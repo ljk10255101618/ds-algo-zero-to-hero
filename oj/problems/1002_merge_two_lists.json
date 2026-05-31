@@ -1,0 +1,48 @@
+{
+  "id": 1002,
+  "title": "合并两个有序链表",
+  "difficulty": "简单",
+  "tags": ["链表", "递归"],
+  "chapter": "1.数组与链表",
+  "description": "将两个升序链表合并为一个新的升序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。",
+  "examples": [
+    {
+      "input": "l1 = [1,2,4], l2 = [1,3,4]",
+      "output": "[1,1,2,3,4,4]",
+      "explanation": null
+    },
+    {
+      "input": "l1 = [], l2 = []",
+      "output": "[]",
+      "explanation": null
+    },
+    {
+      "input": "l1 = [], l2 = [0]",
+      "output": "[0]",
+      "explanation": null
+    }
+  ],
+  "constraints": [
+    "两个链表的节点数目范围是 [0, 50]",
+    "-100 <= Node.val <= 100",
+    "l1 和 l2 均按非递减顺序排列"
+  ],
+  "template": {
+    "python": "class ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef merge_two_lists(l1: ListNode, l2: ListNode) -> ListNode:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function mergeTwoLists(l1, l2) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"l1": [1,2,4], "l2": [1,3,4]}, "expected": [1,1,2,3,4,4]},
+    {"input": {"l1": [], "l2": []}, "expected": []},
+    {"input": {"l1": [], "l2": [0]}, "expected": [0]},
+    {"input": {"l1": [1,3,5], "l2": [2,4,6]}, "expected": [1,2,3,4,5,6]},
+    {"input": {"l1": [1], "l2": [2]}, "expected": [1,2]}
+  ],
+  "hints": [
+    "可以递归实现",
+    "也可以用迭代法，使用虚拟头节点简化操作"
+  ],
+  "solutions": {
+    "python": "def merge_two_lists(l1, l2):\n    dummy = ListNode(0)\n    cur = dummy\n    while l1 and l2:\n        if l1.val <= l2.val:\n            cur.next = l1\n            l1 = l1.next\n        else:\n            cur.next = l2\n            l2 = l2.next\n        cur = cur.next\n    cur.next = l1 or l2\n    return dummy.next"
+  }
+}

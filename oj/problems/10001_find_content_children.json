@@ -1,0 +1,43 @@
+{
+  "id": 10001,
+  "title": "分发饼干",
+  "difficulty": "简单",
+  "tags": ["贪心", "排序"],
+  "chapter": "10.贪心算法",
+  "description": "假设你是一位很棒的家长，想要给你的孩子们分发饼干。你有两个孩子数组：g（每个孩子的胃口值）和 s（每块饼干的大小）。如果给孩子的饼干大小 >= 孩子的胃口值，就会满足这个孩子。每个孩子最多只能得到一块饼干。请你尽可能满足越多数量的孩子，并返回这个最大数值。",
+  "examples": [
+    {
+      "input": "g = [1,2,3], s = [1,1]",
+      "output": "1",
+      "explanation": "你有2块饼干，但3个孩子的胃口值分别是 1、2、3。饼干尺寸 1 只能满足胃口 1 的孩子，所以输出 1"
+    },
+    {
+      "input": "g = [1,2], s = [1,2,3]",
+      "output": "2",
+      "explanation": "你可以满足两个胃口值分别是 1 和 2 的孩子"
+    }
+  ],
+  "constraints": [
+    "1 <= g.length <= 3 * 10^4",
+    "1 <= s.length <= 3 * 10^4",
+    "1 <= g[i], s[j] <= 2^31 - 1"
+  ],
+  "template": {
+    "python": "def find_content_children(g: list[int], s: list[int]) -> int:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function findContentChildren(g, s) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"g": [1,2,3], "s": [1,1]}, "expected": 1},
+    {"input": {"g": [1,2], "s": [1,2,3]}, "expected": 2},
+    {"input": {"g": [1,2,3], "s": [3]}, "expected": 1},
+    {"input": {"g": [10,9,8,7], "s": [5,6,7,8]}, "expected": 2},
+    {"input": {"g": [1,1,1], "s": [1,1,1]}, "expected": 3}
+  ],
+  "hints": [
+    "思路：优先满足胃口小的孩子（小饼干先给胃口小的孩子）",
+    "将两个数组都排序，然后用双指针遍历"
+  ],
+  "solutions": {
+    "python": "def find_content_children(g, s):\n    g.sort()\n    s.sort()\n    child = 0\n    for cookie in s:\n        if child < len(g) and cookie >= g[child]:\n            child += 1\n    return child"
+  }
+}

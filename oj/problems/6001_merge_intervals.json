@@ -1,0 +1,43 @@
+{
+  "id": 6001,
+  "title": "合并区间",
+  "difficulty": "中等",
+  "tags": ["排序", "数组"],
+  "chapter": "6.排序算法",
+  "description": "给出一个区间的集合，请合并所有重叠的区间。",
+  "examples": [
+    {
+      "input": "intervals = [[1,3],[2,6],[8,10],[15,18]]",
+      "output": "[[1,6],[8,10],[15,18]]",
+      "explanation": "区间 [1,3] 和 [2,6] 重叠，合并为 [1,6]"
+    },
+    {
+      "input": "intervals = [[1,4],[4,5]]",
+      "output": "[[1,5]]",
+      "explanation": "区间 [1,4] 和 [4,5] 可被视为重叠区间"
+    }
+  ],
+  "constraints": [
+    "1 <= intervals.length <= 10^4",
+    "intervals[i].length == 2",
+    "0 <= start_i <= end_i <= 10^4"
+  ],
+  "template": {
+    "python": "def merge(intervals: list[list[int]]) -> list[list[int]]:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function merge(intervals) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"intervals": [[1,3],[2,6],[8,10],[15,18]]}, "expected": [[1,6],[8,10],[15,18]]},
+    {"input": {"intervals": [[1,4],[4,5]]}, "expected": [[1,5]]},
+    {"input": {"intervals": [[1,4],[0,4]]}, "expected": [[0,4]]},
+    {"input": {"intervals": [[1,4],[2,3]]}, "expected": [[1,4]]},
+    {"input": {"intervals": [[1,4],[5,6]]}, "expected": [[1,4],[5,6]]}
+  ],
+  "hints": [
+    "先按起点排序",
+    "遍历时，如果当前区间起点 <= 上一个区间终点，则合并"
+  ],
+  "solutions": {
+    "python": "def merge(intervals):\n    if not intervals:\n        return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for start, end in intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1][1] = max(merged[-1][1], end)\n        else:\n            merged.append([start, end])\n    return merged"
+  }
+}

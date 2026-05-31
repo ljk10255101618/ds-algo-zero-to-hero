@@ -1,0 +1,17 @@
+# OJ 评测系统配置文件
+
+{
+  "version": "1.0.0",
+  "name": "DS-Algo OJ System",
+  "description": "数据结构与算法在线评测系统",
+  "time_limit": 5,
+  "memory_limit": 256,
+  "allowed_languages": ["python", "javascript", "cpp", "java"],
+  "judge_config": {
+    "max_output_size": 10240,
+    "max_cpu_time": 5000,
+    "max_real_time": 10000,
+    "spj_version": "default"
+  },
+  "problem_count": 10
+}

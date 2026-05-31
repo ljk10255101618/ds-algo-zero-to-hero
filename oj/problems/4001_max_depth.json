@@ -1,0 +1,42 @@
+{
+  "id": 4001,
+  "title": "二叉树的最大深度",
+  "difficulty": "简单",
+  "tags": ["树", "DFS", "BFS"],
+  "chapter": "4.树与二叉树",
+  "description": "给定一个二叉树 root ，返回其最大深度。二叉树的最大深度是从根节点到最远叶子节点的最长路径上的节点数。",
+  "examples": [
+    {
+      "input": "root = [3,9,20,null,null,15,7]",
+      "output": "3",
+      "explanation": null
+    },
+    {
+      "input": "root = [1,null,2]",
+      "output": "2",
+      "explanation": null
+    }
+  ],
+  "constraints": [
+    "树中节点的数量在 [0, 10^4] 之内",
+    "-100 <= Node.val <= 100"
+  ],
+  "template": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef max_depth(root: TreeNode) -> int:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function maxDepth(root) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"root": [3,9,20,null,null,15,7]}, "expected": 3},
+    {"input": {"root": [1,null,2]}, "expected": 2},
+    {"input": {"root": []}, "expected": 0},
+    {"input": {"root": [1]}, "expected": 1},
+    {"input": {"root": [1,2,3,4,5,null,6,7]}, "expected": 4}
+  ],
+  "hints": [
+    "递归：最大深度 = max(左子树深度, 右子树深度) + 1",
+    "也可以用 BFS 层序遍历，统计层数"
+  ],
+  "solutions": {
+    "python": "def max_depth(root):\n    if not root:\n        return 0\n    return max(max_depth(root.left), max_depth(root.right)) + 1"
+  }
+}

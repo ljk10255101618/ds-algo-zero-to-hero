@@ -1,0 +1,46 @@
+{
+  "id": 9001,
+  "title": "电话号码的字母组合",
+  "difficulty": "中等",
+  "tags": ["回溯", "递归", "字符串"],
+  "chapter": "9.递归与回溯",
+  "description": "给定一个仅包含数字 2-9 的字符串，返回它能表示的所有字母组合。映射关系与电话按键相同。注意：1 不对应任何字母。",
+  "examples": [
+    {
+      "input": "digits = \"23\"",
+      "output": "[\"ad\",\"ae\",\"af\",\"bd\",\"be\",\"bf\",\"cd\",\"ce\",\"cf\"]",
+      "explanation": null
+    },
+    {
+      "input": "digits = \"\"",
+      "output": "[]",
+      "explanation": null
+    },
+    {
+      "input": "digits = \"2\"",
+      "output": "[\"a\",\"b\",\"c\"]",
+      "explanation": null
+    }
+  ],
+  "constraints": [
+    "0 <= digits.length <= 4",
+    "digits[i] 是范围 ['2', '9'] 的一个数字"
+  ],
+  "template": {
+    "python": "def letter_combinations(digits: str) -> list[str]:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function letterCombinations(digits) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"digits": "23"}, "expected": ["ad","ae","af","bd","be","bf","cd","ce","cf"]},
+    {"input": {"digits": ""}, "expected": []},
+    {"input": {"digits": "2"}, "expected": ["a","b","c"]},
+    {"input": {"digits": "79"}, "expected": ["pw","px","py","qw","qx","qy","rw","rx","ry","sw","sx","sy"]}
+  ],
+  "hints": [
+    "使用回溯法，遍历所有可能的组合",
+    "建立一个数字到字母的映射表"
+  ],
+  "solutions": {
+    "python": "def letter_combinations(digits):\n    if not digits:\n        return []\n    mapping = {\n        '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',\n        '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'\n    }\n    result = []\n    def backtrack(index, path):\n        if index == len(digits):\n            result.append(''.join(path))\n            return\n        for letter in mapping[digits[index]]:\n            path.append(letter)\n            backtrack(index + 1, path)\n            path.pop()\n    backtrack(0, [])\n    return result"
+  }
+}

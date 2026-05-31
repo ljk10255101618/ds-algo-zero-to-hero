@@ -1,0 +1,50 @@
+{
+  "id": 7001,
+  "title": "搜索旋转排序数组",
+  "difficulty": "中等",
+  "tags": ["二分查找", "数组"],
+  "chapter": "7.查找算法",
+  "description": "整数数组 nums 按升序排列，数组中的值互不相同。给你旋转后的数组 nums 和一个目标值 target，如果你能找到 target，请返回它的索引。否则返回 -1。",
+  "examples": [
+    {
+      "input": "nums = [4,5,6,7,0,1,2], target = 0",
+      "output": "4",
+      "explanation": null
+    },
+    {
+      "input": "nums = [4,5,6,7,0,1,2], target = 3",
+      "output": "-1",
+      "explanation": null
+    },
+    {
+      "input": "nums = [1], target = 0",
+      "output": "-1",
+      "explanation": null
+    }
+  ],
+  "constraints": [
+    "1 <= nums.length <= 5000",
+    "-10^4 <= nums[i] <= 10^4",
+    "nums 中每个值都 互不相同",
+    "nums 原来是一个升序排序的数组，但进行了旋转",
+    "0 <= 旋转值 < nums.length"
+  ],
+  "template": {
+    "python": "def search(nums: list[int], target: int) -> int:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function search(nums, target) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"nums": [4,5,6,7,0,1,2], "target": 0}, "expected": 4},
+    {"input": {"nums": [4,5,6,7,0,1,2], "target": 3}, "expected": -1},
+    {"input": {"nums": [1], "target": 0}, "expected": -1},
+    {"input": {"nums": [5,1,2,3,4], "target": 1}, "expected": 1},
+    {"input": {"nums": [3,1], "target": 1}, "expected": 1}
+  ],
+  "hints": [
+    "二分查找，关键是判断哪半边是有序的",
+    "如果 nums[mid] > nums[left]，说明左半边有序"
+  ],
+  "solutions": {
+    "python": "def search(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        if nums[left] <= nums[mid]:\n            if nums[left] <= target < nums[mid]:\n                right = mid - 1\n            else:\n                left = mid + 1\n        else:\n            if nums[mid] < target <= nums[right]:\n                left = mid + 1\n            else:\n                right = mid - 1\n    return -1"
+  }
+}

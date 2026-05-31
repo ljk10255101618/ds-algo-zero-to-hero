@@ -1,0 +1,39 @@
+{
+  "id": 5001,
+  "title": "岛屿数量",
+  "difficulty": "中等",
+  "tags": ["图", "DFS", "BFS"],
+  "chapter": "5.图",
+  "description": "给你一个由 '1'（陆地）和 '0'（水）组成的二维网格 grid，请你计算网格中岛屿的数量。岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地细胞形成。",
+  "examples": [
+    {
+      "input": "grid = [\n  [\"1\",\"1\",\"0\",\"0\",\"0\"],\n  [\"1\",\"1\",\"0\",\"0\",\"0\"],\n  [\"0\",\"0\",\"1\",\"0\",\"0\"],\n  [\"0\",\"0\",\"0\",\"1\",\"1\"]\n]",
+      "output": "3",
+      "explanation": null
+    }
+  ],
+  "constraints": [
+    "m == grid.length",
+    "n == grid[i].length",
+    "1 <= m, n <= 300",
+    "grid[i][j] 是 '0' 或 '1'"
+  ],
+  "template": {
+    "python": "def num_islands(grid: list[list[str]]) -> int:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function numIslands(grid) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"grid": [["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]}, "expected": 3},
+    {"input": {"grid": [["1","1","1"],["0","1","0"],["1","1","1"]]}, "expected": 1},
+    {"input": {"grid": [["1","0","1"],["0","0","0"],["1","0","1"]]}, "expected": 4},
+    {"input": {"grid": [["1","1","1"]]}, "expected": 1},
+    {"input": {"grid": [["0","0"],["0","0"]]}, "expected": 0}
+  ],
+  "hints": [
+    "遍历网格，遇到 '1' 就开始 DFS，将相连的 '1' 都变成 '0'",
+    "每完成一次 DFS，岛屿数量 +1"
+  ],
+  "solutions": {
+    "python": "def num_islands(grid):\n    if not grid:\n        return 0\n    count = 0\n    for i in range(len(grid)):\n        for j in range(len(grid[0])):\n            if grid[i][j] == '1':\n                count += 1\n                dfs(grid, i, j)\n    return count\n\ndef dfs(grid, i, j):\n    if i < 0 or j < 0 or i >= len(grid) or j >= len(grid[0]) or grid[i][j] == '0':\n        return\n    grid[i][j] = '0'\n    dfs(grid, i+1, j)\n    dfs(grid, i-1, j)\n    dfs(grid, i, j+1)\n    dfs(grid, i, j-1)"
+  }
+}

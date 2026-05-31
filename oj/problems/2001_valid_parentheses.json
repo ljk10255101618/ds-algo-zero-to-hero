@@ -1,0 +1,49 @@
+{
+  "id": 2001,
+  "title": "有效的括号",
+  "difficulty": "简单",
+  "tags": ["栈", "字符串"],
+  "chapter": "2.栈与队列",
+  "description": "给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。有效字符串需满足：左括号必须用相同类型的右括号闭合；左括号必须以正确的顺序闭合。",
+  "examples": [
+    {
+      "input": "s = \"()\"",
+      "output": "true",
+      "explanation": null
+    },
+    {
+      "input": "s = \"()[]{}\"",
+      "output": "true",
+      "explanation": null
+    },
+    {
+      "input": "s = \"(]\"",
+      "output": "false",
+      "explanation": null
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 10^4",
+    "s 仅由括号 '()[]{}' 组成"
+  ],
+  "template": {
+    "python": "def is_valid(s: str) -> bool:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function isValid(s) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"s": "()"}, "expected": True},
+    {"input": {"s": "()[]{}"}, "expected": True},
+    {"input": {"s": "(]"}, "expected": False},
+    {"input": {"s": "([)]"}, "expected": False},
+    {"input": {"s": "{[]}"}, "expected": True},
+    {"input": {"s": "("}, "expected": False},
+    {"input": {"s": "){"}, "expected": False}
+  ],
+  "hints": [
+    "使用栈来解决",
+    "遇到左括号入栈，遇到右括号检查栈顶是否匹配"
+  ],
+  "solutions": {
+    "python": "def is_valid(s):\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in mapping:\n            if not stack or stack.pop() != mapping[char]:\n                return False\n        else:\n            stack.append(char)\n    return not stack"
+  }
+}

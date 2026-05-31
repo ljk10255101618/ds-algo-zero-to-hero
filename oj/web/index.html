@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS-Algo OJ - 数据结构与算法在线评测</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .problem-list {
+            list-style: none;
+        }
+        
+        .problem-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .problem-item:hover {
+            background: #f0f0f0;
+        }
+        
+        .problem-item.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .difficulty {
+            font-size: 0.75em;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .difficulty.easy { background: #d1fae5; color: #065f46; }
+        .difficulty.medium { background: #fef3c7; color: #92400e; }
+        .difficulty.hard { background: #fee2e2; color: #991b1b; }
+        
+        .problem-item.active .difficulty {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+        
+        .editor-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .problem-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .problem-header h2 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .problem-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-tag {
+            background: #f3f4f6;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .problem-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .description {
+            grid-column: 1 / -1;
+        }
+        
+        .description h4 {
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .description p {
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .examples, .constraints, .code-editor {
+            margin-bottom: 20px;
+        }
+        
+        .examples h4, .constraints h4, .code-editor h4 {
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .example-box {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        
+        .example-box .label {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .example-box pre {
+            margin: 5px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .constraint-list {
+            list-style: disc;
+            padding-left: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .code-editor textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        
+        .code-editor textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result-box.show {
+            display: block;
+        }
+        
+        .result-box.passed {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+        }
+        
+        .result-box.failed {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+        }
+        
+        .result-header {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .result-detail {
+            background: white;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+        
+        .hint-box {
+            background: #fef3c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .hint-box h4 {
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        
+        .hint-box p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .problem-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 DS-Algo OJ</h1>
+            <p>数据结构与算法在线评测系统</p>
+        </header>
+        
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>📋 题目列表</h3>
+                <ul class="problem-list" id="problemList">
+                    <!-- 动态加载 -->
+                </ul>
+            </aside>
+            
+            <main class="editor-section">
+                <div class="problem-header">
+                    <h2 id="problemTitle">选择一道题目开始</h2>
+                    <div class="problem-meta">
+                        <span class="meta-tag" id="problemDifficulty">-</span>
+                        <span class="meta-tag" id="problemTags">-</span>
+                        <span class="meta-tag" id="problemChapter">-</span>
+                    </div>
+                </div>
+                
+                <div class="problem-content">
+                    <div class="description">
+                        <h4>📖 题目描述</h4>
+                        <p id="problemDesc">请点击左侧题目列表选择题目</p>
+                    </div>
+                    
+                    <div class="examples">
+                        <h4>📝 示例</h4>
+                        <div id="problemExamples"></div>
+                    </div>
+                    
+                    <div class="constraints">
+                        <h4>⚠️ 限制条件</h4>
+                        <ul class="constraint-list" id="problemConstraints"></ul>
+                    </div>
+                    
+                    <div class="hint-box" id="hintBox" style="display:none;">
+                        <h4>💡 提示</h4>
+                        <p id="hintText"></p>
+                    </div>
+                    
+                    <div class="code-editor" style="grid-column: 1 / -1;">
+                        <h4>💻 代码编辑</h4>
+                        <textarea id="codeEditor" placeholder="在这里编写你的 Python 代码..."></textarea>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="runCode()">▶️ 运行代码</button>
+                            <button class="btn btn-secondary" onclick="showSolution()">📖 查看答案</button>
+                            <button class="btn btn-secondary" onclick="resetCode()">🔄 重置</button>
+                        </div>
+                    </div>
+                    
+                    <div class="result-box" id="resultBox">
+                        <div class="result-header" id="resultHeader"></div>
+                        <div class="result-detail" id="resultDetail"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <script>
+        // 题目数据（简化版，实际使用时从 JSON 文件加载）
+        const problems = [
+            {
+                id: 1001,
+                title: "两数之和",
+                difficulty: "简单",
+                tags: ["数组", "哈希表"],
+                chapter: "1.数组与链表",
+                description: "给定一个整数数组 nums 和一个整数目标值 target，请你在数组中找出和为目标值 target 的那两个整数，并返回它们的数组下标。",
+                examples: [
+                    {input: "nums = [2,7,11,15], target = 9", output: "[0,1]"},
+                    {input: "nums = [3,2,4], target = 6", output: "[1,2]"}
+                ],
+                constraints: [
+                    "2 <= nums.length <= 10^4",
+                    "-10^9 <= nums[i] <= 10^9",
+                    "-10^9 <= target <= 10^9"
+                ],
+                hints: ["使用哈希表可以将查找时间降到 O(1)"],
+                template: `def two_sum(nums: list[int], target: int) -> list[int]:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 1002,
+                title: "合并两个有序链表",
+                difficulty: "简单",
+                tags: ["链表", "递归"],
+                chapter: "1.数组与链表",
+                description: "将两个升序链表合并为一个新的升序链表并返回。",
+                examples: [
+                    {input: "l1 = [1,2,4], l2 = [1,3,4]", output: "[1,1,2,3,4,4]"}
+                ],
+                constraints: [
+                    "0 <= 节点数 <= 50",
+                    "-100 <= Node.val <= 100"
+                ],
+                hints: ["可以使用递归或迭代法"],
+                template: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def merge_two_lists(l1, l2):
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 2001,
+                title: "有效的括号",
+                difficulty: "简单",
+                tags: ["栈", "字符串"],
+                chapter: "2.栈与队列",
+                description: "给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s，判断字符串是否有效。",
+                examples: [
+                    {input: 's = "()"', output: "true"},
+                    {input: 's = "(]"', output: "false"}
+                ],
+                constraints: ["1 <= s.length <= 10^4"],
+                hints: ["使用栈来解决"],
+                template: `def is_valid(s: str) -> bool:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 3001,
+                title: "无重复字符的最长子串",
+                difficulty: "中等",
+                tags: ["哈希表", "滑动窗口"],
+                chapter: "3.哈希表",
+                description: "给定一个字符串 s，请你找出其中不含有重复字符的最长子串的长度。",
+                examples: [
+                    {input: 's = "abcabcbb"', output: "3"},
+                    {input: 's = "bbbbb"', output: "1"}
+                ],
+                constraints: ["0 <= s.length <= 5 * 10^4"],
+                hints: ["使用滑动窗口和哈希表"],
+                template: `def length_of_longest_substring(s: str) -> int:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 4001,
+                title: "二叉树的最大深度",
+                difficulty: "简单",
+                tags: ["树", "DFS", "BFS"],
+                chapter: "4.树与二叉树",
+                description: "给定一个二叉树，返回其最大深度。",
+                examples: [
+                    {input: "root = [3,9,20,null,null,15,7]", output: "3"}
+                ],
+                constraints: ["0 <= 节点数 <= 10^4"],
+                hints: ["递归或层序遍历"],
+                template: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def max_depth(root) -> int:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 5001,
+                title: "岛屿数量",
+                difficulty: "中等",
+                tags: ["图", "DFS", "BFS"],
+                chapter: "5.图",
+                description: "给你一个由 '1'（陆地）和 '0'（水）组成的二维网格，计算岛屿数量。",
+                examples: [
+                    {input: 'grid = [["1","1","0"],["0","1","0"]]', output: "1"}
+                ],
+                constraints: ["1 <= m, n <= 300"],
+                hints: ["DFS 遍历，相连的 '1' 都标记为 '0'"],
+                template: `def num_islands(grid: list[list[str]]) -> int:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 6001,
+                title: "合并区间",
+                difficulty: "中等",
+                tags: ["排序", "数组"],
+                chapter: "6.排序算法",
+                description: "给出一个区间的集合，请合并所有重叠的区间。",
+                examples: [
+                    {input: "intervals = [[1,3],[2,6],[8,10],[15,18]]", output: "[[1,6],[8,10],[15,18]]"}
+                ],
+                constraints: ["1 <= intervals.length <= 10^4"],
+                hints: ["先按起点排序"],
+                template: `def merge(intervals: list[list[int]]) -> list[list[int]]:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 7001,
+                title: "搜索旋转排序数组",
+                difficulty: "中等",
+                tags: ["二分查找"],
+                chapter: "7.查找算法",
+                description: "在旋转后的排序数组中搜索目标值。",
+                examples: [
+                    {input: "nums = [4,5,6,7,0,1,2], target = 0", output: "4"}
+                ],
+                constraints: ["1 <= nums.length <= 5000"],
+                hints: ["二分查找，关键是判断哪半边有序"],
+                template: `def search(nums: list[int], target: int) -> int:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 8001,
+                title: "爬楼梯",
+                difficulty: "简单",
+                tags: ["动态规划"],
+                chapter: "8.动态规划",
+                description: "爬 n 阶楼梯，每次可以爬 1 或 2 阶，有多少种方法？",
+                examples: [
+                    {input: "n = 2", output: "2"},
+                    {input: "n = 3", output: "3"}
+                ],
+                constraints: ["1 <= n <= 45"],
+                hints: ["斐波那契数列问题"],
+                template: `def climb_stairs(n: int) -> int:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 9001,
+                title: "电话号码的字母组合",
+                difficulty: "中等",
+                tags: ["回溯", "递归"],
+                chapter: "9.递归与回溯",
+                description: "给定数字字符串，返回所有可能的字母组合。",
+                examples: [
+                    {input: 'digits = "23"', output: '["ad","ae","af","bd","be","bf","cd","ce","cf"]'}
+                ],
+                constraints: ["0 <= digits.length <= 4"],
+                hints: ["使用回溯法"],
+                template: `def letter_combinations(digits: str) -> list[str]:
+    # 在这里编写你的代码
+    pass`
+            },
+            {
+                id: 10001,
+                title: "分发饼干",
+                difficulty: "简单",
+                tags: ["贪心", "排序"],
+                chapter: "10.贪心算法",
+                description: "尽可能满足更多孩子的胃口。",
+                examples: [
+                    {input: "g = [1,2,3], s = [1,1]", output: "1"}
+                ],
+                constraints: ["1 <= g.length <= 3 * 10^4"],
+                hints: ["优先满足胃口小的孩子"],
+                template: `def find_content_children(g: list[int], s: list[int]) -> int:
+    # 在这里编写你的代码
+    pass`
+            }
+        ];
+        
+        let currentProblem = null;
+        
+        function init() {
+            renderProblemList();
+            if (problems.length > 0) {
+                selectProblem(problems[0].id);
+            }
+        }
+        
+        function renderProblemList() {
+            const list = document.getElementById('problemList');
+            list.innerHTML = problems.map(p => {
+                const diffClass = p.difficulty === '简单' ? 'easy' : p.difficulty === '中等' ? 'medium' : 'hard';
+                return `<li class="problem-item" data-id="${p.id}" onclick="selectProblem(${p.id})">
+                    <span>${p.id} - ${p.title}</span>
+                    <span class="difficulty ${diffClass}">${p.difficulty}</span>
+                </li>`;
+            }).join('');
+        }
+        
+        function selectProblem(id) {
+            const p = problems.find(x => x.id === id);
+            if (!p) return;
+            
+            currentProblem = p;
+            
+            // 更新列表选中状态
+            document.querySelectorAll('.problem-item').forEach(item => {
+                item.classList.toggle('active', parseInt(item.dataset.id) === id);
+            });
+            
+            // 更新题目信息
+            document.getElementById('problemTitle').textContent = `${p.id}. ${p.title}`;
+            document.getElementById('problemDifficulty').textContent = p.difficulty;
+            document.getElementById('problemTags').textContent = p.tags.join(', ');
+            document.getElementById('problemChapter').textContent = p.chapter;
+            document.getElementById('problemDesc').textContent = p.description;
+            
+            // 更新示例
+            const examplesHtml = p.examples.map((ex, i) => `
+                <div class="example-box">
+                    <div class="label">示例 ${i + 1}</div>
+                    <pre>输入: ${ex.input}</pre>
+                    <pre>输出: ${ex.output}</pre>
+                </div>
+            `).join('');
+            document.getElementById('problemExamples').innerHTML = examplesHtml;
+            
+            // 更新限制
+            document.getElementById('problemConstraints').innerHTML = 
+                p.constraints.map(c => `<li>${c}</li>`).join('');
+            
+            // 更新提示
+            const hintBox = document.getElementById('hintBox');
+            if (p.hints && p.hints.length > 0) {
+                hintBox.style.display = 'block';
+                document.getElementById('hintText').textContent = p.hints[0];
+            } else {
+                hintBox.style.display = 'none';
+            }
+            
+            // 更新代码模板
+            document.getElementById('codeEditor').value = p.template;
+            
+            // 隐藏结果
+            document.getElementById('resultBox').classList.remove('show', 'passed', 'failed');
+        }
+        
+        function runCode() {
+            if (!currentProblem) {
+                alert('请先选择题目');
+                return;
+            }
+            
+            const code = document.getElementById('codeEditor').value;
+            
+            // 简单的客户端模拟测试
+            // 实际使用时需要发送到后端或使用 WebAssembly
+            const resultBox = document.getElementById('resultBox');
+            const resultHeader = document.getElementById('resultHeader');
+            const resultDetail = document.getElementById('resultDetail');
+            
+            resultBox.classList.add('show', 'failed');
+            resultHeader.textContent = '⚠️ 本地评测功能需要 Python 环境';
+            resultDetail.innerHTML = `
+                <p>请使用命令行工具进行评测：</p>
+                <pre style="background:#f3f4f6;padding:10px;border-radius:5px;margin-top:10px;">
+# 1. 将你的代码保存为 solution.py
+# 2. 运行评测脚本
+python judge/judge.py ${currentProblem.id} solution.py</pre>
+                <p style="margin-top:15px;">或者访问题目对应的学习文档查看详细解法。</p>
+            `;
+        }
+        
+        function showSolution() {
+            if (!currentProblem) return;
+            
+            const solutions = {
+                1001: `def two_sum(nums: list[int], target: int) -> list[int]:
+    seen = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement], i]
+        seen[num] = i
+    return []`,
+                2001: `def is_valid(s: str) -> bool:
+    stack = []
+    mapping = {')': '(', '}': '{', ']': '['}
+    for char in s:
+        if char in mapping:
+            if not stack or stack.pop() != mapping[char]:
+                return False
+        else:
+            stack.append(char)
+    return not stack`,
+                8001: `def climb_stairs(n: int) -> int:
+    if n <= 2:
+        return n
+    dp = [0] * (n + 1)
+    dp[1], dp[2] = 1, 2
+    for i in range(3, n + 1):
+        dp[i] = dp[i-1] + dp[i-2]
+    return dp[n]`
+            };
+            
+            if (solutions[currentProblem.id]) {
+                document.getElementById('codeEditor').value = solutions[currentProblem.id];
+            } else {
+                alert('该题目的解答稍后提供');
+            }
+        }
+        
+        function resetCode() {
+            if (currentProblem) {
+                document.getElementById('codeEditor').value = currentProblem.template;
+                document.getElementById('resultBox').classList.remove('show', 'passed', 'failed');
+            }
+        }
+        
+        // 初始化
+        init();
+    </script>
+</body>
+</html>

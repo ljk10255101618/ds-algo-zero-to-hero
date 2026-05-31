@@ -1,0 +1,48 @@
+{
+  "id": 3001,
+  "title": "无重复字符的最长子串",
+  "difficulty": "中等",
+  "tags": ["哈希表", "滑动窗口", "双指针"],
+  "chapter": "3.哈希表",
+  "description": "给定一个字符串 s ，请你找出其中不含有重复字符的最长子串的长度。",
+  "examples": [
+    {
+      "input": "s = \"abcabcbb\"",
+      "output": "3",
+      "explanation": "无重复字符的最长子串是 \"abc\"，长度为 3"
+    },
+    {
+      "input": "s = \"bbbbb\"",
+      "output": "1",
+      "explanation": "无重复字符的最长子串是 \"b\"，长度为 1"
+    },
+    {
+      "input": "s = \"pwwkew\"",
+      "output": "3",
+      "explanation": "无重复字符的最长子串是 \"wke\"，长度为 3"
+    }
+  ],
+  "constraints": [
+    "0 <= s.length <= 5 * 10^4",
+    "s 由英文字母、数字、符号和空格组成"
+  ],
+  "template": {
+    "python": "def length_of_longest_substring(s: str) -> int:\n    # 在这里编写你的代码\n    pass",
+    "javascript": "function lengthOfLongestSubstring(s) {\n    // 在这里编写你的代码\n}"
+  },
+  "test_cases": [
+    {"input": {"s": "abcabcbb"}, "expected": 3},
+    {"input": {"s": "bbbbb"}, "expected": 1},
+    {"input": {"s": "pwwkew"}, "expected": 3},
+    {"input": {"s": ""}, "expected": 0},
+    {"input": {"s": " "}, "expected": 1},
+    {"input": {"s": "dvdf"}, "expected": 3}
+  ],
+  "hints": [
+    "暴力解法：枚举所有子串，检查是否无重复，时间复杂度 O(n³)",
+    "提示：使用滑动窗口和哈希表可以将复杂度降到 O(n)"
+  ],
+  "solutions": {
+    "python": "def length_of_longest_substring(s):\n    char_index = {}\n    left = 0\n    max_len = 0\n    for right, char in enumerate(s):\n        if char in char_index and char_index[char] >= left:\n            left = char_index[char] + 1\n        char_index[char] = right\n        max_len = max(max_len, right - left + 1)\n    return max_len"
+  }
+}
