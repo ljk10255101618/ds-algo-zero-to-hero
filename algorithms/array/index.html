@@ -3,54 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数组 (Array) - DSATutor</title>
+    <title>数组 · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-    <div class="algo-page">
-        <!-- 导航栏 -->
-        <nav class="navbar">
-            <a href="../../index.html" class="back-link">← 返回知识图谱</a>
-            <div class="algo-level">
-                <span class="level-badge level-1">Lv1 · 基础入门</span>
-            </div>
-            <h1 class="algo-title">数组 (Array)</h1>
-        </nav>
+    <div class="algo-header">
+        <a href="../../index.html" class="back-link">← 返回</a>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#6366f1">线性结构</span>
+            <span class="algo-level">Lv1</span>
+            <h1>数组 Array</h1>
+            <p>连续内存空间，O(1) 随机访问</p>
+        </div>
+    </div>
 
-        <div class="content-wrapper">
-            <main class="main-area">
-                <!-- 算法简介 -->
-                <section class="intro-section">
-                    <h2>什么是数组？</h2>
-                    <div class="intro-content">
-                        <p>数组是最基础、最常用的数据结构。
-                        <span class="highlight">它在内存中占据一块连续的存储空间</span>，用于存储相同类型的元素集合。</p>
-                        <p>想象一栋公寓楼的 <strong>信箱墙</strong> 📮 —— 每个信箱有固定的编号（索引 0, 1, 2...），你知道 7 号信箱的位置，就能直接走过去打开它。这就是数组的 <strong>O(1) 随机访问</strong>。</p>
-                        <p>但如果你要在中间插入一个新信箱，就需要把后面的所有信箱都挪动位置 —— 这就是数组插入需要 <span class="highlight">O(n) 时间</span> 的原因。</p>
-                    </div>
-                </section>
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
+                <h2>📝 定义</h2>
+                <p>数组是最基础、最常用的数据结构。<strong>它在内存中占据一块连续的存储空间</strong>，用于存储相同类型的元素集合。</p>
+                <div class="highlight-box">
+                    <strong>核心特点：</strong>
+                    <ul>
+                        <li><strong>连续内存</strong> — 数组元素在内存中紧紧相邻存放</li>
+                        <li><strong>索引访问</strong> — 通过索引直接计算地址：<code>addr[i] = base + i × size</code></li>
+                        <li><strong>固定类型</strong> — 所有元素必须是相同的数据类型</li>
+                    </ul>
+                </div>
+                <div class="complexity-box">
+                    <div><span class="big-o">访问</span> O(1)</div>
+                    <div><span class="big-o">搜索</span> O(n)</div>
+                    <div><span class="big-o">插入</span> O(n)</div>
+                    <div><span class="big-o">删除</span> O(n)</div>
+                </div>
+            </section>
 
-                <!-- 交互可视化 -->
-                <section class="viz-section">
-                    <h2>🎮 交互演示 · 数组操作</h2>
+            <section class="algo-section">
+                <h2>🎮 交互演示</h2>
+                <div class="visualizer-container">
                     <div class="controls">
-                        <div class="control-group">
-                            <label>数组大小:</label>
-                            <input type="range" id="size-slider" min="4" max="12" step="1" value="8">
-                            <span id="size-value" class="value-display">8</span>
-                        </div>
-                        <div class="control-group">
-                            <button id="randomize-btn" class="btn btn-primary">随机生成</button>
-                            <button id="reset-btn" class="btn btn-secondary">重置</button>
-                        </div>
+                        <label>数组大小: <input type="range" id="size-slider" min="4" max="12" value="8" onchange="updateSize(this.value)"></label>
+                        <span id="size-value" class="value-display">8</span>
+                        <button class="btn btn-primary" onclick="randomize()">随机生成</button>
+                        <button class="btn btn-secondary" onclick="resetArray()">重置</button>
                     </div>
-
-                    <div class="try-it-box">
+                    <div id="array-viz" class="viz-canvas"></div>
+                    <div id="array-log" class="viz-log"></div>
+                    <div class="try-it-box" style="margin-top:12px;">
                         <strong>💡 试一试：</strong>
                         <ul>
                             <li>🖱️ <strong>点击</strong>任意数组元素将其删除（后面的元素会前移）</li>
@@ -58,123 +60,65 @@
                             <li>🔍 观察元素移动的过程，体会 O(n) 的插入/删除操作</li>
                         </ul>
                     </div>
+                </div>
+            </section>
 
-                    <div id="array-viz" class="viz-container">
-                        <!-- D3.js 可视化渲染 -->
+            <section class="algo-section">
+                <h2>💡 适用场景</h2>
+                <div class="use-cases">
+                    <div class="use-case-card">
+                        <h4>🎯 频繁随机访问</h4>
+                        <p>通过索引快速获取元素，O(1) 效率</p>
                     </div>
-
-                    <div class="status-bar">
-                        <h4>📊 当前状态</h4>
-                        <p>数组长度: <span id="array-length">8</span></p>
-                        <p>内存地址: 连续 · <span id="array-memory">从 0x00 开始</span></p>
-                        <p>随机访问: <span class="highlight">O(1)</span> · 插入/删除: <span class="highlight">O(n)</span></p>
+                    <div class="use-case-card">
+                        <h4>💾 缓存友好</h4>
+                        <p>连续内存空间，CPU 缓存预取效率高</p>
                     </div>
-                </section>
-
-                <!-- 深度理解模块 -->
-                <section class="viz-section">
-                    <h2>📚 深度理解</h2>
-                    
-                    <!-- 适用场景 -->
-                    <div class="info-card scenario-card" style="margin-bottom:16px;">
-                        <h3>🎯 适用场景</h3>
-                        <div class="info-content">
-                            <ul>
-                                <li><strong>需要频繁随机访问</strong>：通过索引快速获取元素</li>
-                                <li><strong>数据量相对固定</strong>：不频繁进行插入/删除操作</li>
-                                <li><strong>缓存友好</strong>：连续内存空间，CPU 缓存预取效率高</li>
-                                <li><strong>矩阵运算</strong>：二维数组是矩阵的天然表示</li>
-                                <li><strong>作为底层构建块</strong>：栈、队列、哈希表等都可以用数组实现</li>
-                            </ul>
-                        </div>
+                    <div class="use-case-card">
+                        <h4>📐 矩阵运算</h4>
+                        <p>二维数组是矩阵的天然表示</p>
                     </div>
+                </div>
+            </section>
 
-                    <!-- 复杂度分析 -->
-                    <div class="info-card" style="margin-bottom:16px;">
-                        <h3>⏱️ 复杂度分析</h3>
-                        <div class="info-content">
-                            <table class="complexity-table">
-                                <tr>
-                                    <th>操作</th><th>时间复杂度</th><th>说明</th>
-                                </tr>
-                                <tr>
-                                    <td>随机访问</td><td><strong>O(1)</strong></td><td>通过索引直接计算地址</td>
-                                </tr>
-                                <tr>
-                                    <td>搜索（无序）</td><td><strong>O(n)</strong></td><td>需要遍历查找</td>
-                                </tr>
-                                <tr>
-                                    <td>搜索（有序）</td><td><strong>O(log n)</strong></td><td>配合二分搜索</td>
-                                </tr>
-                                <tr>
-                                    <td>插入（尾部）</td><td><strong>O(1)</strong></td><td>有空间时直接写入</td>
-                                </tr>
-                                <tr>
-                                    <td>插入（中间/头部）</td><td><strong>O(n)</strong></td><td>需要移动后续元素</td>
-                                </tr>
-                                <tr>
-                                    <td>删除</td><td><strong>O(n)</strong></td><td>需要移动后续元素</td>
-                                </tr>
-                            </table>
-                            <p style="margin-top:12px;font-size:0.85rem;color:var(--text-muted);">
-                            💡 数组的 <strong>O(1) 随机访问</strong> 是其最大优势——地址计算：<code>base_addr + index × element_size</code>
-                            </p>
-                        </div>
+            <section class="algo-section">
+                <h2>⚠️ 局限性</h2>
+                <div class="highlight-box" style="background:rgba(239,68,68,0.1);border-color:#ef4444;">
+                    <ul>
+                        <li><strong>固定大小</strong>：创建后无法动态扩容（需要重新分配）</li>
+                        <li><strong>插入/删除开销大</strong>：需要移动大量元素</li>
+                        <li><strong>内存碎片</strong>：大数组需要连续大块内存</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="algo-section">
+                <h2>🔗 发展脉络</h2>
+                <div class="evolution-timeline">
+                    <div class="evo-node">
+                        <div class="evo-circle" style="background:#6366f1;">1940</div>
+                        <div class="evo-name">数组</div>
                     </div>
+                    <div class="evo-arrow">→</div>
+                    <a class="evo-node" href="../linked-list/index.html">
+                        <div class="evo-circle" style="background:#6366f1;">1955</div>
+                        <div class="evo-name">链表</div>
+                    </a>
+                    <div class="evo-reason">解决动态插入</div>
+                    <div class="evo-arrow">→</div>
+                    <a class="evo-node" href="../hash-table/index.html">
+                        <div class="evo-circle" style="background:#8b5cf6;">1953</div>
+                        <div class="evo-name">哈希表</div>
+                    </a>
+                    <div class="evo-reason">O(1) 查找</div>
+                </div>
+            </section>
+        </main>
 
-                    <!-- 发展脉络 -->
-                    <div class="info-card" style="margin-bottom:16px;">
-                        <h3>🔗 发展脉络</h3>
-                        <div class="evolution-timeline">
-                            <div class="evo-node">
-                                <div class="evo-circle" style="background:#6366f1;">1940</div>
-                                <div class="evo-name">数组</div>
-                            </div>
-                            <div class="evo-arrow">→</div>
-                            <a class="evo-node" href="../linked-list/index.html">
-                                <div class="evo-circle" style="background:#6366f1;">1955</div>
-                                <div class="evo-name">链表</div>
-                            </a>
-                            <div class="evo-reason">解决动态插入</div>
-                            <div class="evo-arrow">→</div>
-                            <a class="evo-node" href="../hash-table/index.html">
-                                <div class="evo-circle" style="background:#8b5cf6;">1953</div>
-                                <div class="evo-name">哈希表</div>
-                            </a>
-                            <div class="evo-reason">O(1) 查找</div>
-                            <div class="evo-arrow">→</div>
-                            <a class="evo-node" href="../bst/index.html">
-                                <div class="evo-circle" style="background:#10b981;">1960</div>
-                                <div class="evo-name">BST</div>
-                            </a>
-                            <div class="evo-reason">动态有序</div>
-                        </div>
-                    </div>
-
-                    <!-- 局限性 -->
-                    <div class="info-card" style="margin-bottom:16px;">
-                        <h3>⚠️ 局限性</h3>
-                        <div class="info-content">
-                            <ul>
-                                <li><strong>固定大小</strong>：创建后无法动态扩容（需要重新分配）</li>
-                                <li><strong>插入/删除开销大</strong>：需要移动大量元素</li>
-                                <li><strong>内存碎片</strong>：大数组需要连续大块内存</li>
-                                <li><strong>类型单一</strong>：所有元素必须是相同类型</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 代码实现 -->
-                <section class="viz-section">
-                    <h2>💻 代码实现</h2>
-                    <div class="code-block">
-                        <div class="code-header">
-                            <span>Python</span>
-                            <span>数组基本操作</span>
-                        </div>
-                        <div class="code-content">
-                            <pre style="margin:0;"># Python 列表模拟数组操作
+        <aside class="algo-sidebar">
+            <div class="sidebar-card">
+                <h3>⚡ 代码实现</h3>
+                <pre><code># Python 数组操作
 
 # 创建数组
 arr = [1, 3, 5, 7, 9]
@@ -190,322 +134,184 @@ def search(arr, target):
     return -1
 
 # 插入 — O(n)
-def insert(arr, index, value):
+def insert(arr, idx, val):
     arr.append(0)  # 先扩展
-    # 从后往前移动元素
-    for i in range(len(arr)-1, index, -1):
+    for i in range(len(arr)-1, idx, -1):
         arr[i] = arr[i-1]
-    arr[index] = value
-    return arr
+    arr[idx] = val
 
-# 删除 — O(n)
-def delete(arr, index):
-    for i in range(index, len(arr)-1):
+# 删除 — O(n)  
+def delete(arr, idx):
+    for i in range(idx, len(arr)-1):
         arr[i] = arr[i+1]
-    arr.pop()
-    return arr</pre>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 关键要点 -->
-                <section class="takeaways-section">
-                    <h3>🎯 关键要点</h3>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">✅</span>
-                        <span class="takeaway-text"><strong>O(1) 随机访问</strong> 是数组最大的优势，源于连续内存和索引计算</span>
-                    </div>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">✅</span>
-                        <span class="takeaway-text"><strong>缓存友好</strong> — 连续内存使得 CPU 可以预加载相邻数据，访问速度远快于链表</span>
-                    </div>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">⚠️</span>
-                        <span class="takeaway-text"><strong>插入/删除 O(n)</strong> — 需要移动元素，大量操作时考虑使用链表</span>
-                    </div>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">💡</span>
-                        <span class="takeaway-text"><strong>双指针技巧</strong> 是数组相关算法中最常用的优化手段</span>
-                    </div>
-                </section>
-            </main>
-
-            <!-- 侧边栏 -->
-            <aside class="sidebar">
-                <div class="sidebar-card">
-                    <h3>📋 目录</h3>
-                    <ul class="toc-list">
-                        <li><a href="#"><span class="toc-dot"></span>什么是数组</a></li>
-                        <li><a href="#"><span class="toc-dot"></span>交互演示</a></li>
-                        <li><a href="#"><span class="toc-dot"></span>复杂度分析</a></li>
-                        <li><a href="#"><span class="toc-dot"></span>代码实现</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-card">
-                    <h3>⏱️ 复杂度速查</h3>
-                    <table class="complexity-table">
-                        <tr><th>操作</th><th>复杂度</th></tr>
-                        <tr><td>访问</td><td><strong style="color:var(--success);">O(1)</strong></td></tr>
-                        <tr><td>搜索</td><td><strong style="color:var(--warning);">O(n)</strong></td></tr>
-                        <tr><td>插入</td><td><strong style="color:var(--danger);">O(n)</strong></td></tr>
-                        <tr><td>删除</td><td><strong style="color:var(--danger);">O(n)</strong></td></tr>
-                    </table>
-                </div>
-
-                <div class="sidebar-card">
-                    <h3>📝 相关题目</h3>
-                    <ul class="problem-list">
-                        <li>
-                            <span class="problem-name">两数之和</span>
-                            <span class="problem-difficulty diff-easy">简单</span>
-                        </li>
-                        <li>
-                            <span class="problem-name">最大子数组和</span>
-                            <span class="problem-difficulty diff-medium">中等</span>
-                        </li>
-                        <li>
-                            <span class="problem-name">合并有序数组</span>
-                            <span class="problem-difficulty diff-easy">简单</span>
-                        </li>
-                        <li>
-                            <span class="problem-name">旋转数组</span>
-                            <span class="problem-difficulty diff-medium">中等</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-card">
-                    <h3>🔗 关联知识点</h3>
-                    <ul class="problem-list">
-                        <li><a href="../linked-list/index.html" class="problem-name" style="color:var(--primary);">→ 链表</a></li>
-                        <li><a href="../hash-table/index.html" class="problem-name" style="color:var(--primary);">→ 哈希表</a></li>
-                        <li><a href="../search/binary-search/index.html" class="problem-name" style="color:var(--primary);">→ 二分搜索</a></li>
-                        <li><a href="../sorting/quick/index.html" class="problem-name" style="color:var(--primary);">→ 快速排序</a></li>
-                    </ul>
-                </div>
-            </aside>
-        </div>
+    arr.pop()</code></pre>
+            </div>
+            <div class="sidebar-card">
+                <h3>📌 推荐题目</h3>
+                <ul>
+                    <li><a href="https://leetcode.cn/problems/two-sum/" target="_blank">1. 两数之和</a></li>
+                    <li><a href="https://leetcode.cn/problems/maximum-subarray/" target="_blank">53. 最大子数组和</a></li>
+                    <li><a href="https://leetcode.cn/problems/merge-sorted-array/" target="_blank">88. 合并两个有序数组</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-card">
+                <h3>🔗 关联知识点</h3>
+                <ul>
+                    <li><a href="../linked-list/index.html">→ 链表</a></li>
+                    <li><a href="../hash-table/index.html">→ 哈希表</a></li>
+                    <li><a href="../search/binary-search/index.html">→ 二分搜索</a></li>
+                    <li><a href="../sorting/quick/index.html">→ 快速排序</a></li>
+                </ul>
+            </div>
+        </aside>
     </div>
 
-    <!-- AI 助手 -->
-    <button class="ai-toggle-btn" id="aiToggleBtn" onclick="toggleAIPanel()" title="AI 学习助手" style="position:fixed;bottom:28px;right:28px;z-index:9999;">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-    </button>
-
-    <div class="ai-chat-panel" id="aiChatPanel" style="position:fixed;bottom:104px;right:28px;z-index:9998;">
-        <div class="ai-chat-header">
-            <h3>AI 学习助手</h3>
-            <div class="ai-chat-header-actions">
-                <button class="ai-header-btn" onclick="clearChat()" title="清除">
-                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                </button>
-            </div>
-        </div>
-        <div class="ai-chat-messages" id="aiChatMessages">
-            <div class="ai-message ai-bot-message">
-                <div class="ai-message-avatar">🤖</div>
-                <div class="ai-message-content">
-                    <p>👋 我在学习数组！可以问我：</p>
-                    <ul style="margin:8px 0 0 16px;font-size:13px;">
-                        <li>"数组和链表有什么区别？"</li>
-                        <li>"为什么数组访问是 O(1)？"</li>
-                        <li>"什么是动态数组？"</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="ai-chat-input-area">
-            <textarea class="ai-chat-input" id="aiChatInput" placeholder="提问..." rows="1" onkeydown="handleInputKeydown(event)"></textarea>
-            <button class="ai-send-btn" onclick="sendMessage()">
-                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-            </button>
-        </div>
-    </div>
-
-    <script src="../../assets/js/ai-assistant.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-    // ========== 数组可视化 ==========
-    let arrayData = [];
-    const COLORS = ['#6366f1', '#818cf8', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#8b5cf6'];
+        let arrayData = [];
+        const COLORS = ['#6366f1', '#818cf8', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#8b5cf6'];
 
-    function initArrayViz() {
-        const container = document.getElementById('array-viz');
-        container.innerHTML = '';
-        
-        const width = container.clientWidth || 800;
-        const height = 280;
-        
-        const svg = d3.select(container)
-            .append('svg')
-            .attr('width', '100%')
-            .attr('height', height)
-            .attr('viewBox', [0, 0, width, height]);
-        
-        drawArray(svg, width, height);
-    }
+        function logMsg(msg) {
+            const logEl = document.getElementById('array-log');
+            logEl.innerHTML = `<span class="log-msg">👉 ${msg}</span>`;
+            setTimeout(() => logEl.innerHTML = '', 2500);
+        }
 
-    function drawArray(svg, width, height) {
-        const size = parseInt(document.getElementById('size-slider').value);
-        const cellWidth = Math.min(70, (width - 60) / size);
-        const cellHeight = 60;
-        const startX = (width - size * cellWidth) / 2;
-        const startY = height / 2 - cellHeight / 2;
-        
-        // 如果数据长度变化，重新生成
-        if (arrayData.length !== size) {
+        function updateSize(val) {
+            document.getElementById('size-value').textContent = val;
+            arrayData = [];
+            initArrayViz();
+        }
+
+        function randomize() {
+            const size = parseInt(document.getElementById('size-slider').value);
             arrayData = [];
             for (let i = 0; i < size; i++) {
                 arrayData.push(Math.floor(Math.random() * 90) + 10);
             }
+            initArrayViz();
+            logMsg('已生成随机数组');
         }
-        
-        // 清除旧内容
-        svg.selectAll('*').remove();
-        
-        // 标题
-        svg.append('text')
-            .attr('x', width / 2)
-            .attr('y', 25)
-            .attr('text-anchor', 'middle')
-            .style('font-size', '14px')
-            .style('font-weight', '600')
-            .style('fill', '#475569')
-            .text('📦 数组内存布局 (连续存储)');
-        
-        // 内存地址行
-        svg.selectAll('.addr')
-            .data(arrayData)
-            .join('text')
-            .attr('class', 'addr')
-            .attr('x', (d, i) => startX + i * cellWidth + cellWidth / 2)
-            .attr('y', startY - 12)
-            .attr('text-anchor', 'middle')
-            .style('font-size', '10px')
-            .style('font-family', 'monospace')
-            .style('fill', '#94a3b8')
-            .text((d, i) => `0x${(i * 4).toString(16).padStart(2, '0')}`);
-        
-        // 单元格
-        const cells = svg.selectAll('.cell')
-            .data(arrayData)
-            .join('g')
-            .attr('class', 'cell')
-            .attr('transform', (d, i) => `translate(${startX + i * cellWidth}, ${startY})`)
-            .style('cursor', 'pointer');
-        
-        cells.append('rect')
-            .attr('width', cellWidth - 2)
-            .attr('height', cellHeight)
-            .attr('rx', 8)
-            .attr('ry', 8)
-            .style('fill', (d, i) => COLORS[i % COLORS.length])
-            .style('opacity', 0.85)
-            .style('stroke', '#fff')
-            .style('stroke-width', 2)
-            .style('transition', 'all 0.3s')
-            .on('mouseover', function() {
-                d3.select(this).style('opacity', 1).style('stroke-width', 3);
-            })
-            .on('mouseout', function() {
-                d3.select(this).style('opacity', 0.85).style('stroke-width', 2);
-            })
-            .on('click', function(event, d) {
-                // 删除元素
-                const idx = arrayData.indexOf(d);
-                if (idx >= 0) {
-                    // 动画：移出
-                    const cellGroup = d3.select(this.parentNode);
-                    cellGroup.transition()
-                        .duration(300)
-                        .style('opacity', 0)
-                        .attr('transform', `translate(${startX + idx * cellWidth - 20}, ${startY})`)
-                        .on('end', () => {
-                            arrayData.splice(idx, 1);
-                            document.getElementById('array-length').textContent = arrayData.length;
-                            drawArray(svg, width, height);
-                        });
-                }
-            })
-            .on('dblclick', function(event, d) {
-                // 插入新元素
-                const idx = arrayData.indexOf(d);
-                const newVal = Math.floor(Math.random() * 90) + 10;
-                arrayData.splice(idx >= 0 ? idx : arrayData.length, 0, newVal);
-                document.getElementById('array-length').textContent = arrayData.length;
-                drawArray(svg, width, height);
-            });
-        
-        cells.append('text')
-            .attr('x', (cellWidth - 2) / 2)
-            .attr('y', cellHeight / 2 + 4)
-            .attr('text-anchor', 'middle')
-            .style('font-size', '16px')
-            .style('font-weight', '700')
-            .style('fill', '#fff')
-            .style('pointer-events', 'none')
-            .text(d => d);
-        
-        // 索引行
-        svg.selectAll('.index')
-            .data(arrayData)
-            .join('text')
-            .attr('class', 'index')
-            .attr('x', (d, i) => startX + i * cellWidth + cellWidth / 2)
-            .attr('y', startY + cellHeight + 20)
-            .attr('text-anchor', 'middle')
-            .style('font-size', '11px')
-            .style('font-family', 'monospace')
-            .style('font-weight', '600')
-            .style('fill', '#64748b')
-            .text((d, i) => `[${i}]`);
-        
-        // 操作提示
-        svg.append('text')
-            .attr('x', width / 2)
-            .attr('y', height - 10)
-            .attr('text-anchor', 'middle')
-            .style('font-size', '11px')
-            .style('fill', '#94a3b8')
-            .text('🖱️ 单击删除 · 双击插入 · 滑块调整大小');
-    }
 
-    // ========== 事件绑定 ==========
-    document.addEventListener('DOMContentLoaded', () => {
-        initArrayViz();
-        
-        document.getElementById('size-slider').addEventListener('input', function() {
-            document.getElementById('size-value').textContent = this.value;
-            arrayData = [];
+        function resetArray() {
+            randomize();
+        }
+
+        function initArrayViz() {
             const container = document.getElementById('array-viz');
-            const svg = d3.select(container).select('svg');
-            drawArray(svg, container.clientWidth || 800, 280);
-        });
-        
-        document.getElementById('randomize-btn').addEventListener('click', () => {
-            arrayData = [];
-            const container = document.getElementById('array-viz');
-            const svg = d3.select(container).select('svg');
-            drawArray(svg, container.clientWidth || 800, 280);
-        });
-        
-        document.getElementById('reset-btn').addEventListener('click', () => {
-            document.getElementById('size-slider').value = 8;
-            document.getElementById('size-value').textContent = '8';
-            arrayData = [];
-            const container = document.getElementById('array-viz');
-            const svg = d3.select(container).select('svg');
-            drawArray(svg, container.clientWidth || 800, 280);
-        });
-        
-        window.addEventListener('resize', () => {
-            const container = document.getElementById('array-viz');
-            const svg = d3.select(container).select('svg');
-            if (svg.node()) {
-                drawArray(svg, container.clientWidth || 800, 280);
+            container.innerHTML = '';
+            
+            const width = Math.min(600, container.clientWidth || 600);
+            const height = 200;
+            
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('width', '100%')
+                .attr('height', height)
+                .attr('viewBox', [0, 0, width, height]);
+            
+            if (arrayData.length === 0) {
+                randomize();
             }
-        });
-    });
+            
+            drawArray(svg, width, height);
+        }
+
+        function drawArray(svg, width, height) {
+            const size = arrayData.length;
+            const cellWidth = Math.min(60, (width - 40) / size);
+            const cellHeight = 50;
+            const startX = (width - size * cellWidth) / 2;
+            const startY = height / 2 - cellHeight / 2 + 20;
+            
+            svg.selectAll('*').remove();
+            
+            // Title
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', 22)
+                .attr('text-anchor', 'middle')
+                .style('font-size', '13px')
+                .style('font-weight', '600')
+                .style('fill', '#475569')
+                .text('📦 数组内存布局 (连续存储)');
+            
+            // Address row
+            svg.selectAll('.addr')
+                .data(arrayData)
+                .join('text')
+                .attr('class', 'addr')
+                .attr('x', (d, i) => startX + i * cellWidth + cellWidth / 2)
+                .attr('y', startY - 8)
+                .attr('text-anchor', 'middle')
+                .style('font-size', '9px')
+                .style('font-family', 'monospace')
+                .style('fill', '#94a3b8')
+                .text((d, i) => `0x${(i * 4).toString(16).padStart(2, '0')}`);
+            
+            // Index row
+            svg.selectAll('.idx')
+                .data(arrayData)
+                .join('text')
+                .attr('class', 'idx')
+                .attr('x', (d, i) => startX + i * cellWidth + cellWidth / 2)
+                .attr('y', startY - 20)
+                .attr('text-anchor', 'middle')
+                .style('font-size', '10px')
+                .style('fill', '#666')
+                .text((d, i) => `[${i}]`);
+            
+            // Cells
+            const cells = svg.selectAll('.cell')
+                .data(arrayData)
+                .join('g')
+                .attr('class', 'cell')
+                .attr('transform', (d, i) => `translate(${startX + i * cellWidth}, ${startY})`);
+            
+            cells.append('rect')
+                .attr('width', cellWidth - 2)
+                .attr('height', cellHeight)
+                .attr('rx', 6)
+                .attr('fill', (d, i) => COLORS[i % COLORS.length])
+                .attr('opacity', 0.85)
+                .on('click', function(event, d) {
+                    const idx = arrayData.indexOf(d);
+                    if (idx > -1) {
+                        arrayData.splice(idx, 1);
+                        initArrayViz();
+                        logMsg(`删除 arr[${idx}]，元素前移 (O(n))`);
+                    }
+                })
+                .on('dblclick', function(event, d) {
+                    const idx = arrayData.indexOf(d);
+                    const newVal = Math.floor(Math.random() * 90) + 10;
+                    arrayData.splice(idx + 1, 0, newVal);
+                    initArrayViz();
+                    logMsg(`在 arr[${idx}] 后插入 ${newVal} (O(n))`);
+                });
+            
+            cells.append('text')
+                .attr('x', (cellWidth - 2) / 2)
+                .attr('y', cellHeight / 2 + 5)
+                .attr('text-anchor', 'middle')
+                .style('fill', '#fff')
+                .style('font-size', '16px')
+                .style('font-weight', 'bold')
+                .text(d => d);
+            
+            // Info text
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 8)
+                .attr('text-anchor', 'middle')
+                .style('font-size', '11px')
+                .style('fill', '#888')
+                .text('点击删除 | 双击插入 | 随机访问 O(1) | 插入/删除 O(n)');
+        }
+
+        // Initialize
+        window.addEventListener('load', initArrayViz);
+        window.addEventListener('resize', initArrayViz);
     </script>
 </body>
 </html>
