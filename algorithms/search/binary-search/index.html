@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二分搜索 - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-2">Lv2 · 核心基础</span></div>
+        <h1 class="algo-title">二分搜索 (Binary Search)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是二分搜索？</h2>
+                <div class="intro-content">
+                    <p><strong>二分搜索</strong> 是在 <span class="highlight">有序数组</span> 中查找目标值的高效算法。每次将搜索范围缩小一半。</p>
+                    <p>📖 想象你在字典里查单词：翻到中间页，看目标在左边还是右边，<strong>每次排除一半</strong>，很快就能找到。</p>
+                    <p>💡 <strong>重要前提</strong>：数组必须是<strong>有序的</strong>。如果无序，需要先排序。</p>
+                </div>
+            </section>
+            <section class="viz-section">
+                <h2>🎮 交互演示</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <label>目标值:</label>
+                        <input type="number" id="target-input" value="42" style="width:70px">
+                        <button id="search-btn" class="btn btn-primary">搜索</button>
+                        <button id="reset-btn" class="btn btn-secondary">重置</button>
+                    </div>
+                </div>
+                <div id="bs-viz" class="viz-container"><svg width="700" height="250"></svg></div>
+                <div id="bs-status" class="status-bar"><span id="bs-msg">输入目标值，点击搜索</span></div>
+            </section>
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <div class="code-tabs">
+                    <div class="tab-header"><button class="tab-btn active" data-lang="iter">迭代</button><button class="tab-btn" data-lang="recur">递归</button></div>
+                    <div class="tab-content active" data-lang="iter"><pre class="code-block"><code>def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1  # 未找到</code></pre></div>
+                    <div class="tab-content" data-lang="recur"><pre class="code-block"><code>def binary_search_recursive(arr, target, left, right):
+    if left > right:
+        return -1
+    mid = left + (right - left) // 2
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] < target:
+        return binary_search_recursive(arr, target, mid + 1, right)
+    else:
+        return binary_search_recursive(arr, target, left, mid - 1)</code></pre></div>
+                </div>
+            </section>
+            <section class="complexity-section">
+                <h2>📊 复杂度</h2>
+                <table class="complexity-table">
+                    <tr><th>情况</th><th>时间复杂度</th><th>空间</th></tr>
+                    <tr><td>平均/最坏</td><td class="good">O(log n)</td><td class="good">O(1)</td></tr>
+                </table>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 前提条件</h3><ul><li>数组必须有序</li><li>支持随机访问</li><li>可比较大小</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关</h3><ul><li>← <a href="../hash-table/index.html">哈希表</a></li><li>→ 二分搜索树 (BST)</li></ul></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#bs-viz svg"),W=700,H=250;
+let arr=[13,18,24,29,35,42,50,57,63,71];let steps=[],stepIdx=-1;
+function bsSteps(a,t){const s=[];let l=0,r=a.length-1;
+    while(l<=r){const m=l+Math.floor((r-l)/2);s.push({l,r,m,found:a[m]===t,arr:[...a]});
+        if(a[m]===t)break;if(a[m]<t)l=m+1;else r=m-1;}
+    return s;}
+function render(idx){svg.selectAll("*").remove();const s=steps[idx];if(!s){renderIdle();return;}
+    const a=s.arr;const barW=Math.min(60,(W-80)/a.length);
+    a.forEach((v,i)=>{const x=40+i*(barW+8),h=Math.min(120,v*2);
+        let fill="#93c5fd";if(i===s.m&&s.found)fill="#4ade80";else if(i===s.m)fill="#fbbf24";else if(i>=s.l&&i<=s.r)fill="#93c5fd";else fill="#e5e7eb";
+        svg.append("rect").attr("x",x).attr("y",H-50-h).attr("width",barW).attr("height",h).attr("fill",fill).attr("rx",4);
+        svg.append("text").attr("x",x+barW/2).attr("y",H-30).attr("text-anchor","middle").attr("font-size","13").attr("font-weight","bold").text(v);
+    });
+    document.getElementById("bs-msg").textContent=s.found?`✅ 找到！arr[${s.m}]=${a[s.m]} = 目标值`:`🔍 搜索区间 [${s.l},${s.r}]，mid=${s.m} (arr[${s.m}]=${a[s.m]})`;
+}
+function renderIdle(){arr.forEach((v,i)=>{const x=40+i*75,h=v*2;
+        svg.append("rect").attr("x",x).attr("y",H-50-h).attr("width",60).attr("height",h).attr("fill","#93c5fd").attr("rx",4);
+        svg.append("text").attr("x",x+30).attr("y",H-30).attr("text-anchor","middle").attr("font-size","13").attr("font-weight","bold").text(v);
+    });}
+document.getElementById("search-btn").addEventListener("click",()=>{const t=parseInt(document.getElementById("target-input").value);if(isNaN(t))return;steps=bsSteps([...arr],t);stepIdx=0;
+    function next(){if(stepIdx<steps.length){render(stepIdx);stepIdx++;setTimeout(next,700);}}
+    next();
+});
+document.getElementById("reset-btn").addEventListener("click",()=>{steps=[];stepIdx=-1;svg.selectAll("*").remove();renderIdle();document.getElementById("bs-msg").textContent='已重置';});
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",function(){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+    this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
+}));
+renderIdle();
+</script>
+</body>
+</html>

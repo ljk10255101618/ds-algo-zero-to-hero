@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVL树 - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-3">Lv3 · 进阶掌握</span></div>
+        <h1 class="algo-title">AVL树 (平衡二叉搜索树)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是 AVL 树？</h2>
+                <div class="intro-content">
+                    <p>AVL 树是 <span class="highlight">自平衡的二叉搜索树</span>，由 Adelson-Velsky 和 Landis 在 1962 年发明，是世界上第一个自平衡二叉搜索树。</p>
+                    <p>它的核心思想是：<strong>任何节点的左右子树高度差不超过 1</strong>。这个高度差称为 <strong>平衡因子 (Balance Factor)</strong>。</p>
+                    <p>当插入或删除导致平衡被打破时，通过 <strong>四种旋转操作</strong> 重新平衡：LL、RR、LR、RL。</p>
+                </div>
+            </section>
+
+            <section class="viz-section">
+                <h2>🎮 交互演示 · AVL树操作</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <label>插入值:</label>
+                        <input type="number" id="insert-input" min="1" max="99" value="10" style="width:70px">
+                        <button id="insert-btn" class="btn btn-primary">插入</button>
+                    </div>
+                    <div class="control-group">
+                        <label>删除值:</label>
+                        <input type="number" id="delete-input" min="1" max="99" value="10" style="width:70px">
+                        <button id="delete-btn" class="btn btn-danger">删除</button>
+                        <button id="reset-btn" class="btn btn-secondary">重置</button>
+                    </div>
+                </div>
+                <div id="avl-viz" class="viz-container">
+                    <svg width="750" height="350"></svg>
+                </div>
+                <div id="avl-status" class="status-bar">
+                    <span id="avl-msg">点击插入或删除操作</span>
+                </div>
+            </section>
+
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <div class="code-tabs">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-lang="python">Python</button>
+                        <button class="tab-btn" data-lang="java">Java</button>
+                    </div>
+                    <div class="tab-content active" data-lang="python"><pre class="code-block"><code>class AVLNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.height = 1
+
+def get_height(node):
+    return node.height if node else 0
+
+def get_balance(node):
+    return get_height(node.left) - get_height(node.right) if node else 0
+
+def rotate_right(y):
+    x = y.left
+    T2 = x.right
+    x.right = y
+    y.left = T2
+    y.height = 1 + max(get_height(y.left), get_height(y.right))
+    x.height = 1 + max(get_height(x.left), get_height(x.right))
+    return x
+
+def rotate_left(x):
+    y = x.right
+    T2 = y.left
+    y.left = x
+    x.right = T2
+    x.height = 1 + max(get_height(x.left), get_height(x.right))
+    y.height = 1 + max(get_height(y.left), get_height(y.right))
+    return y
+
+def insert(node, val):
+    if not node: return AVLNode(val)
+    if val < node.val: node.left = insert(node.left, val)
+    else: node.right = insert(node.right, val)
+    node.height = 1 + max(get_height(node.left), get_height(node.right))
+    bf = get_balance(node)
+    if bf > 1 and val < node.left.val: return rotate_right(node)       # LL
+    if bf < -1 and val > node.right.val: return rotate_left(node)      # RR
+    if bf > 1 and val > node.left.val:                                 # LR
+        node.left = rotate_left(node.left)
+        return rotate_right(node)
+    if bf < -1 and val < node.right.val:                               # RL
+        node.right = rotate_right(node.right)
+        return rotate_left(node)
+    return node</code></pre></div>
+                    <div class="tab-content" data-lang="java"><pre class="code-block"><code>class AVLNode {
+    int val, height;
+    AVLNode left, right;
+    AVLNode(int val) { this.val = val; this.height = 1; }
+}
+class AVLTree {
+    int height(AVLNode n) { return n == null ? 0 : n.height; }
+    int balance(AVLNode n) { return n == null ? 0 : height(n.left) - height(n.right); }
+    AVLNode rotateRight(AVLNode y) {
+        AVLNode x = y.left, T2 = x.right;
+        x.right = y; y.left = T2;
+        y.height = 1 + Math.max(height(y.left), height(y.right));
+        x.height = 1 + Math.max(height(x.left), height(x.right));
+        return x;
+    }
+    AVLNode rotateLeft(AVLNode x) {
+        AVLNode y = x.right, T2 = y.left;
+        y.left = x; x.right = T2;
+        x.height = 1 + Math.max(height(x.left), height(x.right));
+        y.height = 1 + Math.max(height(y.left), height(y.right));
+        return y;
+    }
+    AVLNode insert(AVLNode node, int val) {
+        if (node == null) return new AVLNode(val);
+        if (val < node.val) node.left = insert(node.left, val);
+        else node.right = insert(node.right, val);
+        node.height = 1 + Math.max(height(node.left), height(node.right));
+        int bf = balance(node);
+        if (bf > 1 && val < node.left.val) return rotateRight(node);
+        if (bf < -1 && val > node.right.val) return rotateLeft(node);
+        if (bf > 1 && val > node.left.val) { node.left = rotateLeft(node.left); return rotateRight(node); }
+        if (bf < -1 && val < node.right.val) { node.right = rotateRight(node.right); return rotateLeft(node); }
+        return node;
+    }
+}</code></pre></div>
+                </div>
+            </section>
+
+            <section class="complexity-section">
+                <h2>📊 复杂度分析</h2>
+                <table class="complexity-table">
+                    <tr><th>操作</th><th>平均</th><th>最坏</th></tr>
+                    <tr><td>查找</td><td class="good">O(log n)</td><td class="good">O(log n)</td></tr>
+                    <tr><td>插入</td><td class="good">O(log n)</td><td class="good">O(log n)</td></tr>
+                    <tr><td>删除</td><td class="good">O(log n)</td><td class="good">O(log n)</td></tr>
+                </table>
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/balanced-binary-tree/" target="_blank" class="practice-card">
+                        <span class="practice-num">110</span>
+                        <span class="practice-title">平衡二叉树</span>
+                        <span class="practice-tag easy">简单</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/balance-a-binary-search-tree/" target="_blank" class="practice-card">
+                        <span class="practice-num">1382</span>
+                        <span class="practice-title">将二叉搜索树变平衡</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 四种旋转</h3><ul><li><strong>LL</strong>: 右旋</li><li><strong>RR</strong>: 左旋</li><li><strong>LR</strong>: 左旋→右旋</li><li><strong>RL</strong>: 右旋→左旋</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../bst/index.html">二叉搜索树</a></li><li>→ <a href="../red-black/index.html">红黑树</a></li></ul></div>
+            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:60%">60%</div></div></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg = d3.select("#avl-viz svg"), width = 750, height = 350;
+let root = null;
+let msg = document.getElementById("avl-msg");
+
+class AVLNode {
+    constructor(val) { this.val = val; this.left = null; this.right = null; this.height = 1; }
+}
+function h(n) { return n ? n.height : 0; }
+function bf(n) { return n ? h(n.left) - h(n.right) : 0; }
+function updateHeight(n) { if(n) n.height = 1 + Math.max(h(n.left), h(n.right)); }
+function rotR(y) { let x=y.left,T2=x.right; x.right=y; y.left=T2; updateHeight(y); updateHeight(x); return x; }
+function rotL(x) { let y=x.right,T2=y.left; y.left=x; x.right=T2; updateHeight(x); updateHeight(y); return y; }
+function insert(node, val) {
+    if(!node) return msg.textContent=`插入 ${val} ✅`, new AVLNode(val);
+    if(val<node.val) node.left=insert(node.left,val);
+    else if(val>node.val) node.right=insert(node.right,val);
+    else { msg.textContent=`${val} 已存在`; return node; }
+    updateHeight(node); let bal=bf(node);
+    if(bal>1 && val<node.left.val){ msg.textContent=`⚠️ LL失衡 → 右旋`; return rotR(node); }
+    if(bal<-1 && val>node.right.val){ msg.textContent=`⚠️ RR失衡 → 左旋`; return rotL(node); }
+    if(bal>1 && val>node.left.val){ msg.textContent=`⚠️ LR失衡 → 左旋+右旋`; node.left=rotL(node.left); return rotR(node); }
+    if(bal<-1 && val<node.right.val){ msg.textContent=`⚠️ RL失衡 → 右旋+左旋`; node.right=rotR(node.right); return rotL(node); }
+    msg.textContent=`插入 ${val} ✅ 平衡因子=${bal}`; return node;
+}
+function minNode(n) { while(n.left) n=n.left; return n; }
+function deleteNode(node, val) {
+    if(!node) { msg.textContent=`${val} 不存在`; return null; }
+    if(val<node.val) node.left=deleteNode(node.left,val);
+    else if(val>node.val) node.right=deleteNode(node.right,val);
+    else {
+        msg.textContent=`删除 ${val} ✅`;
+        if(!node.left||!node.right){ node=node.left||node.right; return node; }
+        let t=minNode(node.right); node.val=t.val; node.right=deleteNode(node.right,t.val);
+    }
+    if(!node) return node; updateHeight(node); let bal=bf(node);
+    if(bal>1 && bf(node.left)>=0){ msg.textContent=`⚠️ LL失衡 → 右旋`; return rotR(node); }
+    if(bal<-1 && bf(node.right)<=0){ msg.textContent=`⚠️ RR失衡 → 左旋`; return rotL(node); }
+    if(bal>1 && bf(node.left)<0){ msg.textContent=`⚠️ LR失衡 → 左旋+右旋`; node.left=rotL(node.left); return rotR(node); }
+    if(bal<-1 && bf(node.right)>0){ msg.textContent=`⚠️ RL失衡 → 右旋+左旋`; node.right=rotR(node.right); return rotL(node); }
+    return node;
+}
+
+function render() {
+    svg.selectAll("*").remove();
+    if(!root){ svg.append("text").attr("x",width/2).attr("y",height/2).attr("text-anchor","middle").attr("fill","#999").attr("font-size","16").text("AVL树为空，请插入节点"); return; }
+    const nodes=[], edges=[]; const r=22, yGap=60, xGap=120;
+    function traverse(n,depth,left,right,x){ if(!n) return;
+        const cx=(left+right)/2; nodes.push({val:n.val,bf:bf(n),x:cx,y:depth*yGap+50,height:n.height});
+        if(n.left){ edges.push({s:cx,t:(left+x)/2,sy:depth*yGap+50,ty:(depth+1)*yGap+50}); traverse(n.left,depth+1,left,x,(left+x)/2); }
+        if(n.right){ edges.push({s:cx,t:(x+right)/2,sy:depth*yGap+50,ty:(depth+1)*yGap+50}); traverse(n.right,depth+1,x,right,(x+right)/2); }
+    }
+    traverse(root,0,0,width,width/2);
+    edges.forEach(e=>{ svg.append("line").attr("x1",e.s).attr("y1",e.sy).attr("x2",e.t).attr("y2",e.ty).attr("stroke","#bbb").attr("stroke-width",2); });
+    nodes.forEach(n=>{ const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`);
+        g.append("circle").attr("r",r).attr("fill",n.bf===0?"#4ade80":Math.abs(n.bf)===1?"#fbbf24":"#f87171").attr("stroke","#333").attr("stroke-width",2);
+        g.append("text").attr("text-anchor","middle").attr("dy","0.3em").attr("font-size","14").attr("font-weight","bold").text(n.val);
+        g.append("text").attr("text-anchor","middle").attr("y",r+14).attr("font-size","10").attr("fill","#666").text(`bf=${n.bf}`);
+    });
+}
+function refresh(){ render(); }
+document.getElementById("insert-btn").addEventListener("click",()=>{ const v=parseInt(document.getElementById("insert-input").value); if(!isNaN(v)){ root=insert(root,v); refresh(); } });
+document.getElementById("delete-btn").addEventListener("click",()=>{ const v=parseInt(document.getElementById("delete-input").value); if(!isNaN(v)){ root=deleteNode(root,v); refresh(); } });
+document.getElementById("reset-btn").addEventListener("click",()=>{ root=null; msg.textContent="已重置"; refresh(); });
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",function(){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+    this.classList.add("active"); document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
+}));
+</script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最小生成树 - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-4">Lv4 · 高阶挑战</span></div>
+        <h1 class="algo-title">最小生成树 (MST)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是最小生成树？</h2>
+                <div class="intro-content">
+                    <p><strong>最小生成树 (Minimum Spanning Tree, MST)</strong> 是在一个连通无向加权图中，找到一棵 <span class="highlight">包含所有顶点、边的权值和最小</span> 的树。</p>
+                    <p>💡 <strong>现实应用</strong>：铺设电缆/水管的最优路线设计、通信网络建设、电路板布线。</p>
+                    <p>两大经典算法：</p>
+                    <ul>
+                        <li><strong>Kruskal</strong>（克鲁斯卡尔）：按边权排序，并查集判断连通，O(E log E)</li>
+                        <li><strong>Prim</strong>（普里姆）：从顶点出发，贪心选最小边，O(E log V)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="viz-section">
+                <h2>🎮 交互演示 · Kruskal 算法</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <button id="start-btn" class="btn btn-primary">▶ 开始 Kruskal</button>
+                        <button id="prim-btn" class="btn btn-primary">▶ 开始 Prim</button>
+                        <button id="reset-btn" class="btn btn-secondary">重置</button>
+                    </div>
+                </div>
+                <div id="mst-viz" class="viz-container">
+                    <svg width="750" height="380"></svg>
+                </div>
+                <div id="mst-status" class="status-bar"><span id="mst-msg">点击 ▶ 查看 MST 构建过程</span></div>
+            </section>
+
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <div class="code-tabs">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-lang="kruskal">Kruskal</button>
+                        <button class="tab-btn" data-lang="prim">Prim</button>
+                    </div>
+                    <div class="tab-content active" data-lang="kruskal"><pre class="code-block"><code>class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        rx, ry = self.find(x), self.find(y)
+        if rx == ry: return False
+        if self.rank[rx] < self.rank[ry]:
+            self.parent[rx] = ry
+        else:
+            self.parent[ry] = rx
+            if self.rank[rx] == self.rank[ry]:
+                self.rank[rx] += 1
+        return True
+
+def kruskal(n, edges):
+    # edges: [(weight, u, v)]
+    edges.sort()
+    uf = UnionFind(n)
+    mst = []
+    for w, u, v in edges:
+        if uf.union(u, v):
+            mst.append((u, v, w))
+            if len(mst) == n - 1: break
+    return mst</code></pre></div>
+                    <div class="tab-content" data-lang="prim"><pre class="code-block"><code>import heapq
+
+def prim(graph, start=0):
+    # graph: {u: [(v, weight)]}
+    n = len(graph)
+    visited = [False] * n
+    pq = [(0, start, -1)]  # (weight, node, parent)
+    mst = []
+
+    while pq and len(mst) < n - 1:
+        w, u, p = heapq.heappop(pq)
+        if visited[u]: continue
+        visited[u] = True
+        if p != -1:
+            mst.append((p, u, w))
+
+        for v, w2 in graph[u]:
+            if not visited[v]:
+                heapq.heappush(pq, (w2, v, u))
+
+    return mst</code></pre></div>
+                </div>
+            </section>
+
+            <section class="complexity-section">
+                <h2>📊 算法对比</h2>
+                <table class="complexity-table">
+                    <tr><th>算法</th><th>时间复杂度</th><th>策略</th><th>适用场景</th></tr>
+                    <tr><td>Kruskal</td><td>O(E log E)</td><td>选边法</td><td>稀疏图</td></tr>
+                    <tr><td>Prim</td><td>O(E log V)</td><td>选点法</td><td>稠密图</td></tr>
+                </table>
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/min-cost-to-connect-all-points/" target="_blank" class="practice-card">
+                        <span class="practice-num">1584</span>
+                        <span class="practice-title">连接所有点的最小费用</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 MST 性质</h3><ul><li><strong>切割性质</strong>：最小权边必属于某MST</li><li><strong>环性质</strong>：最大权边不会在MST中</li><li>MST 唯一当权值互异</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../shortest-path/index.html">最短路径</a></li><li>← <a href="../graph/index.html">图论</a></li></ul></div>
+            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:60%">60%</div></div></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#mst-viz svg"),W=750,H=380;
+const nodes=[{id:0,x:120,y:180},{id:1,x:260,y:80},{id:2,x:260,y:280},{id:3,x:420,y:80},{id:4,x:420,y:280},{id:5,x:560,y:180}];
+const allEdges=[
+    {u:0,v:1,w:4,selected:false},{u:0,v:2,w:3,selected:false},{u:1,v:2,w:1,selected:false},
+    {u:1,v:3,w:5,selected:false},{u:2,v:4,w:6,selected:false},{u:3,v:4,w:2,selected:false},
+    {u:3,v:5,w:7,selected:false},{u:4,v:5,w:3,selected:false},{u:1,v:4,w:8,selected:false}
+];
+let kruskalSteps=[],primSteps=[],curStep=-1,mode='kruskal',timer=null;
+class UF{constructor(n){this.p=[...Array(n).keys()];this.r=new Array(n).fill(0);}
+find(x){if(this.p[x]!==x)this.p[x]=this.find(this.p[x]);return this.p[x];}
+union(x,y){let rx=this.find(x),ry=this.find(y);if(rx===ry)return false;
+    if(this.r[rx]<this.r[ry])this.p[rx]=ry;else{if(this.r[rx]===this.r[ry])this.r[rx]++;this.p[ry]=rx;}return true;}}
+function genKruskalSteps(){
+    const es=[...allEdges].sort((a,b)=>a.w-b.w);const steps=[];const uf=new UF(6);let mst=[];
+    for(const e of es){const added=uf.union(e.u,e.v);steps.push({...e,added});}
+    kruskalSteps=steps;
+}
+function genPrimSteps(){
+    const steps=[];
+    const visited=new Array(6).fill(false);visited[0]=true;let mst=[];
+    while(mst.length<5){
+        let best={u:-1,v:-1,w:Infinity};
+        for(const e of allEdges){
+            if(visited[e.u]&&!visited[e.v]&&e.w<best.w)best={...e};
+            if(visited[e.v]&&!visited[e.u]&&e.w<best.w)best={...e};
+        }
+        if(best.u===-1)break;
+        visited[best.v]=visited[best.u]=true;mst.push(best);
+        steps.push({...best,added:true});
+    }
+    primSteps=steps;
+}
+function render(stepIdx,md){
+    svg.selectAll("*").remove();
+    const steps=md==='kruskal'?kruskalSteps:primSteps;
+    const selectedEdges=steps.filter((_,i)=>i<=stepIdx&&_.added);
+    allEdges.forEach(e=>{const u=nodes[e.u],v=nodes[e.v];const isSel=selectedEdges.some(s=>s.u===e.u&&s.v===e.v||s.u===e.v&&s.v===e.u);
+        const isCur=stepIdx>=0&&steps[stepIdx]&&((steps[stepIdx].u===e.u&&steps[stepIdx].v===e.v)||(steps[stepIdx].u===e.v&&steps[stepIdx].v===e.u));
+        svg.append("line").attr("x1",u.x).attr("y1",u.y).attr("x2",v.x).attr("y2",v.y)
+            .attr("stroke",isSel?"#4ade80":isCur?"#f87171":"#ccc").attr("stroke-width",isSel?4:2);
+        svg.append("text").attr("x",(u.x+v.x)/2).attr("y",(u.y+v.y)/2-10).attr("text-anchor","middle").attr("font-size","13").attr("font-weight","bold").attr("fill",isSel?"#4ade80":"#666").text(e.w);
+    });
+    nodes.forEach((n,i)=>{const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`);
+        g.append("circle").attr("r",22).attr("fill","#93c5fd").attr("stroke","#333").attr("stroke-width",2);
+        g.append("text").attr("text-anchor","middle").attr("dy","0.35em").attr("font-size","14").attr("font-weight","bold").text(i);});
+    if(stepIdx>=0&&stepIdx<steps.length){const s=steps[stepIdx];
+        document.getElementById("mst-msg").textContent=s.added?`✅ 加入边 ${s.u}—${s.v} (权=${s.w})`:`❌ 跳过边 ${s.u}—${s.v} (权=${s.w})，会形成环`;}
+    if(stepIdx>=steps.length-1)document.getElementById("mst-msg").textContent=`🎉 MST 构建完成！总权值=${selectedEdges.reduce((sum,e)=>sum+e.w,0)}`;
+}
+genKruskalSteps();genPrimSteps();
+document.getElementById("start-btn").addEventListener("click",function(){
+    if(timer)clearInterval(timer);mode='kruskal';curStep=-1;genKruskalSteps();
+    timer=setInterval(()=>{curStep++;if(curStep>=kruskalSteps.length){clearInterval(timer);timer=null;}render(curStep,'kruskal');},700);
+});
+document.getElementById("prim-btn").addEventListener("click",function(){
+    if(timer)clearInterval(timer);mode='prim';curStep=-1;genPrimSteps();
+    timer=setInterval(()=>{curStep++;if(curStep>=primSteps.length){clearInterval(timer);timer=null;}render(curStep,'prim');},700);
+});
+document.getElementById("reset-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}curStep=-1;render(-1,'kruskal');document.getElementById("mst-msg").textContent="已重置";});
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",function(){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+    this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
+}));
+render(-1,'kruskal');
+</script>
+</body>
+</html>

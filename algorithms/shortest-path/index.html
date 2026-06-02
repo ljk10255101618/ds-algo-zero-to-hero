@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最短路径 - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-4">Lv4 · 高阶挑战</span></div>
+        <h1 class="algo-title">最短路径 (Dijkstra & Bellman-Ford)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是最短路径？</h2>
+                <div class="intro-content">
+                    <p>最短路径问题是图论中的经典问题：在加权图中找到从起点到终点的 <span class="highlight">路径权值和最小</span> 的路径。</p>
+                    <p>🗺️ <strong>现实应用</strong>：Google Maps 导航、网络路由 (OSPF)、社交网络"六度分隔"。</p>
+                    <p>两大经典算法：</p>
+                    <ul>
+                        <li><strong>Dijkstra</strong>（迪杰斯特拉）：贪心思想，不能处理负权边，O((V+E)logV)</li>
+                        <li><strong>Bellman-Ford</strong>（贝尔曼-福特）：动态规划，可以处理负权边，O(VE)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="viz-section">
+                <h2>🎮 交互演示 · Dijkstra 最短路径</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <button id="start-btn" class="btn btn-primary">▶ 开始 Dijkstra</button>
+                        <button id="reset-btn" class="btn btn-secondary">重置</button>
+                        <span style="margin-left:16px;font-size:14px;color:#666">起点: <strong style="color:#e74c3c">A</strong> → 终点: <strong style="color:#e74c3c">F</strong></span>
+                    </div>
+                </div>
+                <div id="graph-viz" class="viz-container">
+                    <svg width="750" height="380"></svg>
+                </div>
+                <div id="sp-status" class="status-bar">
+                    <span id="sp-msg">点击"开始 Dijkstra" 查看算法执行过程</span>
+                </div>
+                <div class="legend">
+                    <span><span class="legend-dot" style="background:#fbbf24"></span> 未访问</span>
+                    <span><span class="legend-dot" style="background:#93c5fd"></span> 已访问</span>
+                    <span><span class="legend-dot" style="background:#4ade80"></span> 最短路径</span>
+                    <span><span class="legend-dot" style="background:#f87171"></span> 当前节点</span>
+                </div>
+            </section>
+
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <div class="code-tabs">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-lang="dijkstra">Dijkstra</button>
+                        <button class="tab-btn" data-lang="bellman">Bellman-Ford</button>
+                    </div>
+                    <div class="tab-content active" data-lang="dijkstra"><pre class="code-block"><code>import heapq
+
+def dijkstra(graph, start):
+    """graph: {node: [(neighbor, weight)]}"""
+    dist = {node: float('inf') for node in graph}
+    dist[start] = 0
+    pq = [(0, start)]  # (distance, node)
+    prev = {}
+
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d > dist[u]: continue  # 跳过旧记录
+
+        for v, w in graph[u]:
+            nd = d + w
+            if nd < dist[v]:
+                dist[v] = nd
+                prev[v] = u
+                heapq.heappush(pq, (nd, v))
+
+    return dist, prev</code></pre></div>
+                    <div class="tab-content" data-lang="bellman"><pre class="code-block"><code>def bellman_ford(edges, V, start):
+    """edges: [(u, v, w)], V: 顶点数"""
+    dist = [float('inf')] * V
+    dist[start] = 0
+
+    # 松弛 V-1 次
+    for _ in range(V - 1):
+        for u, v, w in edges:
+            if dist[u] != float('inf') and dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+
+    # 检测负环
+    for u, v, w in edges:
+        if dist[u] != float('inf') and dist[u] + w < dist[v]:
+            return None  # 存在负环
+
+    return dist</code></pre></div>
+                </div>
+            </section>
+
+            <section class="complexity-section">
+                <h2>📊 算法对比</h2>
+                <table class="complexity-table">
+                    <tr><th>算法</th><th>时间复杂度</th><th>负权边</th><th>负环检测</th></tr>
+                    <tr><td>Dijkstra</td><td>O((V+E)logV)</td><td class="bad">✗ 不能</td><td class="bad">✗</td></tr>
+                    <tr><td>Bellman-Ford</td><td>O(VE)</td><td class="good">✓ 可以</td><td class="good">✓</td></tr>
+                    <tr><td>Floyd-Warshall</td><td>O(V³)</td><td class="good">✓ 可以</td><td>✓ 全源</td></tr>
+                </table>
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/network-delay-time/" target="_blank" class="practice-card">
+                        <span class="practice-num">743</span>
+                        <span class="practice-title">网络延迟时间</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/cheapest-flights-within-k-stops/" target="_blank" class="practice-card">
+                        <span class="practice-num">787</span>
+                        <span class="practice-title">K 站中转内最便宜</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 核心步骤</h3><ul><li>初始化距离数组</li><li>每次选未访问的最小距离点</li><li>松弛相邻节点</li><li>重复直到所有点访问完</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../graph/index.html">图论基础</a></li><li>→ <a href="../mst/index.html">最小生成树</a></li></ul></div>
+            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:85%">85%</div></div></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#graph-viz svg"),W=750,H=380;
+const graph={A:{B:4,C:2},B:{C:1,D:5},C:{D:8,E:10},D:{E:2,F:6},E:{F:3},F:{}};
+const nodes=[{id:"A",x:100,y:180},{id:"B",x:250,y:80},{id:"C",x:250,y:280},{id:"D",x:420,y:80},{id:"E",x:420,y:280},{id:"F",x:580,y:180}];
+const nodeMap={};nodes.forEach(n=>nodeMap[n.id]=n);
+function getEdges(){const es=[];
+    for(const [u,nei] of Object.entries(graph)){for(const [v,w] of Object.entries(nei)){es.push({u,v,w});}}
+    return es;
+}
+let state={dist:{},prev:{},visited:{},current:null,path:[],done:false,step:0,steps:[]};
+function initState(){
+    state={dist:{},prev:{},visited:{},current:null,path:[],done:false,step:0,steps:[]};
+    for(const id of Object.keys(graph)){state.dist[id]=id==='A'?0:Infinity;state.prev[id]=null;state.visited[id]=false;}
+    // Precompute steps
+    const pq=[[0,'A',[]]];const vis={};const steps=[];
+    while(pq.length){
+        pq.sort((a,b)=>a[0]-b[0]);
+        const [d,u,path]=pq.shift();
+        if(vis[u])continue;vis[u]=true;
+        const newPath=[...path,u];
+        steps.push({type:'visit',node:u,dist:d,path:[...newPath]});
+        if(u==='F'){steps.push({type:'done',path:[...newPath],dist:d});break;}
+        for(const [v,w] of Object.entries(graph[u])){
+            const nd=d+w;
+            if(!vis[v]){steps.push({type:'relax',from:u,to:v,newDist:nd});pq.push([nd,v,[...newPath]]);}
+        }
+    }
+    state.steps=steps;
+}
+function renderStep(idx){
+    if(idx>=state.steps.length){state.done=true;document.getElementById("sp-msg").textContent=`✅ 最短路径完成！距离=${state.steps[state.steps.length-1]?.dist||0}`;return;}
+    const s=state.steps[idx];
+    svg.selectAll("*").remove();
+    const edges=getEdges();
+    edges.forEach(e=>{const u=nodeMap[e.u],v=nodeMap[e.v];
+        const line=svg.append("line").attr("x1",u.x).attr("y1",u.y).attr("x2",v.x).attr("y2",v.y).attr("stroke","#ccc").attr("stroke-width",2);
+        // Add weight label
+        const mx=(u.x+v.x)/2,my=(u.y+v.y)/2;
+        svg.append("text").attr("x",mx).attr("y",my-8).attr("text-anchor","middle").attr("font-size","13").attr("font-weight","bold").attr("fill","#666").text(e.w);
+    });
+    nodes.forEach(n=>{
+        const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`);
+        let fill="#fbbf24";
+        if(s.type==='visit'&&s.node===n.id)fill="#f87171";
+        else if(state.path.includes(n.id)||(s.path&&s.path.includes(n.id)))fill="#4ade80";
+        else if(state.visited[n.id])fill="#93c5fd";
+        g.append("circle").attr("r",22).attr("fill",fill).attr("stroke","#333").attr("stroke-width",2);
+        g.append("text").attr("text-anchor","middle").attr("dy","0.35em").attr("font-size","16").attr("font-weight","bold").text(n.id);
+        const d=state.dist[n.id];
+        if(d!==Infinity)g.append("text").attr("text-anchor","middle").attr("y",32).attr("font-size","11").attr("fill","#666").text(`d=${d}`);
+    });
+    if(s.type==='visit'){document.getElementById("sp-msg").textContent=`🔍 访问节点 ${s.node}，当前最短距离=${s.dist}`;state.visited[s.node]=true;state.dist[s.node]=s.dist;state.path=s.path||[];}
+    else if(s.type==='relax'){document.getElementById("sp-msg").textContent=`🔄 松弛: ${s.from}→${s.to}，新距离=${s.newDist}`;if(s.newDist<state.dist[s.to])state.dist[s.to]=s.newDist;}
+    else if(s.type==='done'){document.getElementById("sp-msg").textContent=`✅ 找到最短路径: ${s.path.join('→')}，总距离=${s.dist}`;state.path=s.path;state.done=true;document.getElementById("start-btn").disabled=false;}
+    state.step=idx;
+}
+document.getElementById("start-btn").addEventListener("click",function(){
+    this.disabled=true;initState();state.step=0;
+    function next(){if(state.step<state.steps.length){renderStep(state.step);state.step++;setTimeout(next,800);}else{document.getElementById("start-btn").disabled=false;}}
+    next();
+});
+document.getElementById("reset-btn").addEventListener("click",()=>{initState();svg.selectAll("*").remove();document.getElementById("sp-msg").textContent="已重置，点击 ▶ 开始 Dijkstra";document.getElementById("start-btn").disabled=false;render();});
+function render(){const edges=getEdges();
+    edges.forEach(e=>{const u=nodeMap[e.u],v=nodeMap[e.v];svg.append("line").attr("x1",u.x).attr("y1",u.y).attr("x2",v.x).attr("y2",v.y).attr("stroke","#ccc").attr("stroke-width",2);
+        svg.append("text").attr("x",(u.x+v.x)/2).attr("y",(u.y+v.y)/2-8).attr("text-anchor","middle").attr("font-size","13").attr("font-weight","bold").attr("fill","#666").text(e.w);});
+    nodes.forEach(n=>{const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`);
+        g.append("circle").attr("r",22).attr("fill","#fbbf24").attr("stroke","#333").attr("stroke-width",2);
+        g.append("text").attr("text-anchor","middle").attr("dy","0.35em").attr("font-size","16").attr("font-weight","bold").text(n.id);});
+}
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",function(){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+    this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
+}));
+initState();render();
+</script>
+</body>
+</html>

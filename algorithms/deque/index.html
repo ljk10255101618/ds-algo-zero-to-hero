@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双端队列 (Deque) - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-1">Lv1 · 基础入门</span></div>
+        <h1 class="algo-title">双端队列 (Deque)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是双端队列？</h2>
+                <div class="intro-content">
+                    <p><strong>双端队列（Deque）</strong> 是队列的升级版，允许在 <span class="highlight">头部和尾部两端</span> 进行插入和删除操作。</p>
+                    <p>想象火车站 🚉 的 <strong>双面站台</strong> —— 乘客可以从左边上车，也可以从右边上车；可以从左边下车，也可以从右边下车。这就是 Deque 的 "双端" 特性。</p>
+                    <p>在 Python 中，<code>collections.deque</code> 是高度优化的双端队列实现，提供了 O(1) 的头尾操作效率。</p>
+                </div>
+            </section>
+
+            <section class="viz-section">
+                <h2>🎮 交互演示 · Deque 操作</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <button id="push-front-btn" class="btn btn-primary">push_front(随机值)</button>
+                        <button id="push-back-btn" class="btn btn-primary">push_back(随机值)</button>
+                    </div>
+                    <div class="control-group">
+                        <button id="pop-front-btn" class="btn btn-danger">pop_front()</button>
+                        <button id="pop-back-btn" class="btn btn-danger">pop_back()</button>
+                        <button id="reset-btn" class="btn btn-secondary">清空</button>
+                    </div>
+                </div>
+                <div id="deque-viz" class="viz-container">
+                    <svg width="700" height="200"></svg>
+                </div>
+                <div id="status-bar" class="status-bar">
+                    <span>Front → <span id="front-indicator">null</span></span>
+                    <span> | Back → <span id="back-indicator">null</span></span>
+                    <span> | Size: <span id="size-indicator">0</span></span>
+                </div>
+            </section>
+
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <div class="code-tabs">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-lang="python">Python</button>
+                        <button class="tab-btn" data-lang="java">Java</button>
+                        <button class="tab-btn" data-lang="cpp">C++</button>
+                    </div>
+                    <div class="tab-content active" data-lang="python"><pre class="code-block"><code>from collections import deque
+
+d = deque()          # 创建空双端队列
+d.append(1)          # push_back
+d.appendleft(2)      # push_front
+x = d.pop()          # pop_back
+y = d.popleft()      # pop_front
+d[0]                 # O(1) 随机访问（头部）
+len(d)               # O(1) 获取大小</code></pre></div>
+                    <div class="tab-content" data-lang="java"><pre class="code-block"><code>import java.util.ArrayDeque;
+
+ArrayDeque&lt;Integer&gt; d = new ArrayDeque&lt;&gt;();
+d.addLast(1);       // push_back
+d.addFirst(2);      // push_front
+int x = d.removeLast();   // pop_back
+int y = d.removeFirst();  // pop_front
+int front = d.peekFirst();// 查看头部
+int size = d.size();</code></pre></div>
+                    <div class="tab-content" data-lang="cpp"><pre class="code-block"><code>#include &lt;deque&gt;
+std::deque&lt;int&gt; d;
+d.push_back(1);     // push_back
+d.push_front(2);    // push_front
+d.pop_back();       // pop_back
+d.pop_front();      // pop_front
+int front = d.front();
+int size = d.size();</code></pre></div>
+                </div>
+            </section>
+
+            <section class="complexity-section">
+                <h2>📊 复杂度分析</h2>
+                <table class="complexity-table">
+                    <tr><th>操作</th><th>时间复杂度</th><th>说明</th></tr>
+                    <tr><td>push_front / push_back</td><td class="good">O(1)</td><td>两端插入，无需移动元素</td></tr>
+                    <tr><td>pop_front / pop_back</td><td class="good">O(1)</td><td>两端删除，无需移动元素</td></tr>
+                    <tr><td>随机访问 (索引)</td><td class="mid">O(1)</td><td>分段连续存储，两级索引</td></tr>
+                    <tr><td>中间插入/删除</td><td class="bad">O(n)</td><td>需要移动元素到两端</td></tr>
+                    <tr><td>空间复杂度</td><td class="good">O(n)</td><td>存储 n 个元素</td></tr>
+                </table>
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/design-circular-deque/" target="_blank" class="practice-card">
+                        <span class="practice-num">641</span>
+                        <span class="practice-title">设计循环双端队列</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/sliding-window-maximum/" target="_blank" class="practice-card">
+                        <span class="practice-num">239</span>
+                        <span class="practice-title">滑动窗口最大值</span>
+                        <span class="practice-tag hard">困难</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/implement-stack-using-queues/" target="_blank" class="practice-card">
+                        <span class="practice-num">225</span>
+                        <span class="practice-title">用队列实现栈</span>
+                        <span class="practice-tag easy">简单</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 核心特性</h3><ul><li>双端插入/删除 O(1)</li><li>支持随机访问</li><li>底层分段连续存储</li><li>Python 标准库实现</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../queue/index.html">队列</a></li><li>← <a href="../stack/index.html">栈</a></li><li>→ <a href="../linked-list/index.html">链表</a></li></ul></div>
+            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:70%">70%</div></div></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg = d3.select("#deque-viz svg");
+const width = 700, height = 200, cellW = 60, cellH = 50;
+const centerY = height / 2;
+let dequeData = [];
+let colors = d3.scaleOrdinal(d3.schemeSet3);
+
+function render() {
+    svg.selectAll("*").remove();
+    const g = svg.append("g").attr("transform", `translate(${width/2 - (dequeData.length * cellW)/2}, 0)`);
+    dequeData.forEach((val, i) => {
+        const x = i * cellW;
+        const rect = g.append("rect").attr("x", x).attr("y", centerY - cellH/2)
+            .attr("width", cellW).attr("height", cellH)
+            .attr("rx", 6).attr("ry", 6)
+            .attr("fill", colors(i)).attr("stroke", "#333").attr("stroke-width", 2)
+            .attr("opacity", 0).transition().duration(300).attr("opacity", 1);
+        g.append("text").attr("x", x + cellW/2).attr("y", centerY + 5)
+            .attr("text-anchor", "middle").attr("font-size", "18").attr("font-weight", "bold")
+            .text(val).attr("opacity", 0).transition().duration(300).attr("opacity", 1);
+    });
+    if (dequeData.length === 0) {
+        g.append("text").attr("x", 0).attr("y", centerY + 5)
+            .attr("text-anchor", "middle").attr("font-size", "16").attr("fill", "#999")
+            .text("Deque 为空，请添加元素");
+    }
+    // 标注 Front 和 Back
+    if (dequeData.length > 0) {
+        g.append("text").attr("x", 0).attr("y", centerY - cellH/2 - 10)
+            .attr("text-anchor", "middle").attr("font-size", "12").attr("fill", "#e74c3c").attr("font-weight", "bold")
+            .text("← FRONT");
+        g.append("text").attr("x", (dequeData.length-1)*cellW + cellW/2).attr("y", centerY - cellH/2 - 10)
+            .attr("text-anchor", "middle").attr("font-size", "12").attr("fill", "#2ecc71").attr("font-weight", "bold")
+            .text("BACK →");
+    }
+    document.getElementById("front-indicator").textContent = dequeData.length ? dequeData[0] : "null";
+    document.getElementById("back-indicator").textContent = dequeData.length ? dequeData[dequeData.length-1] : "null";
+    document.getElementById("size-indicator").textContent = dequeData.length;
+}
+
+function randVal() { return Math.floor(Math.random() * 99); }
+
+document.getElementById("push-front-btn").addEventListener("click", () => { if(dequeData.length<10) { dequeData.unshift(randVal()); render(); } });
+document.getElementById("push-back-btn").addEventListener("click", () => { if(dequeData.length<10) { dequeData.push(randVal()); render(); } });
+document.getElementById("pop-front-btn").addEventListener("click", () => { if(dequeData.length>0) { dequeData.shift(); render(); } });
+document.getElementById("pop-back-btn").addEventListener("click", () => { if(dequeData.length>0) { dequeData.pop(); render(); } });
+document.getElementById("reset-btn").addEventListener("click", () => { dequeData = []; render(); });
+render();
+
+// Code tabs
+document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.querySelector(`.tab-content[data-lang="${btn.dataset.lang}"]`).classList.add("active");
+    });
+});
+// KaTeX
+document.querySelectorAll(".katex-math").forEach(el => { try { katex.render(el.textContent, el, {throwOnError:false}); } catch(e){} });
+</script>
+</body>
+</html>

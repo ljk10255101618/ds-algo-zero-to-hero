@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树状数组 (Fenwick Tree) - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-4">Lv4 · 高阶挑战</span></div>
+        <h1 class="algo-title">树状数组 (Fenwick Tree / BIT)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是树状数组？</h2>
+                <div class="intro-content">
+                    <p><strong>树状数组 (Binary Indexed Tree, BIT)</strong> 是一种用于 <span class="highlight">高效维护前缀和</span> 的数据结构，由 Peter Fenwick 在 1994 年提出。</p>
+                    <p>它的核心思想是利用 <strong>lowbit</strong>（二进制最低位的 1）将数组组织成树形结构，实现 O(log n) 的更新和查询。</p>
+                    <p>💡 <strong>与线段树的对比</strong>：树状数组代码更简洁、常数更小，但只能处理前缀/差分相关的操作（求和、求逆序对等）。</p>
+                </div>
+            </section>
+            <section class="viz-section">
+                <h2>🎮 交互演示</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <button id="prefix-btn" class="btn btn-primary">前缀和 [0,5]</button>
+                        <button id="update-btn" class="btn btn-primary">更新 idx=3 → +5</button>
+                        <button id="reset-btn" class="btn btn-secondary">重置</button>
+                    </div>
+                </div>
+                <div id="bit-viz" class="viz-container"><svg width="700" height="300"></svg></div>
+                <div id="bit-status" class="status-bar"><span id="bit-msg">树状数组 = 数组 + 二进制索引</span></div>
+            </section>
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <pre class="code-block"><code>class FenwickTree:
+    def __init__(self, n):
+        self.n = n
+        self.bit = [0] * (n + 1)  # 1-indexed
+
+    def lowbit(self, x):
+        return x & -x
+
+    def add(self, idx, delta):
+        """idx 处增加 delta (1-indexed)"""
+        i = idx
+        while i <= self.n:
+            self.bit[i] += delta
+            i += self.lowbit(i)
+
+    def prefix_sum(self, idx):
+        """前缀和 [1, idx]"""
+        res = 0
+        i = idx
+        while i > 0:
+            res += self.bit[i]
+            i -= self.lowbit(i)
+        return res
+
+    def range_sum(self, l, r):
+        """区间和 [l, r]"""
+        return self.prefix_sum(r) - self.prefix_sum(l - 1)
+
+# 应用：求逆序对
+def count_inversions(arr):
+    bit = FenwickTree(max(arr))
+    inv = 0
+    for i, v in enumerate(arr):
+        bit.add(v, 1)
+        inv += i + 1 - bit.prefix_sum(v)
+    return inv</code></pre>
+            </section>
+            <section class="complexity-section">
+                <h2>📊 对比线段树</h2>
+                <table class="complexity-table">
+                    <tr><th>特性</th><th>树状数组</th><th>线段树</th></tr>
+                    <tr><td>代码量</td><td class="good">少（5行核心）</td><td>多</td></tr>
+                    <tr><td>常数</td><td class="good">小</td><td>较大</td></tr>
+                    <tr><td>功能</td><td>前缀和/差分</td><td class="good">任意区间操作</td></tr>
+                    <tr><td>区间更新</td><td>需差分技巧</td><td class="good">原生支持 lazy</td></tr>
+                </table>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 lowbit 详解</h3><ul><li><code>lowbit(x) = x & -x</code></li><li>例: lowbit(6)=2 (110→10)</li><li>更新时向上累加</li><li>查询时向下减</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关</h3><ul><li>← <a href="../../segment-tree/index.html">线段树</a></li><li>← <a href="../../array/index.html">数组</a></li></ul></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#bit-viz svg"),W=700,H=300;const N=8;let arr=[2,4,6,8,10,12,14,16];let bit=new Array(N+1).fill(0);
+function lowbit(x){return x&-x;}
+function add(idx,delta){let i=idx;while(i<=N){bit[i]+=delta;i+=lowbit(i);}}
+function prefix(idx){let r=0,i=idx;while(i>0){r+=bit[i];i-=lowbit(i);}return r;}
+function build(){bit.fill(0);arr.forEach((v,i)=>add(i+1,v));}
+function render(){svg.selectAll("*").remove();
+    // Draw array
+    arr.forEach((v,i)=>{const x=30+i*75;svg.append("rect").attr("x",x).attr("y",10).attr("width",60).attr("height",25).attr("fill","#fbbf24").attr("rx",3);
+        svg.append("text").attr("x",x+30).attr("y",27).attr("text-anchor","middle").attr("font-size","12").attr("font-weight","bold").text(v);
+        svg.append("text").attr("x",x+30).attr("y",48).attr("text-anchor","middle").attr("font-size","9").attr("fill","#999").text(`[${i}]`);
+    });
+    // Draw BIT array (1-indexed)
+    for(let i=1;i<=N;i++){const x=30+(i-1)*75;const y=100;
+        svg.append("rect").attr("x",x).attr("y",y).attr("width",60).attr("height",25).attr("fill","#93c5fd").attr("rx",3);
+        svg.append("text").attr("x",x+30).attr("y",117).attr("text-anchor","middle").attr("font-size","12").attr("font-weight","bold").text(bit[i]);
+        // Show lowbit info
+        const lb=lowbit(i);
+        svg.append("text").attr("x",x+30).attr("y",y-5).attr("text-anchor","middle").attr("font-size","10").attr("fill","#666")
+            .text(`BIT[${i}] covers ${i-lb+1}~${i}`);
+        // Show binary
+        svg.append("text").attr("x",x+30).attr("y",y+40).attr("text-anchor","middle").attr("font-size","9").attr("fill","#999")
+            .text(`(${i.toString(2).padStart(4,'0')}) lowbit=${lb}`);
+    }
+    const sum=prefix(N);
+    svg.append("text").attr("x",W/2).attr("y",H-10).attr("text-anchor","middle").attr("font-size","12").attr("fill","#666")
+        .text(`前缀和 sum[1~N]=${sum} | 树状数组: [${bit.slice(1).join(', ')}]`);
+}
+build();render();
+document.getElementById("prefix-btn").addEventListener("click",()=>{const r=prefix(5);document.getElementById("bit-msg").textContent=`🔍 前缀和 [0,5] = ${r}`;});
+document.getElementById("update-btn").addEventListener("click",()=>{arr[3]+=5;add(4,5);render();document.getElementById("bit-msg").textContent=`✅ arr[3] += 5，BIT 已更新`;});
+document.getElementById("reset-btn").addEventListener("click",()=>{arr=[2,4,6,8,10,12,14,16];bit.fill(0);build();render();document.getElementById("bit-msg").textContent='已重置';});
+</script>
+</body>
+</html>

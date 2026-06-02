@@ -3,216 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图 · DSATutor</title>
-    <link rel="stylesheet" href="/assets/css/algorithm.css">
+    <title>图 (Graph) - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <div class="algo-header">
-        <a href="/" class="back-link">← 返回</a>
-        <div class="algo-header-content">
-            <span class="algo-tag" style="background:#2ecc71">图结构</span>
-            <span class="algo-level">Lv3</span>
-            <h1>图 Graph</h1>
-            <p>顶点 + 边，描述万物互联的关系</p>
-        </div>
-    </div>
-
-    <div class="algo-layout">
-        <main class="algo-main">
-            <section class="algo-section">
-                <h2>📝 定义</h2>
-                <p>图由 <strong>顶点 (Vertex)</strong> 和 <strong>边 (Edge)</strong> 组成，记作 G = (V, E)。</p>
-                <div class="highlight-box">
-                    <strong>分类：</strong>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-3">Lv3 · 进阶掌握</span></div>
+        <h1 class="algo-title">图 (Graph) · BFS & DFS 遍历</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是图？</h2>
+                <div class="intro-content">
+                    <p>图由 <strong>顶点 (Vertex)</strong> 和 <strong>边 (Edge)</strong> 组成，记作 G = (V, E)，是描述 <span class="highlight">万物互联关系</span> 的最通用数据结构。</p>
+                    <p>🌐 <strong>无处不在</strong>：社交网络（人与人）、地图导航（地点与道路）、Web 页面（超链接）、神经网络（神经元连接）。</p>
+                    <p>两种基本遍历方式：</p>
                     <ul>
-                        <li><strong>有向图 vs 无向图</strong> — 边是否有方向</li>
-                        <li><strong>加权图 vs 无权图</strong> — 边是否带权重</li>
-                        <li><strong>连通图 vs 非连通图</strong> — 任意两点是否可达</li>
+                        <li><strong>BFS（广度优先）</strong>：层层推进，像水波扩散，找到最短路径</li>
+                        <li><strong>DFS（深度优先）</strong>：一路走到黑，回溯再走，遍历所有可能</li>
                     </ul>
-                    <strong>存储方式：</strong> 邻接矩阵 O(V²) · 邻接表 O(V+E)
-                </div>
-                <div class="complexity-box">
-                    <div><span class="big-o">DFS</span> O(V+E)</div>
-                    <div><span class="big-o">BFS</span> O(V+E)</div>
-                    <div><span class="big-o">Dijkstra</span> O(E log V)</div>
-                    <div><span class="big-o">空间</span> O(V+E)</div>
                 </div>
             </section>
 
-            <section class="algo-section">
-                <h2>🎮 交互演示</h2>
-                <div class="visualizer-container">
-                    <div class="controls">
-                        <button class="btn btn-primary" onclick="runBFS()">BFS 广度优先</button>
-                        <button class="btn btn-warning" onclick="runDFS()">DFS 深度优先</button>
-                        <button class="btn btn-secondary" onclick="resetGraph()">重置</button>
+            <section class="viz-section">
+                <h2>🎮 交互演示 · BFS / DFS 遍历</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <button id="bfs-btn" class="btn btn-primary">▶ BFS 广度优先</button>
+                        <button id="dfs-btn" class="btn btn-primary">▶ DFS 深度优先</button>
+                        <button id="reset-btn" class="btn btn-secondary">重置</button>
                     </div>
-                    <div id="graphViz" class="viz-canvas"></div>
-                    <div id="graphLog" class="viz-log"></div>
-                    <div class="traversal-result" id="traversalResult"></div>
+                    <div class="control-group">
+                        <label>当前算法:</label>
+                        <span id="algo-label" style="font-weight:bold;font-size:16px;color:#1e40af">BFS</span>
+                    </div>
+                </div>
+                <div id="graph-viz" class="viz-container">
+                    <svg width="750" height="380"></svg>
+                </div>
+                <div id="graph-status" class="status-bar"><span id="graph-msg">点击 BFS 或 DFS 开始遍历</span></div>
+                <div class="legend">
+                    <span><span class="legend-dot" style="background:#fbbf24"></span> 未访问</span>
+                    <span><span class="legend-dot" style="background:#93c5fd"></span> 已发现</span>
+                    <span><span class="legend-dot" style="background:#4ade80"></span> 已访问</span>
+                    <span><span class="legend-dot" style="background:#f87171"></span> 当前节点</span>
+                </div>
+                <div class="traversal-order">
+                    <strong>遍历序列:</strong> <span id="order-list" style="font-size:16px;font-weight:bold;color:#1e40af">—</span>
                 </div>
             </section>
 
-            <section class="algo-section">
-                <h2>💡 应用</h2>
-                <div class="use-cases">
-                    <div class="use-case-card"><h4>🗺️ 导航</h4><p>Dijkstra 最短路径算法</p></div>
-                    <div class="use-case-card"><h4>📱 社交网络</h4><p>好友推荐 - 共同好友数计算</p></div>
-                    <div class="use-case-card"><h4>🌐 网页排名</h4><p>PageRank 基于图的链接分析</p></div>
-                </div>
-            </section>
-        </main>
-        <aside class="algo-sidebar">
-            <div class="sidebar-card"><h3>⚡ 代码</h3><pre><code>from collections import deque
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <div class="code-tabs">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-lang="bfs">BFS</button>
+                        <button class="tab-btn" data-lang="dfs">DFS</button>
+                    </div>
+                    <div class="tab-content active" data-lang="bfs"><pre class="code-block"><code>from collections import deque
 
 def bfs(graph, start):
-    visited = {start}
+    """graph: 邻接表 {node: [neighbors]}"""
+    visited = set()
     queue = deque([start])
-    while queue:
-        v = queue.popleft()
-        for n in graph[v]:
-            if n not in visited:
-                visited.add(n)
-                queue.append(n)
-    return visited
-
-def dfs(graph, start, visited=None):
-    if visited is None:
-        visited = set()
     visited.add(start)
-    for n in graph[start]:
-        if n not in visited:
-            dfs(graph, n, visited)
-    return visited</code></pre></div>
-            <div class="sidebar-card"><h3>📌 题目</h3><ul>
-                <li><a href="https://leetcode.cn/problems/number-of-islands/" target="_blank">200. 岛屿数量</a></li>
-                <li><a href="https://leetcode.cn/problems/course-schedule/" target="_blank">207. 课程表</a></li>
-            </ul></div>
+    order = []
+
+    while queue:
+        node = queue.popleft()
+        order.append(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+    return order</code></pre></div>
+                    <div class="tab-content" data-lang="dfs"><pre class="code-block"><code>def dfs(graph, start):
+    """递归版 DFS"""
+    visited = set()
+    order = []
+
+    def dfs_recursive(node):
+        visited.add(node)
+        order.append(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs_recursive(neighbor)
+
+    dfs_recursive(start)
+    return order
+
+# 迭代版
+def dfs_iterative(graph, start):
+    visited = set()
+    stack = [start]
+    order = []
+    while stack:
+        node = stack.pop()
+        if node not in visited:
+            visited.add(node)
+            order.append(node)
+            # 逆序入栈保持顺序
+            for n in reversed(graph[node]):
+                if n not in visited:
+                    stack.append(n)
+    return order</code></pre></div>
+                </div>
+            </section>
+
+            <section class="complexity-section">
+                <h2>📊 复杂度分析</h2>
+                <table class="complexity-table">
+                    <tr><th>算法</th><th>时间复杂度</th><th>空间复杂度</th><th>数据结构</th></tr>
+                    <tr><td>BFS</td><td class="good">O(V + E)</td><td class="mid">O(V)</td><td>队列</td></tr>
+                    <tr><td>DFS</td><td class="good">O(V + E)</td><td class="mid">O(V)</td><td>栈/递归</td></tr>
+                </table>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 图分类</h3><ul><li>有向 / 无向</li><li>加权 / 无权</li><li>连通 / 非连通</li><li>稀疏 / 稠密</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关算法</h3><ul><li>→ <a href="../shortest-path/index.html">最短路径</a></li><li>→ <a href="../mst/index.html">最小生成树</a></li></ul></div>
+            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:90%">90%</div></div></div>
         </aside>
     </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#graph-viz svg"),W=750,H=380;
+const graph={0:[1,2,3],1:[0,4,5],2:[0,6],3:[0,7],4:[1],5:[1],6:[2],7:[3]};
+const nodePos={0:{x:375,y:60},1:{x:220,y:160},2:{x:530,y:160},3:{x:375,y:280},4:{x:100,y:280},5:{x:280,y:340},6:{x:600,y:300},7:{x:450,y:350}};
+let orderList=[],timer=null,algo='bfs';
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>
-        const graphData = {
-            nodes: [
-                {id: 'A', group:1}, {id: 'B', group:1}, {id: 'C', group:1},
-                {id: 'D', group:2}, {id: 'E', group:2}, {id: 'F', group:2},
-                {id: 'G', group:3}
-            ],
-            links: [
-                {source:'A',target:'B'}, {source:'A',target:'C'},
-                {source:'B',target:'D'}, {source:'B',target:'E'},
-                {source:'C',target:'F'}, {source:'C',target:'G'},
-                {source:'E',target:'F'}, {source:'D',target:'E'}
-            ]
-        };
-        let visitedNodes = [];
-        let traversalPath = [];
-        const logEl = document.getElementById('graphLog');
-        const resultEl = document.getElementById('traversalResult');
-        function logMsg(m){logEl.innerHTML=`<span class="log-msg">👉 ${m}</span>`;setTimeout(()=>logEl.innerHTML='',3000);}
+function bfsSteps(g,start){const vis={},order=[],steps=[];const q=[start];vis[start]=true;steps.push({type:'discover',node:start,order:[...order],vis:{...vis}});
+    while(q.length){const u=q.shift();order.push(u);steps.push({type:'visit',node:u,order:[...order],vis:{...vis}});
+        for(const v of g[u]){if(!vis[v]){vis[v]=true;steps.push({type:'discover',node:v,parent:u,order:[...order],vis:{...vis}});q.push(v);}}}
+    steps.push({type:'done',order:[...order],vis:{...vis}});return steps;}
+function dfsSteps(g,start){const vis={},order=[],steps=[];function dfs(u){vis[u]=true;steps.push({type:'discover',node:u,order:[...order],vis:{...vis}});
+        for(const v of g[u]){if(!vis[v]){dfs(v);}}order.push(u);steps.push({type:'visit',node:u,order:[...order],vis:{...vis}});}
+    dfs(start);steps.push({type:'done',order:[...order],vis:{...vis}});return steps;}
 
-        function getAdj() {
-            const adj = {};
-            graphData.nodes.forEach(n => adj[n.id] = []);
-            graphData.links.forEach(l => {
-                adj[l.source].push(l.target);
-                adj[l.target].push(l.source);
-            });
-            return adj;
-        }
-
-        function render(highlight=[], order=[]) {
-            const w = 600, h = 350;
-            const viz = document.getElementById('graphViz');
-            viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
-            const svg = d3.select(viz.querySelector('svg'));
-
-            const simulation = d3.forceSimulation(graphData.nodes)
-                .force('link', d3.forceLink(graphData.links).id(d=>d.id).distance(100))
-                .force('charge', d3.forceManyBody().strength(-200))
-                .force('center', d3.forceCenter(w/2, h/2))
-                .stop();
-
-            for (let i = 0; i < 300; i++) simulation.tick();
-
-            svg.selectAll('line').data(graphData.links).enter().append('line')
-             .attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
-             .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y)
-             .attr('stroke','#555').attr('stroke-width',1.5);
-
-            const gs = svg.selectAll('g').data(graphData.nodes).enter().append('g')
-             .attr('transform',d=>`translate(${d.x},${d.y})`);
-
-            const colors = {'A':'#4A90D9','B':'#4A90D9','C':'#4A90D9','D':'#e67e22','E':'#e67e22','F':'#e67e22','G':'#2ecc71'};
-            gs.append('circle').attr('r',22)
-             .attr('fill',d=>highlight.includes(d.id)?'#FFD700':colors[d.id])
-             .attr('stroke',d=>highlight.includes(d.id)?'#ff6b6b':'#fff')
-             .attr('stroke-width',d=>highlight.includes(d.id)?3:1.5);
-
-            gs.append('text').attr('text-anchor','middle').attr('dy','5')
-             .attr('fill','#fff').attr('font-size','16').attr('font-weight','bold').text(d=>d.id);
-
-            // Display order
-            if (order.length > 0) {
-                resultEl.innerHTML = '<strong>遍历顺序:</strong> ' + order.map((id,i) =>
-                    `<span class="order-step">${id}</span>`
-                ).join(' → ');
-                resultEl.style.display = 'block';
-            } else {
-                resultEl.style.display = 'none';
-            }
-        }
-
-        async function runBFS() {
-            const adj = getAdj();
-            const visited = new Set();
-            const queue = ['A'];
-            const order = [];
-            visited.add('A');
-            let curr = [];
-
-            while (queue.length > 0) {
-                const v = queue.shift();
-                curr = [v];
-                order.push(v);
-                render(curr, [...order]);
-                await new Promise(r => setTimeout(r, 600));
-
-                for (const n of adj[v]) {
-                    if (!visited.has(n)) {
-                        visited.add(n);
-                        queue.push(n);
-                    }
-                }
-            }
-            render([], order);
-            logMsg(`✅ BFS 完成，访问顺序: ${order.join(' → ')}`);
-        }
-
-        async function runDFS() {
-            const adj = getAdj();
-            const visited = new Set();
-            const order = [];
-
-            async function dfs(v) {
-                visited.add(v);
-                order.push(v);
-                render([v], [...order]);
-                await new Promise(r => setTimeout(r, 600));
-                for (const n of adj[v]) {
-                    if (!visited.has(n)) await dfs(n);
-                }
-            }
-
-            await dfs('A');
-            render([], order);
-            logMsg(`✅ DFS 完成，访问顺序: ${order.join(' → ')}`);
-        }
-
-        function resetGraph() { visitedNodes = []; traversalPath = []; render(); resultEl.style.display='none'; logMsg('已重置'); }
-
-        render();
-    </script>
+let steps=[],stepIdx=-1;
+function renderStep(idx){svg.selectAll("*").remove();const s=steps[idx];if(!s)return;
+    const edges=[];for(const [u,nei] of Object.entries(graph)){for(const v of nei){if(u<v)edges.push({u:parseInt(u),v});}}
+    edges.forEach(e=>{svg.append("line").attr("x1",nodePos[e.u].x).attr("y1",nodePos[e.u].y).attr("x2",nodePos[e.v].x).attr("y2",nodePos[e.v].y).attr("stroke","#ccc").attr("stroke-width",2);});
+    Object.entries(nodePos).forEach(([id,pos])=>{const i=parseInt(id);let fill="#fbbf24";
+        if(s.node===i)fill="#f87171";else if(s.vis&&s.vis[i])fill="#93c5fd";else if(s.order&&s.order.includes(i))fill="#4ade80";
+        const g=svg.append("g").attr("transform",`translate(${pos.x},${pos.y})`);
+        g.append("circle").attr("r",25).attr("fill",fill).attr("stroke","#333").attr("stroke-width",2);
+        g.append("text").attr("text-anchor","middle").attr("dy","0.35em").attr("font-size","16").attr("font-weight","bold").text(id);});
+    document.getElementById("order-list").textContent=s.order.length?s.order.join(' → '):'—';
+    const names={0:'起点',1:'邻居1',2:'邻居2',3:'邻居3',4:'子节点A',5:'子节点B',6:'子节点C',7:'子节点D'};
+    document.getElementById("graph-msg").textContent=s.type==='discover'?`🔍 发现节点 ${s.node} (${names[s.node]||''})`:s.type==='visit'?`✅ 访问节点 ${s.node}`:s.type==='done'?`🎉 ${algo} 遍历完成！序列: ${s.order.join('→')}`:'...';
+}
+function startAlgo(a){if(timer){clearInterval(timer);timer=null;}
+    algo=a;document.getElementById("algo-label").textContent=a.toUpperCase();
+    steps=a==='bfs'?bfsSteps(graph,0):dfsSteps(graph,0);stepIdx=0;
+    timer=setInterval(()=>{if(stepIdx>=steps.length-1){clearInterval(timer);timer=null;}renderStep(stepIdx);stepIdx++;},600);
+}
+document.getElementById("bfs-btn").addEventListener("click",()=>startAlgo('bfs'));
+document.getElementById("dfs-btn").addEventListener("click",()=>startAlgo('dfs'));
+document.getElementById("reset-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}svg.selectAll("*").remove();document.getElementById("graph-msg").textContent='已重置';document.getElementById("order-list").textContent='—';renderGraph();});
+function renderGraph(){const edges=[];for(const [u,nei] of Object.entries(graph)){for(const v of nei){if(parseInt(u)<v)edges.push({u:parseInt(u),v});}}
+    edges.forEach(e=>{svg.append("line").attr("x1",nodePos[e.u].x).attr("y1",nodePos[e.u].y).attr("x2",nodePos[e.v].x).attr("y2",nodePos[e.v].y).attr("stroke","#ccc").attr("stroke-width",2);});
+    Object.entries(nodePos).forEach(([id,pos])=>{const g=svg.append("g").attr("transform",`translate(${pos.x},${pos.y})`);
+        g.append("circle").attr("r",25).attr("fill","#fbbf24").attr("stroke","#333").attr("stroke-width",2);
+        g.append("text").attr("text-anchor","middle").attr("dy","0.35em").attr("font-size","16").attr("font-weight","bold").text(id);});
+}
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",function(){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+    this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
+}));
+renderGraph();
+</script>
 </body>
 </html>

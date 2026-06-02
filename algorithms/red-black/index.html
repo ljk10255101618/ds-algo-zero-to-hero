@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红黑树 (Red-Black Tree) - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-4">Lv4 · 高阶挑战</span></div>
+        <h1 class="algo-title">红黑树 (Red-Black Tree)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是红黑树？</h2>
+                <div class="intro-content">
+                    <p>红黑树是一种 <span class="highlight">自平衡的二叉搜索树</span>，是计算机科学中最重要的数据结构之一。它保证了在最坏情况下基本操作的时间复杂度为 O(log n)。</p>
+                    <p>红黑树的 <strong>5条性质</strong>：</p>
+                    <ol class="rule-list">
+                        <li>每个节点是 <span style="color:#e74c3c">红色</span> 或 <span style="color:#333">黑色</span></li>
+                        <li>根节点是黑色的</li>
+                        <li>叶子节点（NIL）是黑色的</li>
+                        <li>红色节点的子节点必须是黑色的（<strong>不能有连续的红节点</strong>）</li>
+                        <li>从任一节点到其每个叶子的路径上，<strong>黑色节点数量相同</strong></li>
+                    </ol>
+                    <p>💡 <strong>实际应用</strong>：Java 的 TreeMap/TreeSet、C++ STL 的 map/set、Linux 内核的完全公平调度器都基于红黑树。</p>
+                </div>
+            </section>
+
+            <section class="viz-section">
+                <h2>🎮 交互演示 · 红黑树插入</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <label>插入值:</label>
+                        <input type="number" id="insert-input" min="1" max="99" value="10" style="width:70px">
+                        <button id="insert-btn" class="btn btn-primary">插入</button>
+                        <button id="auto-btn" class="btn btn-primary">自动插入 1~7</button>
+                        <button id="reset-btn" class="btn btn-secondary">重置</button>
+                    </div>
+                </div>
+                <div id="rb-viz" class="viz-container">
+                    <svg width="750" height="380"></svg>
+                </div>
+                <div id="rb-status" class="status-bar"><span id="rb-msg">插入节点观察颜色变化和旋转</span></div>
+                <div class="legend">
+                    <span><span class="legend-dot" style="background:#e74c3c"></span> 红色节点</span>
+                    <span><span class="legend-dot" style="background:#333"></span> 黑色节点</span>
+                    <span><span class="legend-dot" style="background:#fbbf24;border:2px solid #333"></span> 当前操作节点</span>
+                </div>
+            </section>
+
+            <section class="code-section">
+                <h2>💻 核心操作</h2>
+                <div class="code-tabs">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-lang="concept">核心思想</button>
+                        <button class="tab-btn" data-lang="python">Python</button>
+                    </div>
+                    <div class="tab-content active" data-lang="concept"><pre class="code-block"><code>1. 新插入节点默认为红色
+2. 如果父节点是黑色 → 无需调整 ✅
+3. 如果父节点是红色 → 需要修复：
+   a. 叔叔节点是红色    → 颜色翻转 (Recolor)
+   b. 叔叔节点是黑色    → 旋转 + 重新着色
+       - LL型: 右旋 + 变色
+       - RR型: 左旋 + 变色
+       - LR型: 左旋→右旋 + 变色
+       - RL型: 右旋→左旋 + 变色</code></pre></div>
+                    <div class="tab-content" data-lang="python"><pre class="code-block"><code>class RBNode:
+    def __init__(self, val, color='red'):
+        self.val = val
+        self.left = self.right = None
+        self.color = color  # 'red' or 'black'
+
+class RBTree:
+    def __init__(self): self.NIL = RBNode(None, 'black'); self.root = self.NIL
+
+    def insert(self, val):
+        new_node = RBNode(val)
+        new_node.left = new_node.right = self.NIL
+        # ... BST插入 + 红黑树修复
+        self.root.color = 'black'
+
+    def _fix_insert(self, k):
+        while k != self.root and k.parent.color == 'red':
+            # 判断叔叔节点颜色
+            # 旋转/变色处理...</code></pre></div>
+                </div>
+            </section>
+
+            <section class="complexity-section">
+                <h2>📊 对比 AVL 树</h2>
+                <table class="complexity-table">
+                    <tr><th>特性</th><th>红黑树</th><th>AVL树</th></tr>
+                    <tr><td>平衡条件</td><td>黑高相同，无连续红</td><td>高度差 ≤ 1</td></tr>
+                    <tr><td>查找</td><td>O(log n) 略慢</td><td class="good">O(log n) 更快</td></tr>
+                    <tr><td>插入/删除</td><td class="good">O(log n) 旋转更少</td><td>O(log n) 旋转更多</td></tr>
+                    <tr><td>应用场景</td><td>频繁插入删除</td><td>频繁查找</td></tr>
+                </table>
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/balance-a-binary-search-tree/" target="_blank" class="practice-card">
+                        <span class="practice-num">1382</span>
+                        <span class="practice-title">平衡BST</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 5条性质</h3><ol style="font-size:13px;padding-left:16px"><li>节点红或黑</li><li>根黑</li><li>叶(NIL)黑</li><li>红子必黑</li><li>黑高相同</li></ol></div>
+            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../avl/index.html">AVL树</a></li><li>← <a href="../bst/index.html">二叉搜索树</a></li></ul></div>
+            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:80%">80%</div></div></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#rb-viz svg"),W=750,H=380;
+let tree={root:null}; const r=22;
+class Node{constructor(v){this.val=v;this.left=null;this.right=null;this.color='red';this.parent=null;}}
+function isRed(n){return n&&n.color==='red';}
+function rotateR(p){let q=p.left;p.left=q.right;if(q.right)q.right.parent=p;q.right=p;q.parent=p.parent;p.parent=q;return q;}
+function rotateL(p){let q=p.right;p.right=q.left;if(q.left)q.left.parent=p;q.left=p;q.parent=p.parent;p.parent=q;return q;}
+function flipColors(n){n.color='red';if(n.left)n.left.color='black';if(n.right)n.right.color='black';}
+let msg=document.getElementById("rb-msg");
+function insert(val){
+    msg.textContent=`插入 ${val}`;
+    if(!tree.root){tree.root=new Node(val);tree.root.color='black';msg.textContent=`插入 ${val} ✅ 根节点为黑色`;render();return;}
+    let path=[],cur=tree.root,parent=null;
+    while(cur){parent=cur;path.push(cur);if(val<cur.val)cur=cur.left;else if(val>cur.val)cur=cur.right;else{msg.textContent=`${val} 已存在`;render();return;}}
+    let nn=new Node(val);nn.parent=parent;
+    if(val<parent.val)parent.left=nn;else parent.right=nn;
+    // Fix up
+    fixInsert(nn,path);
+    render();
+}
+function fixInsert(n,path){
+    while(n!==tree.root&&isRed(n.parent)){
+        let p=n.parent,g=p.parent;
+        if(p===g.left){
+            let u=g.right;
+            if(isRed(u)){flipColors(g);n=g;msg.textContent='🔄 颜色翻转';}
+            else{
+                if(n===p.right){n=p;rotateL(n);p=n.parent;msg.textContent='🔄 LR→左旋';}
+                p.color='black';g.color='red';rotateR(g);msg.textContent='🔄 右旋+变色';break;
+            }
+        }else{
+            let u=g.left;
+            if(isRed(u)){flipColors(g);n=g;msg.textContent='🔄 颜色翻转';}
+            else{
+                if(n===p.left){n=p;rotateR(n);p=n.parent;msg.textContent='🔄 RL→右旋';}
+                p.color='black';g.color='red';rotateL(g);msg.textContent='🔄 左旋+变色';break;
+            }
+        }
+    }
+    tree.root.color='black';
+}
+function deleteTree(n){if(!n)return;deleteTree(n.left);deleteTree(n.right);}
+function reset(){deleteTree(tree.root);tree.root=null;msg.textContent='已重置';render();}
+function render(){
+    svg.selectAll("*").remove();
+    if(!tree.root){svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle").attr("fill","#999").attr("font-size","16").text("红黑树为空，请插入节点");return;}
+    const nodes=[],edges=[];const yGap=60;
+    function trav(n,depth,l,r,x){if(!n)return;
+        const cx=(l+r)/2;nodes.push({val:n.val,color:n.color,x:cx,y:depth*yGap+40,parentX:x});
+        if(n.left){trav(n.left,depth+1,l,cx,(l+cx)/2);edges.push({x1:cx,y1:depth*yGap+40,x2:(l+cx)/2,y2:(depth+1)*yGap+40});}
+        if(n.right){trav(n.right,depth+1,cx,r,(cx+r)/2);edges.push({x1:cx,y1:depth*yGap+40,x2:(cx+r)/2,y2:(depth+1)*yGap+40});}
+    }
+    trav(tree.root,0,0,W,W/2);
+    edges.forEach(e=>{svg.append("line").attr("x1",e.x1).attr("y1",e.y1).attr("x2",e.x2).attr("y2",e.y2).attr("stroke","#999").attr("stroke-width",2);});
+    nodes.forEach(n=>{const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`);
+        g.append("circle").attr("r",r).attr("fill",n.color==='red'?'#e74c3c':'#333').attr("stroke","#fff").attr("stroke-width",2);
+        g.append("text").attr("text-anchor","middle").attr("dy","0.35em").attr("fill",n.color==='red'?'#fff':'#fff').attr("font-size","14").attr("font-weight","bold").text(n.val);
+    });
+}
+document.getElementById("insert-btn").addEventListener("click",()=>{const v=parseInt(document.getElementById("insert-input").value);if(!isNaN(v))insert(v);});
+document.getElementById("auto-btn").addEventListener("click",()=>{reset();[7,3,18,10,22,8,11,26,2,6,13].forEach(v=>insert(v));});
+document.getElementById("reset-btn").addEventListener("click",reset);
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",function(){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+    this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
+}));
+</script>
+</body>
+</html>

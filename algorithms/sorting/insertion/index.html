@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插入排序 - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-1">Lv1 · 基础入门</span></div>
+        <h1 class="algo-title">插入排序 (Insertion Sort)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是插入排序？</h2>
+                <div class="intro-content">
+                    <p><strong>插入排序</strong> 的原理类似于 <span class="highlight">整理手中的扑克牌</span> 🃏 —— 每次从桌上拿起一张新牌，插入到手中已排好序的合适位置。</p>
+                    <p>它的核心思想是：<strong>将待排序元素插入到已排序序列的正确位置</strong>。</p>
+                    <p>特点：<strong>稳定排序</strong>，对<strong>近乎有序</strong>的数据效率极高（O(n)），是高级排序算法（如 Timsort）的重要组成部分。</p>
+                </div>
+            </section>
+            <section class="viz-section">
+                <h2>🎮 交互演示</h2>
+                <div class="controls">
+                    <button id="step-btn" class="btn btn-primary">单步执行</button>
+                    <button id="auto-btn" class="btn btn-primary">▶ 自动播放</button>
+                    <button id="reset-btn" class="btn btn-secondary">重置</button>
+                    <button id="new-btn" class="btn btn-primary">随机生成</button>
+                </div>
+                <div id="sort-viz" class="viz-container"><svg width="700" height="300"></svg></div>
+                <div id="sort-status" class="status-bar"><span id="sort-msg">点击"单步执行"开始</span></div>
+            </section>
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <pre class="code-block"><code>def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]  # 向右移动
+            j -= 1
+        arr[j + 1] = key  # 插入到正确位置
+    return arr</code></pre>
+            </section>
+            <section class="complexity-section">
+                <h2>📊 复杂度</h2>
+                <table class="complexity-table">
+                    <tr><th>情况</th><th>时间复杂度</th><th>空间</th></tr>
+                    <tr><td>最好（已有序）</td><td class="good">O(n)</td><td rowspan="3" class="good">O(1)</td></tr>
+                    <tr><td>平均</td><td class="bad">O(n²)</td></tr>
+                    <tr><td>最坏（逆序）</td><td class="bad">O(n²)</td></tr>
+                </table>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 特性</h3><ul><li>稳定排序 ✅</li><li>原地排序 O(1)</li><li>近乎有序时极快</li><li>Timsort 的组成部分</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关</h3><ul><li>← <a href="../selection/index.html">选择排序</a></li><li>→ <a href="../merge/index.html">归并排序</a></li></ul></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#sort-viz svg"),W=700,H=300;let arr=[],steps=[],stepIdx=-1,timer=null;
+function randArr(){return Array.from({length:8},()=>Math.floor(Math.random()*90)+10);}
+function genSteps(a){const s=[];const n=a.length;
+    for(let i=1;i<n;i++){let key=a[i],j=i-1;
+        s.push({type:'pick',i,key,arr:[...a]});
+        while(j>=0&&a[j]>key){a[j+1]=a[j];s.push({type:'shift',j,pos:j+1,arr:[...a]});j--;}
+        a[j+1]=key;s.push({type:'place',pos:j+1,arr:[...a]});}
+    s.push({type:'done',arr:[...a]});return s;}
+function render(idx){svg.selectAll("*").remove();const s=steps[idx];if(!s){renderEmpty();return;}
+    const arr=s.arr;const barW=Math.min(60,(W-80)/arr.length),maxVal=100;
+    arr.forEach((v,i)=>{const x=40+i*(barW+8),h=(v/maxVal)*(H-100);
+        let fill="#93c5fd";if(s.type==='pick'&&i===s.i)fill="#fbbf24";else if(s.type==='shift'&&i===s.pos)fill="#f87171";else if(s.type==='place'&&i===s.pos)fill="#4ade80";else if(s.type==='done')fill="#4ade80";else if(i<s.pos||(s.type==='place'&&i<s.pos))fill="#4ade80";
+        svg.append("rect").attr("x",x).attr("y",H-40-h).attr("width",barW).attr("height",h).attr("fill",fill).attr("rx",4);
+        svg.append("text").attr("x",x+barW/2).attr("y",H-20).attr("text-anchor","middle").attr("font-size","14").attr("font-weight","bold").text(v);
+    });
+    document.getElementById("sort-msg").textContent=s.type==='pick'?`👉 取出 arr[${s.i}]=${s.key}`:s.type==='shift'?`➡️ arr[${s.j}] 右移到 arr[${s.pos}]`:s.type==='place'?`✅ 将 key 插入到 arr[${s.pos}]`:s.type==='done'?`✅ 排序完成！`:`...`;
+}
+function renderEmpty(){svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle").attr("fill","#999").text("点击随机生成开始");}
+document.getElementById("step-btn").addEventListener("click",()=>{if(steps.length===0){arr=randArr();steps=genSteps([...arr]);stepIdx=0;}else if(stepIdx<steps.length-1)stepIdx++;render(stepIdx);if(timer){clearInterval(timer);timer=null;}});
+document.getElementById("auto-btn").addEventListener("click",function(){if(timer){clearInterval(timer);timer=null;this.textContent='▶ 自动播放';return;}if(steps.length===0){arr=randArr();steps=genSteps([...arr]);stepIdx=0;}this.textContent='⏸ 暂停';timer=setInterval(()=>{if(stepIdx>=steps.length-1){clearInterval(timer);timer=null;this.textContent='▶ 自动播放';}else{stepIdx++;render(stepIdx);}},500);});
+document.getElementById("reset-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}document.getElementById("auto-btn").textContent='▶ 自动播放';arr=[];steps=[];stepIdx=-1;renderEmpty();document.getElementById("sort-msg").textContent='已重置';});
+document.getElementById("new-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}document.getElementById("auto-btn").textContent='▶ 自动播放';arr=randArr();steps=genSteps([...arr]);stepIdx=0;render(0);});
+renderEmpty();
+</script>
+</body>
+</html>

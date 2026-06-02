@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择排序 - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-1">Lv1 · 基础入门</span></div>
+        <h1 class="algo-title">选择排序 (Selection Sort)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是选择排序？</h2>
+                <div class="intro-content">
+                    <p><strong>选择排序</strong> 是一种直观的排序算法。它的核心思想是：<span class="highlight">每一轮从未排序部分选出最小值，放到已排序部分的末尾</span>。</p>
+                    <p>📱 就像你手里有一副打乱的扑克牌，你每次从中抽出最小的那张放到桌上 —— 重复这个操作，桌上的牌就是有序的。</p>
+                    <p>特点：<strong>不稳定排序</strong>，原地排序，<strong>无论数据如何，比较次数都相同</strong>。</p>
+                </div>
+            </section>
+            <section class="viz-section">
+                <h2>🎮 交互演示</h2>
+                <div class="controls">
+                    <button id="step-btn" class="btn btn-primary">单步执行</button>
+                    <button id="auto-btn" class="btn btn-primary">▶ 自动播放</button>
+                    <button id="reset-btn" class="btn btn-secondary">重置</button>
+                    <button id="new-btn" class="btn btn-primary">随机生成</button>
+                </div>
+                <div id="sort-viz" class="viz-container"><svg width="700" height="300"></svg></div>
+                <div id="sort-status" class="status-bar"><span id="sort-msg">点击"单步执行"开始</span></div>
+            </section>
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <pre class="code-block"><code>def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]  # 交换
+    return arr</code></pre>
+            </section>
+            <section class="complexity-section">
+                <h2>📊 复杂度</h2>
+                <table class="complexity-table">
+                    <tr><th>情况</th><th>时间复杂度</th><th>空间</th></tr>
+                    <tr><td>最好/最坏/平均</td><td class="bad">O(n²)</td><td class="good">O(1)</td></tr>
+                </table>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 特性</h3><ul><li>不稳定排序</li><li>原地排序 O(1)</li><li>比较次数固定 n(n-1)/2</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关</h3><ul><li>→ <a href="../bubble/index.html">冒泡排序</a></li><li>→ <a href="../insertion/index.html">插入排序</a></li></ul></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#sort-viz svg"),W=700,H=300;let arr=[],steps=[],stepIdx=-1,timer=null;
+function randArr(){return Array.from({length:8},()=>Math.floor(Math.random()*90)+10);}
+function genSteps(a){const s=[];const n=a.length;for(let i=0;i<n-1;i++){let min=i;for(let j=i+1;j<n;j++){s.push({type:'compare',i,j,min,arr:[...a]});if(a[j]<a[min])min=j;}if(min!==i){[a[i],a[min]]=[a[min],a[i]];s.push({type:'swap',i,min,arr:[...a]});}s.push({type:'sorted',idx:i,arr:[...a]});}s.push({type:'done',arr:[...a]});return s;}
+function render(idx){svg.selectAll("*").remove();
+    const s=steps[idx];if(!s){renderEmpty();return;}
+    const arr=s.arr;const barW=Math.min(60,(W-80)/arr.length),maxVal=100;
+    arr.forEach((v,i)=>{const x=40+i*(barW+8),h=(v/maxVal)*(H-100);
+        let fill="#93c5fd";if(s.type==='sorted'&&i<=s.idx)fill="#4ade80";else if(s.type==='compare'&&(i===s.i||i===s.j))fill="#f87171";else if(s.type==='swap'&&(i===s.i||i===s.min))fill="#fbbf24";else if(s.type==='done')fill="#4ade80";
+        svg.append("rect").attr("x",x).attr("y",H-40-h).attr("width",barW).attr("height",h).attr("fill",fill).attr("rx",4);
+        svg.append("text").attr("x",x+barW/2).attr("y",H-20).attr("text-anchor","middle").attr("font-size","14").attr("font-weight","bold").text(v);
+    });
+    document.getElementById("sort-msg").textContent=s.type==='compare'?`🔍 比较 arr[${s.i}]=${arr[s.i]} 和 arr[${s.j}]=${arr[s.j]}`:s.type==='swap'?`🔄 交换 arr[${s.i}]↔arr[${s.min}]`:s.type==='done'?`✅ 排序完成！`:`✅ arr[${s.idx}] 已就位`;
+}
+function renderEmpty(){svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle").attr("fill","#999").text("点击随机生成开始");}
+document.getElementById("step-btn").addEventListener("click",()=>{if(steps.length===0){arr=randArr();steps=genSteps([...arr]);stepIdx=0;}else if(stepIdx<steps.length-1)stepIdx++;render(stepIdx);if(timer){clearInterval(timer);timer=null;}});
+document.getElementById("auto-btn").addEventListener("click",function(){if(timer){clearInterval(timer);timer=null;this.textContent='▶ 自动播放';return;}if(steps.length===0){arr=randArr();steps=genSteps([...arr]);stepIdx=0;}this.textContent='⏸ 暂停';timer=setInterval(()=>{if(stepIdx>=steps.length-1){clearInterval(timer);timer=null;this.textContent='▶ 自动播放';}else{stepIdx++;render(stepIdx);}},600);});
+document.getElementById("reset-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}document.getElementById("auto-btn").textContent='▶ 自动播放';arr=[];steps=[];stepIdx=-1;renderEmpty();document.getElementById("sort-msg").textContent='已重置';});
+document.getElementById("new-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}document.getElementById("auto-btn").textContent='▶ 自动播放';arr=randArr();steps=genSteps([...arr]);stepIdx=0;render(0);});
+renderEmpty();
+</script>
+</body>
+</html>

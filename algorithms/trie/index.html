@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前缀树 (Trie) - DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+</head>
+<body>
+<div class="algo-page">
+    <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
+        <div class="algo-level"><span class="level-badge level-3">Lv3 · 进阶掌握</span></div>
+        <h1 class="algo-title">前缀树 (Trie / 字典树)</h1>
+    </nav>
+    <div class="content-wrapper">
+        <main class="main-area">
+            <section class="intro-section">
+                <h2>什么是 Trie 树？</h2>
+                <div class="intro-content">
+                    <p><strong>Trie（前缀树 / 字典树）</strong> 是一种 <span class="highlight">用于高效存储和搜索字符串集合</span> 的树形数据结构。</p>
+                    <p>它的核心思想是：<strong>利用字符串的公共前缀来节省存储空间</strong>。例如 "apple" 和 "apply" 共享前缀 "appl"。</p>
+                    <p>📱 <strong>日常应用</strong>：搜索引擎的自动补全、拼写检查、手机九宫格输入法、IP 路由前缀匹配。</p>
+                </div>
+            </section>
+
+            <section class="viz-section">
+                <h2>🎮 交互演示 · Trie 操作</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <label>单词:</label>
+                        <input type="text" id="word-input" placeholder="输入单词" style="width:120px">
+                        <button id="insert-btn" class="btn btn-primary">插入</button>
+                        <button id="search-btn" class="btn btn-primary">搜索</button>
+                        <button id="prefix-btn" class="btn btn-primary">前缀匹配</button>
+                        <button id="reset-btn" class="btn btn-secondary">清空</button>
+                    </div>
+                    <div class="control-group">
+                        <button id="demo-btn" class="btn btn-primary">🌰 演示: apple,apply,app,apk,apt,bat,ball</button>
+                    </div>
+                </div>
+                <div id="trie-viz" class="viz-container">
+                    <svg width="750" height="400"></svg>
+                </div>
+                <div id="trie-status" class="status-bar"><span id="trie-msg">输入单词进行插入/搜索/前缀匹配</span></div>
+            </section>
+
+            <section class="code-section">
+                <h2>💻 代码实现</h2>
+                <div class="code-tabs">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-lang="python">Python</button>
+                        <button class="tab-btn" data-lang="java">Java</button>
+                    </div>
+                    <div class="tab-content active" data-lang="python"><pre class="code-block"><code>class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
+                node.children[ch] = TrieNode()
+            node = node.children[ch]
+        node.is_end = True
+
+    def search(self, word):
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
+                return False
+            node = node.children[ch]
+        return node.is_end
+
+    def startsWith(self, prefix):
+        node = self.root
+        for ch in prefix:
+            if ch not in node.children:
+                return False
+            node = node.children[ch]
+        return True</code></pre></div>
+                    <div class="tab-content" data-lang="java"><pre class="code-block"><code>class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isEnd = false;
+}
+class Trie {
+    TrieNode root = new TrieNode();
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null)
+                node.children[idx] = new TrieNode();
+            node = node.children[idx];
+        }
+        node.isEnd = true;
+    }
+    public boolean search(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            node = node.children[c - 'a'];
+            if (node == null) return false;
+        }
+        return node.isEnd;
+    }
+    public boolean startsWith(String prefix) {
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            node = node.children[c - 'a'];
+            if (node == null) return false;
+        }
+        return true;
+    }
+}</code></pre></div>
+                </div>
+            </section>
+
+            <section class="complexity-section">
+                <h2>📊 复杂度分析</h2>
+                <table class="complexity-table">
+                    <tr><th>操作</th><th>时间复杂度</th><th>空间复杂度</th></tr>
+                    <tr><td>插入</td><td class="good">O(L)</td><td>O(N × L)</td></tr>
+                    <tr><td>搜索</td><td class="good">O(L)</td><td>O(1)</td></tr>
+                    <tr><td>前缀匹配</td><td class="good">O(L)</td><td>O(1)</td></tr>
+                    <tr><td colspan="3">L = 单词长度, N = 单词数量</td></tr>
+                </table>
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/implement-trie-prefix-tree/" target="_blank" class="practice-card">
+                        <span class="practice-num">208</span>
+                        <span class="practice-title">实现 Trie</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/word-search-ii/" target="_blank" class="practice-card">
+                        <span class="practice-num">212</span>
+                        <span class="practice-title">单词搜索 II</span>
+                        <span class="practice-tag hard">困难</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-card"><h3>📖 核心特性</h3><ul><li>利用前缀共享节省空间</li><li>查询效率为 O(L)</li><li>天然支持前缀匹配</li><li>适合字典/自动补全</li></ul></div>
+            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>→ <a href="../hash-table/index.html">哈希表</a></li><li>← <a href="../binary-tree/index.html">二叉树</a></li></ul></div>
+            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:75%">75%</div></div></div>
+        </aside>
+    </div>
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
+const svg=d3.select("#trie-viz svg"),W=750,H=400;
+class TNode{constructor(){this.children={};this.isEnd=false;}}
+let root=new TNode();
+let msg=document.getElementById("trie-msg");
+
+function insert(w){
+    let n=root;for(const ch of w){if(!n.children[ch])n.children[ch]=new TNode();n=n.children[ch];}
+    n.isEnd=true;msg.textContent=`✅ 插入 "${w}" 成功`;render(w);
+}
+function search(w){
+    let n=root;for(const ch of w){if(!n.children[ch]){msg.textContent=`❌ "${w}" 未找到`;render();return false;}n=n.children[ch];}
+    if(n.isEnd){msg.textContent=`✅ 找到 "${w}"`;render(w);return true;}
+    else{msg.textContent=`❌ "${w}" 是前缀但不是完整单词`;render();return false;}
+}
+function startsWith(p){
+    let n=root;for(const ch of p){if(!n.children[ch]){msg.textContent=`❌ 没有以 "${p}" 为前缀的单词`;render();return false;}n=n.children[ch];}
+    msg.textContent=`✅ 存在以 "${p}" 为前缀的单词`;render(p);return true;
+}
+function render(h){
+    svg.selectAll("*").remove();
+    const nodes=[],edges=[];let id=0;const xGap=45,r=18,yGap=55;
+    function dfs(n,depth,xOff,parent){const nid=id++;nodes.push({id:nid,ch:parent?parent.ch:'',isEnd:n.isEnd,x:xOff%7*xGap*2+50+Math.floor(xOff/7)*20,y:depth*yGap+30});let ci=0;
+        for(const [ch,child] of Object.entries(n.children)){const cx=nodes[nid].x+(ci-Object.keys(n.children).length/2)*25;ci++;
+            const cid=id;dfs(child,depth+1,ci*3+Math.floor(Math.random()*2),{ch,node:child,parentId:nid});edges.push({sx:nodes[nid].x,sy:nodes[nid].y,tx:cursorX||cx,ty:(depth+1)*yGap+30});}}
+    function cursorX(){return nodes.length>0?nodes[Math.floor(Math.random()*nodes.length)].x:W/2;}
+    // Simple layout: collect all children first
+    if(!root||Object.keys(root.children).length===0){svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle").attr("fill","#999").attr("font-size","16").text("Trie 为空，请插入单词");return;}
+    const nodes2=[],edges2=[];
+    let nid2=0;let depthMap={};
+    function layout(n,depth,xOff){
+        const key=depth+'-'+xOff;if(depthMap[key])depthMap[key]++;else depthMap[key]=1;
+        const myId=nid2++;const cx=depth*60+50+xOff*35;
+        nodes2.push({id:myId,ch:n.char||'',isEnd:n.node.isEnd,x:cx,y:depth*70+30,parent:n.parentId});
+        let ci=0;const entries=Object.entries(n.node.children);
+        for(const [ch,child] of entries){
+            const childNode={char:ch,node:child,parentId:myId};
+            const ccx=layout(childNode,depth+1,xOff*2+ci);ci++;
+            edges2.push({sx:cx,sy:depth*70+30,tx:ccx,ty:(depth+1)*70+30});
+        }
+        return cx;
+    }
+    // Build tree structure
+    const rootNode={char:'',node:root,parentId:-1};
+    // Simple flat layout
+    function layout2(n,depth,left,right){
+        const cx=(left+right)/2;const myId=nid2++;const yn=depth*70+30;
+        nodes2.push({id:myId,ch:n.char||'~',isEnd:n.node.isEnd,x:cx,y:yn,parent:n.parentId});
+        const entries=Object.entries(n.node.children);
+        if(entries.length===0)return;
+        const seg=(right-left)/entries.length;
+        entries.forEach(([ch,child],i)=>{
+            const childN={char:ch,node:child,parentId:myId};
+            const childX=layout2(childN,depth+1,left+i*seg,left+(i+1)*seg);
+            edges2.push({sx:cx,sy:yn,tx:childX,ty:(depth+1)*70+30});
+        });
+        return cx;
+    }
+    if(Object.keys(root.children).length>0){
+        nid2=0;layout2(rootNode,0,0,W);
+    }
+    edges2.forEach(e=>{svg.append("line").attr("x1",e.sx).attr("y1",e.sy).attr("x2",e.tx).attr("y2",e.ty).attr("stroke","#999").attr("stroke-width",1.5);});
+    nodes2.forEach(n=>{const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`);
+        if(n.ch==='~'){g.append("circle").attr("r",r/2).attr("fill","#4ade80").attr("opacity",0.3);return;}
+        g.append("circle").attr("r",r).attr("fill",n.isEnd?"#4ade80":"#93c5fd").attr("stroke","#333").attr("stroke-width",1.5);
+        if(n.isEnd)g.append("text").attr("text-anchor","middle").attr("dy","0.35em").attr("font-size","11").attr("fill","#fff").text("✓");
+        g.append("text").attr("text-anchor","middle").attr("y",-r-6).attr("font-size","13").attr("font-weight","bold").attr("fill","#1e40af").text(n.ch);
+    });
+    if(h){svg.append("text").attr("x",W/2).attr("y",H-10).attr("text-anchor","middle").attr("font-size","14").attr("fill","#e74c3c").attr("font-weight","bold").text(`← 高亮操作: "${h}"`);}
+}
+document.getElementById("insert-btn").addEventListener("click",()=>{const w=document.getElementById("word-input").value.trim().toLowerCase();if(w)insert(w);});
+document.getElementById("search-btn").addEventListener("click",()=>{const w=document.getElementById("word-input").value.trim().toLowerCase();if(w)search(w);});
+document.getElementById("prefix-btn").addEventListener("click",()=>{const w=document.getElementById("word-input").value.trim().toLowerCase();if(w)startsWith(w);});
+document.getElementById("reset-btn").addEventListener("click",()=>{root=new TNode();msg.textContent="已清空";render();});
+document.getElementById("demo-btn").addEventListener("click",()=>{root=new TNode();["apple","apply","app","apk","apt","bat","ball"].forEach(w=>insert(w));render("apple");});
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",function(){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+    this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
+}));
+</script>
+</body>
+</html>
