@@ -67,7 +67,7 @@
             </section>
         </main>
         <aside class="algo-sidebar">
-            <div class="sidebar-card"><h3>⚡ Python 实现</h3><pre><code>class HashTable:
+            <div class="sidebar-card"><h3>⚡ Python 实现</h3><div class="code-block"><pre><code>class HashTable:
     def __init__(self, cap=10):
         self.cap = cap
         self.table = [[] for _ in range(cap)]
@@ -89,7 +89,7 @@
         idx = self._hash(key)
         for k,v in self.table[idx]:
             if k == key: return v
-        return None</code></pre></div>
+        return None</code></pre></div></div>
             <div class="sidebar-card"><h3>📌 题目</h3><ul>
                 <li><a href="https://leetcode.cn/problems/two-sum/" target="_blank">1. 两数之和</a></li>
                 <li><a href="https://leetcode.cn/problems/lru-cache/" target="_blank">146. LRU缓存</a></li>

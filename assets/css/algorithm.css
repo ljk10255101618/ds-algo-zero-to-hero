@@ -656,3 +656,52 @@ body {
 .code-block .variable { color: #e06c75; }
 .code-block .operator { color: #56b6c2; }
 .code-block .class-name { color: #e5c07b; }
+
+/* 代码头部和内容 */
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background: rgba(46, 160, 67, 0.1);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    font-size: 0.85rem;
+}
+
+.code-header span:first-child {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.code-header span:last-child {
+    color: var(--text-muted);
+}
+
+.code-content .code-block {
+    border-radius: 0 0 12px 12px;
+    border-top: none;
+    margin: 0;
+}
+
+.code-content .code-block:first-child {
+    border-radius: 12px;
+    border-top: 1px solid var(--border);
+}
+
+/* 居中代码块 */
+.code-block.centered {
+    text-align: center;
+    padding: 24px;
+}
+
+/* 内联代码 */
+.algo-section code {
+    background: var(--bg-muted);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+    color: var(--primary);
+}

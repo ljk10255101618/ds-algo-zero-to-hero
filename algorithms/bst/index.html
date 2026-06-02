@@ -61,7 +61,7 @@
             </section>
         </main>
         <aside class="algo-sidebar">
-            <div class="sidebar-card"><h3>⚡ 代码</h3><pre><code>class BST:
+            <div class="sidebar-card"><h3>⚡ 代码</h3><div class="code-block"><pre><code>class BST:
     def search(self, root, val):
         if not root or root.val == val:
             return root
@@ -76,7 +76,7 @@
             root.left = self.insert(root.left, val)
         else:
             root.right = self.insert(root.right, val)
-        return root</code></pre></div>
+        return root</code></pre></div></div>
             <div class="sidebar-card"><h3>📌 题目</h3><ul>
                 <li><a href="https://leetcode.cn/problems/validate-binary-search-tree/" target="_blank">98. 验证BST</a></li>
                 <li><a href="https://leetcode.cn/problems/kth-smallest-element-in-a-bst/" target="_blank">230. BST第K小</a></li>
