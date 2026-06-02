@@ -290,18 +290,9 @@ header .subtitle-desc {
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
-.graph-view {
-    display: none;
-    flex: 1;
-    min-height: 420px;
-    background: linear-gradient(180deg, #fafbfc 0%, #f1f5f9 100%);
-    border-radius: 16px;
-    border: 1px solid var(--border-light);
-}
-
-.graph-view.active {
-    display: block;
-    animation: fadeInUp 0.3s var(--ease-out);
+#knowledge-graph {
+    min-height: 600px;
+    height: 600px;
 }
 
 .hint {

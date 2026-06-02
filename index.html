@@ -311,13 +311,28 @@
     };
     </script>
 
+    <!-- D3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    
     <script src="assets/js/knowledge-graph.js"></script>
     <script src="assets/js/ai-assistant.js"></script>
 
-    <!-- D3 初始化 -->
+    <!-- 初始化 -->
     <script>
-    window.addEventListener('load', function() {
-        if (typeof initKnowledgeGraph === 'function') initKnowledgeGraph();
+    document.addEventListener('DOMContentLoaded', function() {
+        // 等待D3加载
+        function waitForD3(callback, attempts) {
+            if (typeof d3 !== 'undefined') {
+                callback();
+            } else if (attempts > 0) {
+                setTimeout(() => waitForD3(callback, attempts - 1), 100);
+            }
+        }
+        waitForD3(function() {
+            if (typeof initKnowledgeGraph === 'function') {
+                initKnowledgeGraph();
+            }
+        }, 20);
     });
     </script>
 </body>
