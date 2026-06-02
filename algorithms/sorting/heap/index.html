@@ -3,31 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>堆排序 - DSATutor · DSATutor</title>
+    <title>堆排序 - DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"><\/script>
-    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <div class="algo-header">
+<div class="algo-header">
         <nav class="navbar">
-            <a href="../../index.html" class="back-link">← 返回首页</a>
-            <span class="nav-title">堆排序</span>
-        </nav>
-        <div class="algo-header-content">
-            <span class="algo-tag" style="background:#3498db">数据结构</span>
-            <span class="algo-level">Lv1</span>
-            <h1>堆排序 - DSATutor</h1>
-            <p class="algo-desc"></p>
-        </div>
-    </div>
-
+        <a href="../../index.html" class="back-link">← 返回</a>
+    </nav>
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
-                
                 <h2>什么是堆排序？</h2>
                 <div class="intro-content">
                     <p><strong>堆排序</strong> 利用 <strong>堆</strong>（完全二叉树）这种数据结构进行排序。它结合了 <span class="highlight">选择排序的思想</span> 和 <span class="highlight">堆的高效取最大值操作</span>。</p>
@@ -38,10 +27,8 @@
                     </ol>
                     <p>特点：<strong>不稳定排序</strong>，原地排序，没有最坏情况。</p>
                 </div>
-            
             </section>
             <section class="algo-section">
-                
                 <h2>🎮 交互演示</h2>
                 <div class="controls">
                     <button id="auto-btn" class="btn btn-primary">▶ 自动演示</button>
@@ -50,10 +37,8 @@
                 </div>
                 <div id="sort-viz" class="viz-container"><svg width="750" height="320"></svg></div>
                 <div id="sort-status" class="status-bar"><span id="sort-msg">点击"自动演示"开始堆排序</span></div>
-            
             </section>
             <section class="algo-section">
-                
                 <h2>💻 代码实现</h2>
                 <pre class="code-block"><code>def heapify(arr, n, i):
     """维护以 i 为根的子树为最大堆"""
@@ -78,10 +63,8 @@ def heap_sort(arr):
         arr[0], arr[i] = arr[i], arr[0]  # 堆顶放到末尾
         heapify(arr, i, 0)  # 调整剩余堆
     return arr</code></pre>
-            
             </section>
             <section class="algo-section">
-                
                 <h2>📊 复杂度</h2>
                 <table class="complexity-table">
                     <tr><th>操作</th><th>时间复杂度</th><th>空间</th></tr>
@@ -89,19 +72,16 @@ def heap_sort(arr):
                     <tr><td>排序</td><td class="good">O(n log n)</td></tr>
                     <tr><td>总体</td><td class="good">O(n log n)</td></tr>
                 </table>
-            
             </section>
         </main>
         <aside class="algo-sidebar">
-            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 核心概念</h3><ul><li>完全二叉树表示</li><li>最大堆：父 ≥ 子</li><li>无需额外空间</li><li>不稳定排序</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关</h3><ul><li>← <a href="../../heap/index.html">堆结构</a></li><li>→ <a href="../quick/index.html">快速排序</a></li></ul></div>
         </aside>
-        </aside>
     </div>
-
-        <script>
-        
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
 const svg=d3.select("#sort-viz svg"),W=750,H=320;let arr=[],steps=[],stepIdx=-1,timer=null;
 function randArr(){return Array.from({length:8},()=>Math.floor(Math.random()*90)+10);}
 function genSteps(a){const s=[],n=a.length;
@@ -130,8 +110,6 @@ document.getElementById("auto-btn").addEventListener("click",function(){if(timer
 document.getElementById("reset-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}document.getElementById("auto-btn").textContent='▶ 自动演示';arr=[];steps=[];stepIdx=-1;renderEmpty();document.getElementById("sort-msg").textContent='已重置';});
 document.getElementById("new-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}document.getElementById("auto-btn").textContent='▶ 自动演示';arr=randArr();steps=genSteps([...arr]);stepIdx=0;render(0);});
 renderEmpty();
-
-    </script>
-
+</script>
 </body>
 </html>

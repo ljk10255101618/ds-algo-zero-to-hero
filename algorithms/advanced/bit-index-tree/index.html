@@ -3,41 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>树状数组 (Fenwick Tree) - DSATutor · DSATutor</title>
+    <title>树状数组 (Fenwick Tree) - DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"><\/script>
-    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <div class="algo-header">
+<div class="algo-header">
         <nav class="navbar">
-            <a href="../../index.html" class="back-link">← 返回首页</a>
-            <span class="nav-title">树状数组</span>
-        </nav>
-        <div class="algo-header-content">
-            <span class="algo-tag" style="background:#3498db">数据结构</span>
-            <span class="algo-level">Lv1</span>
-            <h1>树状数组 (Fenwick Tree) - DSATutor</h1>
-            <p class="algo-desc"></p>
-        </div>
-    </div>
-
+        <a href="../../index.html" class="back-link">← 返回</a>
+    </nav>
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
-                
                 <h2>什么是树状数组？</h2>
                 <div class="intro-content">
                     <p><strong>树状数组 (Binary Indexed Tree, BIT)</strong> 是一种用于 <span class="highlight">高效维护前缀和</span> 的数据结构，由 Peter Fenwick 在 1994 年提出。</p>
                     <p>它的核心思想是利用 <strong>lowbit</strong>（二进制最低位的 1）将数组组织成树形结构，实现 O(log n) 的更新和查询。</p>
                     <p>💡 <strong>与线段树的对比</strong>：树状数组代码更简洁、常数更小，但只能处理前缀/差分相关的操作（求和、求逆序对等）。</p>
                 </div>
-            
             </section>
             <section class="algo-section">
-                
                 <h2>🎮 交互演示</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -48,10 +35,8 @@
                 </div>
                 <div id="bit-viz" class="viz-container"><svg width="700" height="300"></svg></div>
                 <div id="bit-status" class="status-bar"><span id="bit-msg">树状数组 = 数组 + 二进制索引</span></div>
-            
             </section>
             <section class="algo-section">
-                
                 <h2>💻 代码实现</h2>
                 <pre class="code-block"><code>class FenwickTree:
     def __init__(self, n):
@@ -89,10 +74,8 @@ def count_inversions(arr):
         bit.add(v, 1)
         inv += i + 1 - bit.prefix_sum(v)
     return inv</code></pre>
-            
             </section>
             <section class="algo-section">
-                
                 <h2>📊 对比线段树</h2>
                 <table class="complexity-table">
                     <tr><th>特性</th><th>树状数组</th><th>线段树</th></tr>
@@ -101,19 +84,16 @@ def count_inversions(arr):
                     <tr><td>功能</td><td>前缀和/差分</td><td class="good">任意区间操作</td></tr>
                     <tr><td>区间更新</td><td>需差分技巧</td><td class="good">原生支持 lazy</td></tr>
                 </table>
-            
             </section>
         </main>
         <aside class="algo-sidebar">
-            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 lowbit 详解</h3><ul><li><code>lowbit(x) = x & -x</code></li><li>例: lowbit(6)=2 (110→10)</li><li>更新时向上累加</li><li>查询时向下减</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关</h3><ul><li>← <a href="../../segment-tree/index.html">线段树</a></li><li>← <a href="../../array/index.html">数组</a></li></ul></div>
         </aside>
-        </aside>
     </div>
-
-        <script>
-        
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
 const svg=d3.select("#bit-viz svg"),W=700,H=300;const N=8;let arr=[2,4,6,8,10,12,14,16];let bit=new Array(N+1).fill(0);
 function lowbit(x){return x&-x;}
 function add(idx,delta){let i=idx;while(i<=N){bit[i]+=delta;i+=lowbit(i);}}
@@ -145,8 +125,6 @@ build();render();
 document.getElementById("prefix-btn").addEventListener("click",()=>{const r=prefix(5);document.getElementById("bit-msg").textContent=`🔍 前缀和 [0,5] = ${r}`;});
 document.getElementById("update-btn").addEventListener("click",()=>{arr[3]+=5;add(4,5);render();document.getElementById("bit-msg").textContent=`✅ arr[3] += 5，BIT 已更新`;});
 document.getElementById("reset-btn").addEventListener("click",()=>{arr=[2,4,6,8,10,12,14,16];bit.fill(0);build();render();document.getElementById("bit-msg").textContent='已重置';});
-
-    </script>
-
+</script>
 </body>
 </html>

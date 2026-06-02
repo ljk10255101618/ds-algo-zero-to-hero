@@ -3,33 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>最短路径 - DSATutor · DSATutor</title>
+    <title>最短路径 - DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-    <div class="algo-header">
+<div class="algo-header">
         <nav class="navbar">
-            <a href="../../index.html" class="back-link">← 返回首页</a>
-            <span class="nav-title">最短路径</span>
-        </nav>
-        <div class="algo-header-content">
-            <span class="algo-tag" style="background:#3498db">数据结构</span>
-            <span class="algo-level">Lv1</span>
-            <h1>最短路径 - DSATutor</h1>
-            <p class="algo-desc"></p>
-        </div>
-    </div>
-
+        <a href="../../index.html" class="back-link">← 返回</a>
+    </nav>
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
-                
                 <h2>什么是最短路径？</h2>
                 <div class="intro-content">
                     <p>最短路径问题是图论中的经典问题：在加权图中找到从起点到终点的 <span class="highlight">路径权值和最小</span> 的路径。</p>
@@ -40,10 +29,9 @@
                         <li><strong>Bellman-Ford</strong>（贝尔曼-福特）：动态规划，可以处理负权边，O(VE)</li>
                     </ul>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>🎮 交互演示 · Dijkstra 最短路径</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -64,10 +52,9 @@
                     <span><span class="legend-dot" style="background:#4ade80"></span> 最短路径</span>
                     <span><span class="legend-dot" style="background:#f87171"></span> 当前节点</span>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>💻 代码实现</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -113,10 +100,9 @@ def dijkstra(graph, start):
 
     return dist</code></pre></div>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>📊 算法对比</h2>
                 <table class="complexity-table">
                     <tr><th>算法</th><th>时间复杂度</th><th>负权边</th><th>负环检测</th></tr>
@@ -124,20 +110,33 @@ def dijkstra(graph, start):
                     <tr><td>Bellman-Ford</td><td>O(VE)</td><td class="good">✓ 可以</td><td class="good">✓</td></tr>
                     <tr><td>Floyd-Warshall</td><td>O(V³)</td><td class="good">✓ 可以</td><td>✓ 全源</td></tr>
                 </table>
-            
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/network-delay-time/" target="_blank" class="practice-card">
+                        <span class="practice-num">743</span>
+                        <span class="practice-title">网络延迟时间</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/cheapest-flights-within-k-stops/" target="_blank" class="practice-card">
+                        <span class="practice-num">787</span>
+                        <span class="practice-title">K 站中转内最便宜</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                </div>
             </section>
         </main>
         <aside class="algo-sidebar">
-            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 核心步骤</h3><ul><li>初始化距离数组</li><li>每次选未访问的最小距离点</li><li>松弛相邻节点</li><li>重复直到所有点访问完</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../graph/index.html">图论基础</a></li><li>→ <a href="../mst/index.html">最小生成树</a></li></ul></div>
             <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:85%">85%</div></div></div>
         </aside>
-        </aside>
     </div>
-
-        <script>
-        
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
 const svg=d3.select("#graph-viz svg"),W=750,H=380;
 const graph={A:{B:4,C:2},B:{C:1,D:5},C:{D:8,E:10},D:{E:2,F:6},E:{F:3},F:{}};
 const nodes=[{id:"A",x:100,y:180},{id:"B",x:250,y:80},{id:"C",x:250,y:280},{id:"D",x:420,y:80},{id:"E",x:420,y:280},{id:"F",x:580,y:180}];
@@ -212,8 +211,6 @@ document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",func
     this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
 }));
 initState();render();
-
-    </script>
-
+</script>
 </body>
 </html>

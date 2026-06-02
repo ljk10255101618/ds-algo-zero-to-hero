@@ -3,33 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>红黑树 (Red-Black Tree) - DSATutor · DSATutor</title>
+    <title>红黑树 (Red-Black Tree) - DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-    <div class="algo-header">
+<div class="algo-header">
         <nav class="navbar">
-            <a href="../../index.html" class="back-link">← 返回首页</a>
-            <span class="nav-title">红黑树</span>
-        </nav>
-        <div class="algo-header-content">
-            <span class="algo-tag" style="background:#3498db">数据结构</span>
-            <span class="algo-level">Lv1</span>
-            <h1>红黑树 (Red-Black Tree) - DSATutor</h1>
-            <p class="algo-desc"></p>
-        </div>
-    </div>
-
+        <a href="../../index.html" class="back-link">← 返回</a>
+    </nav>
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
-                
                 <h2>什么是红黑树？</h2>
                 <div class="intro-content">
                     <p>红黑树是一种 <span class="highlight">自平衡的二叉搜索树</span>，是计算机科学中最重要的数据结构之一。它保证了在最坏情况下基本操作的时间复杂度为 O(log n)。</p>
@@ -43,10 +32,9 @@
                     </ol>
                     <p>💡 <strong>实际应用</strong>：Java 的 TreeMap/TreeSet、C++ STL 的 map/set、Linux 内核的完全公平调度器都基于红黑树。</p>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>🎮 交互演示 · 红黑树插入</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -66,10 +54,9 @@
                     <span><span class="legend-dot" style="background:#333"></span> 黑色节点</span>
                     <span><span class="legend-dot" style="background:#fbbf24;border:2px solid #333"></span> 当前操作节点</span>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>💻 核心操作</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -105,10 +92,9 @@ class RBTree:
             # 判断叔叔节点颜色
             # 旋转/变色处理...</code></pre></div>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>📊 对比 AVL 树</h2>
                 <table class="complexity-table">
                     <tr><th>特性</th><th>红黑树</th><th>AVL树</th></tr>
@@ -117,20 +103,28 @@ class RBTree:
                     <tr><td>插入/删除</td><td class="good">O(log n) 旋转更少</td><td>O(log n) 旋转更多</td></tr>
                     <tr><td>应用场景</td><td>频繁插入删除</td><td>频繁查找</td></tr>
                 </table>
-            
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/balance-a-binary-search-tree/" target="_blank" class="practice-card">
+                        <span class="practice-num">1382</span>
+                        <span class="practice-title">平衡BST</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                </div>
             </section>
         </main>
         <aside class="algo-sidebar">
-            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 5条性质</h3><ol style="font-size:13px;padding-left:16px"><li>节点红或黑</li><li>根黑</li><li>叶(NIL)黑</li><li>红子必黑</li><li>黑高相同</li></ol></div>
             <div class="algo-info-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../avl/index.html">AVL树</a></li><li>← <a href="../bst/index.html">二叉搜索树</a></li></ul></div>
             <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:80%">80%</div></div></div>
         </aside>
-        </aside>
     </div>
-
-        <script>
-        
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
 const svg=d3.select("#rb-viz svg"),W=750,H=380;
 let tree={root:null}; const r=22;
 class Node{constructor(v){this.val=v;this.left=null;this.right=null;this.color='red';this.parent=null;}}
@@ -197,8 +191,6 @@ document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",func
     document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
     this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
 }));
-
-    </script>
-
+</script>
 </body>
 </html>

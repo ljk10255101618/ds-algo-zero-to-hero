@@ -3,43 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVL树 - DSATutor · DSATutor</title>
+    <title>AVL树 - DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-    <div class="algo-header">
+<div class="algo-header">
         <nav class="navbar">
-            <a href="../../index.html" class="back-link">← 返回首页</a>
-            <span class="nav-title">AVL树</span>
-        </nav>
-        <div class="algo-header-content">
-            <span class="algo-tag" style="background:#3498db">数据结构</span>
-            <span class="algo-level">Lv1</span>
-            <h1>AVL树 - DSATutor</h1>
-            <p class="algo-desc"></p>
-        </div>
-    </div>
-
+        <a href="../../index.html" class="back-link">← 返回</a>
+    </nav>
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
-                
                 <h2>什么是 AVL 树？</h2>
                 <div class="intro-content">
                     <p>AVL 树是 <span class="highlight">自平衡的二叉搜索树</span>，由 Adelson-Velsky 和 Landis 在 1962 年发明，是世界上第一个自平衡二叉搜索树。</p>
                     <p>它的核心思想是：<strong>任何节点的左右子树高度差不超过 1</strong>。这个高度差称为 <strong>平衡因子 (Balance Factor)</strong>。</p>
                     <p>当插入或删除导致平衡被打破时，通过 <strong>四种旋转操作</strong> 重新平衡：LL、RR、LR、RL。</p>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>🎮 交互演示 · AVL树操作</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -60,10 +48,9 @@
                 <div id="avl-status" class="status-bar">
                     <span id="avl-msg">点击插入或删除操作</span>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>💻 代码实现</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -152,10 +139,9 @@ class AVLTree {
     }
 }</code></pre></div>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>📊 复杂度分析</h2>
                 <table class="complexity-table">
                     <tr><th>操作</th><th>平均</th><th>最坏</th></tr>
@@ -163,20 +149,33 @@ class AVLTree {
                     <tr><td>插入</td><td class="good">O(log n)</td><td class="good">O(log n)</td></tr>
                     <tr><td>删除</td><td class="good">O(log n)</td><td class="good">O(log n)</td></tr>
                 </table>
-            
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/balanced-binary-tree/" target="_blank" class="practice-card">
+                        <span class="practice-num">110</span>
+                        <span class="practice-title">平衡二叉树</span>
+                        <span class="practice-tag easy">简单</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/balance-a-binary-search-tree/" target="_blank" class="practice-card">
+                        <span class="practice-num">1382</span>
+                        <span class="practice-title">将二叉搜索树变平衡</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                </div>
             </section>
         </main>
         <aside class="algo-sidebar">
-            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 四种旋转</h3><ul><li><strong>LL</strong>: 右旋</li><li><strong>RR</strong>: 左旋</li><li><strong>LR</strong>: 左旋→右旋</li><li><strong>RL</strong>: 右旋→左旋</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../bst/index.html">二叉搜索树</a></li><li>→ <a href="../red-black/index.html">红黑树</a></li></ul></div>
             <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:60%">60%</div></div></div>
         </aside>
-        </aside>
     </div>
-
-        <script>
-        
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
 const svg = d3.select("#avl-viz svg"), width = 750, height = 350;
 let root = null;
 let msg = document.getElementById("avl-msg");
@@ -245,8 +244,6 @@ document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",func
     document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
     this.classList.add("active"); document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
 }));
-
-    </script>
-
+</script>
 </body>
 </html>

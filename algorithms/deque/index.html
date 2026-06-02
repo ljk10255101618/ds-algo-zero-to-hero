@@ -3,43 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>双端队列 (Deque) - DSATutor · DSATutor</title>
+    <title>双端队列 (Deque) - DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-    <div class="algo-header">
+<div class="algo-header">
         <nav class="navbar">
-            <a href="../../index.html" class="back-link">← 返回首页</a>
-            <span class="nav-title">双端队列</span>
-        </nav>
-        <div class="algo-header-content">
-            <span class="algo-tag" style="background:#3498db">数据结构</span>
-            <span class="algo-level">Lv1</span>
-            <h1>双端队列 (Deque) - DSATutor</h1>
-            <p class="algo-desc"></p>
-        </div>
-    </div>
-
+        <a href="../../index.html" class="back-link">← 返回</a>
+    </nav>
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
-                
                 <h2>什么是双端队列？</h2>
                 <div class="intro-content">
                     <p><strong>双端队列（Deque）</strong> 是队列的升级版，允许在 <span class="highlight">头部和尾部两端</span> 进行插入和删除操作。</p>
                     <p>想象火车站 🚉 的 <strong>双面站台</strong> —— 乘客可以从左边上车，也可以从右边上车；可以从左边下车，也可以从右边下车。这就是 Deque 的 "双端" 特性。</p>
                     <p>在 Python 中，<code>collections.deque</code> 是高度优化的双端队列实现，提供了 O(1) 的头尾操作效率。</p>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>🎮 交互演示 · Deque 操作</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -60,10 +48,9 @@
                     <span> | Back → <span id="back-indicator">null</span></span>
                     <span> | Size: <span id="size-indicator">0</span></span>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>💻 代码实现</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -98,10 +85,9 @@ d.pop_front();      // pop_front
 int front = d.front();
 int size = d.size();</code></pre></div>
                 </div>
-            
             </section>
+
             <section class="algo-section">
-                
                 <h2>📊 复杂度分析</h2>
                 <table class="complexity-table">
                     <tr><th>操作</th><th>时间复杂度</th><th>说明</th></tr>
@@ -111,20 +97,39 @@ int size = d.size();</code></pre></div>
                     <tr><td>中间插入/删除</td><td class="bad">O(n)</td><td>需要移动元素到两端</td></tr>
                     <tr><td>空间复杂度</td><td class="good">O(n)</td><td>存储 n 个元素</td></tr>
                 </table>
-            
+            </section>
+
+            <section class="practice-section">
+                <h2>🎯 练一练</h2>
+                <div class="practice-grid">
+                    <a href="https://leetcode.cn/problems/design-circular-deque/" target="_blank" class="practice-card">
+                        <span class="practice-num">641</span>
+                        <span class="practice-title">设计循环双端队列</span>
+                        <span class="practice-tag medium">中等</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/sliding-window-maximum/" target="_blank" class="practice-card">
+                        <span class="practice-num">239</span>
+                        <span class="practice-title">滑动窗口最大值</span>
+                        <span class="practice-tag hard">困难</span>
+                    </a>
+                    <a href="https://leetcode.cn/problems/implement-stack-using-queues/" target="_blank" class="practice-card">
+                        <span class="practice-num">225</span>
+                        <span class="practice-title">用队列实现栈</span>
+                        <span class="practice-tag easy">简单</span>
+                    </a>
+                </div>
             </section>
         </main>
+        <!-- 侧边栏 -->
         <aside class="algo-sidebar">
-            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 核心特性</h3><ul><li>双端插入/删除 O(1)</li><li>支持随机访问</li><li>底层分段连续存储</li><li>Python 标准库实现</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../queue/index.html">队列</a></li><li>← <a href="../stack/index.html">栈</a></li><li>→ <a href="../linked-list/index.html">链表</a></li></ul></div>
             <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:70%">70%</div></div></div>
         </aside>
-        </aside>
     </div>
-
-        <script>
-        
+</div>
+<script src="../../assets/js/ai-assistant.js"></script>
+<script>
 const svg = d3.select("#deque-viz svg");
 const width = 700, height = 200, cellW = 60, cellH = 50;
 const centerY = height / 2;
@@ -184,8 +189,6 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 });
 // KaTeX
 document.querySelectorAll(".katex-math").forEach(el => { try { katex.render(el.textContent, el, {throwOnError:false}); } catch(e){} });
-
-    </script>
-
+</script>
 </body>
 </html>
