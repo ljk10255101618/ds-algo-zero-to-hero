@@ -413,18 +413,19 @@ body {
     font-size: 0.9rem;
 }
 
-/* 代码块 */
+/* 代码块 - 优化配色提高可读性 */
 .code-block {
-    background: #1e293b;
+    background: #1a1a2e; /* 深蓝黑色背景 */
     border-radius: 12px;
     overflow: hidden;
     margin: 16px 0;
+    border: 1px solid #3a3a5c;
 }
 
 /* sidebar中的代码块 */
 .sidebar-card pre, .sidebar-card code {
-    background: #1e293b;
-    color: #e2e8f0;
+    background: #1a1a2e;
+    color: #ffffff; /* 纯白色，提高对比度 */
     border-radius: 8px;
     padding: 4px;
 }
@@ -432,20 +433,34 @@ body {
 .code-header {
     display: flex;
     justify-content: space-between;
-    padding: 8px 16px;
-    background: #0f172a;
-    color: var(--text-muted);
-    font-size: 0.75rem;
+    align-items: center;
+    padding: 10px 16px;
+    background: #16162a;
+    color: #a0a0c0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #3a3a5c;
 }
 
 .code-content {
     padding: 16px;
     overflow-x: auto;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    line-height: 1.7;
-    color: #e2e8f0;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85rem; /* 增大字体 */
+    line-height: 1.8;
+    color: #ffffff; /* 纯白色代码 */
+    background: #1a1a2e;
 }
+
+/* 代码语法高亮 - 优化配色 */
+.code-block .keyword { color: #ff79c6; font-weight: 600; }   /* 粉色关键字 */
+.code-block .string { color: #50fa7b; }                        /* 绿色字符串 */
+.code-block .number { color: #ffb86c; }                        /* 橙色数字 */
+.code-block .comment { color: #6272a4; font-style: italic; }  /* 蓝色注释 */
+.code-block .function { color: #8be9fd; }                      /* 青色函数 */
+.code-block .variable { color: #ff5555; }                      /* 红色变量 */
+.code-block .operator { color: #f1fa8c; }                      /* 黄色操作符 */
+.code-block .class-name { color: #bd93f9; }                    /* 紫色类名 */
+.code-block .bracket { color: #ffffff; }                       /* 白色括号 */
 
 /* 状态信息 */
 .status-bar {
@@ -647,37 +662,7 @@ body {
     display: block;
 }
 
-/* 代码语法高亮 */
-.code-block .keyword { color: #c678dd; font-weight: 600; }
-.code-block .string { color: #98c379; }
-.code-block .number { color: #d19a66; }
-.code-block .comment { color: #5c6370; font-style: italic; }
-.code-block .function { color: #61afef; }
-.code-block .variable { color: #e06c75; }
-.code-block .operator { color: #56b6c2; }
-.code-block .class-name { color: #e5c07b; }
 
-/* 代码头部和内容 */
-.code-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 16px;
-    background: rgba(46, 160, 67, 0.1);
-    border: 1px solid var(--border);
-    border-bottom: none;
-    border-radius: 12px 12px 0 0;
-    font-size: 0.85rem;
-}
-
-.code-header span:first-child {
-    color: var(--primary);
-    font-weight: 600;
-}
-
-.code-header span:last-child {
-    color: var(--text-muted);
-}
 
 .code-content .code-block {
     border-radius: 0 0 12px 12px;
