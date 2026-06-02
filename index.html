@@ -29,19 +29,12 @@
             </div>
         </header>
 
-        <!-- 主内容 -->
-        <div class="main-content">
-            <!-- 知识图谱导航区域 -->
-            <div id="knowledge-graph-container">
-                <div class="section-title"><span class="icon">🧠</span> 知识图谱 · 探索数据结构之间的关系</div>
-                <div class="graph-mode-switch">
-                    <button class="mode-btn active" data-mode="knowledge" onclick="switchGraphMode('knowledge')">知识图谱</button>
-                    <button class="mode-btn" data-mode="evolution" onclick="switchGraphMode('evolution')">进化史</button>
-                </div>
-                <div id="knowledge-graph" class="graph-view active"></div>
-                <div id="evolution-graph" class="graph-view"></div>
-                <p class="hint">🖱️ 点击节点跳转学习 · Ctrl+滚轮缩放 · 拖拽移动</p>
-            </div>
+        <!-- 知识图谱区域 -->
+        <div id="knowledge-graph-container">
+            <div class="section-title"><span class="icon">🧠</span> 知识图谱 · 数据结构与算法的演进之路</div>
+            <div id="knowledge-graph" class="graph-view active"></div>
+            <p class="hint">🖱️ 点击节点跳转学习 · Ctrl+滚轮缩放 · 拖拽移动 · 节点越大难度越高 · 年份显示历史演进</p>
+        </div>
 
             <!-- 快速入口 -->
             <div class="quick-access">
