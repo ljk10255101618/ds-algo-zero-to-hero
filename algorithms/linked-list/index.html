@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>链表 · DSATutor</title>
+    <title>链表 · DSATutor · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+    
 </head>
 <body>
     <div class="algo-header">
-        <a href="../../index.html" class="back-link">← 返回</a>
+        <nav class="navbar">
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">链表</span>
+        </nav>
         <div class="algo-header-content">
             <span class="algo-tag" style="background:#4A90D9">线性结构</span>
             <span class="algo-level">Lv1</span>
             <h1>链表 Linked List</h1>
-            <p>动态数据结构的基石，插入删除 O(1)，随机访问 O(n)</p>
+            <p class="algo-desc"></p>
         </div>
     </div>
 
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
+                
                 <h2>📝 定义</h2>
                 <p>链表是一种线性数据结构，元素通过指针链接而非连续存储。每个节点包含 <strong>数据域</strong> 和 <strong>指针域</strong>。</p>
                 <div class="highlight-box">
@@ -40,9 +47,10 @@
                     <div><span class="big-o">插入</span> O(1)</div>
                     <div><span class="big-o">删除</span> O(1)</div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>🎮 交互演示</h2>
                 <div class="visualizer-container">
                     <div class="controls">
@@ -57,9 +65,10 @@
                     <div id="linkedListViz" class="viz-canvas"></div>
                     <div id="operationLog" class="viz-log"></div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>💡 应用场景</h2>
                 <div class="use-cases">
                     <div class="use-case-card">
@@ -75,9 +84,11 @@
                         <p>操作系统用链表管理空闲内存块</p>
                     </div>
                 </div>
+            
             </section>
         </main>
         <aside class="algo-sidebar">
+            <aside class="algo-sidebar">
             <div class="sidebar-card">
                 <h3>⚡ 代码实现</h3>
                 <div class="code-block"><pre><code>class ListNode:
@@ -112,10 +123,11 @@ class LinkedList:
                 </ul>
             </div>
         </aside>
+        </aside>
     </div>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>
+        <script>
+        
         let listData = [5, 12, 3, 8, 21];
         const viz = document.getElementById('linkedListViz');
         const log = document.getElementById('operationLog');
@@ -206,6 +218,8 @@ class LinkedList:
         function resetList() { listData = [5, 12, 3, 8, 21]; render(); logOp('已重置为默认链表'); }
 
         render();
+    
     </script>
+
 </body>
 </html>

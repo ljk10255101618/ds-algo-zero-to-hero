@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二叉搜索树 · DSATutor</title>
+    <title>二叉搜索树 · DSATutor · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    
 </head>
 <body>
     <div class="algo-header">
-        <a href="../../index.html" class="back-link">← 返回</a>
+        <nav class="navbar">
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">二叉搜索树</span>
+        </nav>
         <div class="algo-header-content">
             <span class="algo-tag" style="background:#e67e22">树形结构</span>
             <span class="algo-level">Lv2</span>
             <h1>二叉搜索树 BST</h1>
-            <p>左子树 < 根 < 右子树，中序遍历即有序序列</p>
+            <p class="algo-desc"></p>
         </div>
     </div>
 
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
+                
                 <h2>📝 定义</h2>
                 <p>二叉搜索树 (BST) 是一种特殊的二叉树：<strong>左子树所有节点 < 根节点 < 右子树所有节点</strong>。</p>
                 <div class="highlight-box">
@@ -34,9 +40,10 @@
                     <div><span class="big-o">删除</span> O(log n)</div>
                     <div><span class="big-o">空间</span> O(n)</div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>🎮 交互演示</h2>
                 <div class="visualizer-container">
                     <div class="controls">
@@ -49,18 +56,21 @@
                     <div id="bstViz" class="viz-canvas"></div>
                     <div id="bstLog" class="viz-log"></div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>💡 变体</h2>
                 <div class="use-cases">
                     <div class="use-case-card"><h4>⚖️ AVL 树</h4><p>严格平衡，左右子树高度差 ≤ 1</p></div>
                     <div class="use-case-card"><h4>🔴 红黑树</h4><p>近似平衡，C++ STL map/set 的底层</p></div>
                     <div class="use-case-card"><h4>📊 Treap</h4><p>树堆，BST + 随机优先级维护平衡</p></div>
                 </div>
+            
             </section>
         </main>
         <aside class="algo-sidebar">
+            <aside class="algo-sidebar">
             <div class="sidebar-card"><h3>⚡ 代码</h3><div class="code-block"><pre><code>class BST:
     def search(self, root, val):
         if not root or root.val == val:
@@ -82,10 +92,11 @@
                 <li><a href="https://leetcode.cn/problems/kth-smallest-element-in-a-bst/" target="_blank">230. BST第K小</a></li>
             </ul></div>
         </aside>
+        </aside>
     </div>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>
+        <script>
+        
         let bstData = [10, 5, 15, 3, 7, 12, 18];
         const logEl = document.getElementById('bstLog');
         function logMsg(m){logEl.innerHTML=`<span class="log-msg">👉 ${m}</span>`;setTimeout(()=>logEl.innerHTML='',2500);}
@@ -169,6 +180,8 @@
         }
         function resetBST() { bstData = [10, 5, 15, 3, 7, 12, 18]; render(); logMsg('已重置'); }
         render();
+    
     </script>
+
 </body>
 </html>

@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>堆 · DSATutor</title>
+    <title>堆 · DSATutor · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    
 </head>
 <body>
     <div class="algo-header">
-        <a href="../../index.html" class="back-link">← 返回</a>
+        <nav class="navbar">
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">堆</span>
+        </nav>
         <div class="algo-header-content">
             <span class="algo-tag" style="background:#e67e22">树形结构</span>
             <span class="algo-level">Lv3</span>
             <h1>堆 Heap</h1>
-            <p>完全二叉树 + 堆序性质，优先队列的核心</p>
+            <p class="algo-desc"></p>
         </div>
     </div>
 
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
+                
                 <h2>📝 定义</h2>
                 <p>堆是一种 <strong>完全二叉树</strong>，满足 <strong>堆序性质</strong>：</p>
                 <div class="highlight-box">
@@ -36,9 +42,10 @@
                     <div><span class="big-o">删除极值</span> O(log n)</div>
                     <div><span class="big-o">建堆</span> O(n)</div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>🎮 交互演示</h2>
                 <div class="visualizer-container">
                     <div class="controls">
@@ -55,18 +62,21 @@
                     <div id="heapViz" class="viz-canvas"></div>
                     <div id="heapLog" class="viz-log"></div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>💡 应用</h2>
                 <div class="use-cases">
                     <div class="use-case-card"><h4>⏰ 任务调度</h4><p>操作系统按优先级调度进程</p></div>
                     <div class="use-case-card"><h4>📊 Top K</h4><p>小根堆维护最大的 K 个元素</p></div>
                     <div class="use-case-card"><h4>🔀 堆排序</h4><p>建堆 O(n) + 取极值 O(n log n)</p></div>
                 </div>
+            
             </section>
         </main>
         <aside class="algo-sidebar">
+            <aside class="algo-sidebar">
             <div class="sidebar-card"><h3>⚡ 代码</h3><div class="code-block"><pre><code>import heapq
 # Python 默认小根堆
 heap = []
@@ -86,10 +96,11 @@ max_val = -heapq.heappop(max_heap)  # 3</code></pre></div></div>
                 <li><a href="https://leetcode.cn/problems/merge-k-sorted-lists/" target="_blank">23. 合并K个链表</a></li>
             </ul></div>
         </aside>
+        </aside>
     </div>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>
+        <script>
+        
         let heapData = [50, 30, 40, 10, 20, 35];
         const logEl = document.getElementById('heapLog');
         function logMsg(m){logEl.innerHTML=`<span class="log-msg">👉 ${m}</span>`;setTimeout(()=>logEl.innerHTML='',2500);}
@@ -183,6 +194,8 @@ max_val = -heapq.heappop(max_heap)  # 3</code></pre></div></div>
         function resetHeap() { heapData = [50, 30, 40, 10, 20, 35]; render(); logMsg('已重置'); }
 
         render();
+    
     </script>
+
 </body>
 </html>

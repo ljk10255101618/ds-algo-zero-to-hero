@@ -3,28 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二分搜索 - DSATutor</title>
+    <title>二分搜索 - DSATutor · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    
 </head>
 <body>
-<div class="algo-header">
+    <div class="algo-header">
         <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回</a>
-    </nav>
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">二分搜索</span>
+        </nav>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#3498db">数据结构</span>
+            <span class="algo-level">Lv1</span>
+            <h1>二分搜索 - DSATutor</h1>
+            <p class="algo-desc"></p>
+        </div>
+    </div>
+
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
+                
                 <h2>什么是二分搜索？</h2>
                 <div class="intro-content">
                     <p><strong>二分搜索</strong> 是在 <span class="highlight">有序数组</span> 中查找目标值的高效算法。每次将搜索范围缩小一半。</p>
                     <p>📖 想象你在字典里查单词：翻到中间页，看目标在左边还是右边，<strong>每次排除一半</strong>，很快就能找到。</p>
                     <p>💡 <strong>重要前提</strong>：数组必须是<strong>有序的</strong>。如果无序，需要先排序。</p>
                 </div>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>🎮 交互演示</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -36,8 +49,10 @@
                 </div>
                 <div id="bs-viz" class="viz-container"><svg width="700" height="250"></svg></div>
                 <div id="bs-status" class="status-bar"><span id="bs-msg">输入目标值，点击搜索</span></div>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>💻 代码实现</h2>
                 <div class="code-tabs">
                     <div class="tab-header"><button class="tab-btn active" data-lang="iter">迭代</button><button class="tab-btn" data-lang="recur">递归</button></div>
@@ -63,23 +78,28 @@
     else:
         return binary_search_recursive(arr, target, left, mid - 1)</code></pre></div>
                 </div>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>📊 复杂度</h2>
                 <table class="complexity-table">
                     <tr><th>情况</th><th>时间复杂度</th><th>空间</th></tr>
                     <tr><td>平均/最坏</td><td class="good">O(log n)</td><td class="good">O(1)</td></tr>
                 </table>
+            
             </section>
         </main>
         <aside class="algo-sidebar">
+            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 前提条件</h3><ul><li>数组必须有序</li><li>支持随机访问</li><li>可比较大小</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关</h3><ul><li>← <a href="../hash-table/index.html">哈希表</a></li><li>→ 二分搜索树 (BST)</li></ul></div>
         </aside>
+        </aside>
     </div>
-</div>
-<script src="../../assets/js/ai-assistant.js"></script>
-<script>
+
+        <script>
+        
 const svg=d3.select("#bs-viz svg"),W=700,H=250;
 let arr=[13,18,24,29,35,42,50,57,63,71];let steps=[],stepIdx=-1;
 function bsSteps(a,t){const s=[];let l=0,r=a.length-1;
@@ -110,6 +130,8 @@ document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",func
     this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
 }));
 renderIdle();
-</script>
+
+    </script>
+
 </body>
 </html>

@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>归并排序 · DSATutor</title>
+    <title>Merge Sort · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
 </head>
 <body>
     <div class="algo-header">
-        <a href="../../index.html" class="back-link">← 返回</a>
+        <nav class="navbar">
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">Merge Sort</span>
+        </nav>
         <div class="algo-header-content">
-            <span class="algo-tag" style="background:#e74c3c">排序算法</span>
+            <span class="algo-tag" style="background:#9b59b6">排序算法</span>
             <span class="algo-level">Lv3</span>
             <h1>归并排序 Merge Sort</h1>
-            <p>分治思想的经典代表，稳定排序，O(n log n)</p>
+            <p class="algo-desc">分治思想，先拆分再合并，稳定高效</p>
         </div>
     </div>
 
@@ -23,14 +26,9 @@
         <main class="algo-main">
             <section class="algo-section">
                 <h2>📝 定义</h2>
-                <p>归并排序采用 <strong>分治法 (Divide and Conquer)</strong>：将数组分成两半分别排序，再合并两个有序子数组。</p>
+                <p>归并排序采用分治策略，将数组递归分成两半，分别排序后再合并成一个有序数组。</p>
                 <div class="highlight-box">
-                    <strong>算法步骤：</strong>
-                    <ol>
-                        <li><strong>分 (Divide)</strong>：将数组从中间切分为左右两半</li>
-                        <li><strong>治 (Conquer)</strong>：递归地对两半分别排序</li>
-                        <li><strong>合 (Merge)</strong>：将两个有序子数组合并为一个有序数组</li>
-                    </ol>
+                    <strong>核心思想：</strong>分而治之。将数组不断二分，直到每个子数组只有一个元素，然后逐步合并。
                 </div>
                 <div class="complexity-box">
                     <div><span class="big-o">最优</span> O(n log n)</div>
@@ -45,17 +43,27 @@
                 <div class="visualizer-container">
                     <div class="controls">
                         <button class="btn btn-primary" onclick="mergeSortStart()">🚀 开始排序</button>
-                        <button class="btn btn-secondary" onclick="stepMergeSort()">⏭️ 单步执行</button>
+                        <button class="btn btn-secondary" onclick="mergeStep()">⏭️ 单步</button>
                         <button class="btn btn-danger" onclick="resetMerge()">重置</button>
-                        <span style="color:#888;margin-left:10px;font-size:13px" id="mergeStats">比较: 0 | 合并: 0</span>
+                        <span style="color:#888;margin-left:10px;font-size:13px" id="mergeStats">阶段: -</span>
                     </div>
                     <div id="mergeViz" class="viz-canvas"></div>
                     <div id="mergeLog" class="viz-log"></div>
                 </div>
             </section>
+
+            <section class="algo-section">
+                <h2>📌 题目练习</h2>
+                <ul class="practice-list">
+                    <li><a href="https://leetcode.cn/problems/sort-an-array/" target="_blank">912. 排序数组</a></li>
+                    <li><a href="https://leetcode.cn/problems/count-of-smaller-numbers-after-self/" target="_blank">315. 计算右侧小于当前元素的个数</a></li>
+                </ul>
+            </section>
         </main>
         <aside class="algo-sidebar">
-            <div class="sidebar-card"><h3>⚡ 代码</h3><div class="code-block"><pre><code>def merge_sort(arr):
+            <div class="info-card">
+                <h3>⚡ 代码实现</h3>
+                <div class="code-block"><pre><code>def merge_sort(arr):
     if len(arr) <= 1:
         return arr
     mid = len(arr) // 2
@@ -64,70 +72,72 @@
     return merge(left, right)
 
 def merge(left, right):
-    res, i, j = [], 0, 0
+    result = []
+    i = j = 0
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
-            res.append(left[i]); i += 1
+            result.append(left[i])
+            i += 1
         else:
-            res.append(right[j]); j += 1
-    return res + left[i:] + right[j:]</code></pre></div></div>
-            <div class="sidebar-card"><h3>📌 题目</h3><ul>
-                <li><a href="https://leetcode.cn/problems/sort-an-array/" target="_blank">912. 排序数组</a></li>
-                <li><a href="https://leetcode.cn/problems/count-of-smaller-numbers-after-self/" target="_blank">315. 计算右侧小元素</a></li>
-            </ul></div>
+            result.append(right[j])
+            j += 1
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result</code></pre></div>
+            </div>
         </aside>
     </div>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-        let mergeArr = [38, 27, 43, 3, 9, 82, 10];
-        const origArr = [...mergeArr];
-        let mergeSteps = [];
-        let stepIdx = 0;
-        let comparisons = 0, merges = 0;
-        const logEl = document.getElementById('mergeLog');
-        function logMsg(m){logEl.innerHTML=`<span class="log-msg">👉 ${m}</span>`;}
+        let mData = [38, 27, 43, 3, 9, 82, 10];
+        const origM = [...mData];
+        let mSteps = [], mIdx = 0;
+        const mLogEl = document.getElementById('mergeLog');
+        function mLog(m){mLogEl.innerHTML=`<span class="log-msg">👉 ${m}</span>`;}
 
-        function generateMergeSteps(arr, left=0, right=arr.length-1, depth=0) {
-            if (left >= right) return;
-            const mid = Math.floor((left + right) / 2);
-            mergeSteps.push({type:'divide', left, mid, right, depth, arr:[...arr]});
-            generateMergeSteps(arr, left, mid, depth+1);
-            generateMergeSteps(arr, mid+1, right, depth+1);
-            // Simulate merge
-            const temp = [...arr];
-            let i = left, j = mid+1, k = left;
-            while (i <= mid && j <= right) {
-                comparisons++;
-                if (temp[i] <= temp[j]) arr[k++] = temp[i++];
-                else arr[k++] = temp[j++];
+        function mergeSortStart() {
+            mSteps = []; mIdx = 0;
+            mergeSort([...origM], 0, origM.length - 1);
+            mSteps.push({arr:[...origM], msg:'🎉 排序完成！'});
+            function play() {
+                if (mIdx < mSteps.length) {
+                    renderMStep(mIdx); mIdx++;
+                    setTimeout(play, 800);
+                }
             }
-            while (i <= mid) arr[k++] = temp[i++];
-            while (j <= right) arr[k++] = temp[j++];
-            merges++;
-            mergeSteps.push({type:'merge', left, mid, right, arr:[...arr]});
+            play();
         }
 
-        function renderStep(stepIdx) {
-            if (stepIdx >= mergeSteps.length) return;
-            const step = mergeSteps[stepIdx];
-            const w = 700, h = 200;
+        function mergeSort(arr, left, right) {
+            if (left >= right) return;
+            const mid = Math.floor((left + right) / 2);
+            mSteps.push({arr:[...arr], left, right, mid, phase:'拆分', msg:`拆分 [${left}..${right}]，中点=${mid}`});
+            mergeSort(arr, left, mid);
+            mergeSort(arr, mid + 1, right);
+            merge(arr, left, mid, right);
+        }
+
+        function merge(arr, left, mid, right) {
+            mSteps.push({arr:[...arr], left, right, mid, phase:'合并', msg:`合并 [${left}..${mid}] 和 [${mid+1}..${right}]`});
+        }
+
+        function renderMStep(idx) {
+            if (idx >= mSteps.length) return;
+            const s = mSteps[idx];
+            const w = 700, h = 220;
             const viz = document.getElementById('mergeViz');
             viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
             const svg = d3.select(viz.querySelector('svg'));
-            const data = step.arr;
-            const barW = Math.min(50, (w-100)/data.length);
 
-            data.forEach((v, i) => {
-                const isRange = i >= step.left && i <= step.right;
-                const isLeft = isRange && i <= step.mid;
-                const isRight = isRange && i > step.mid;
+            const barW = Math.min(50, (w-100)/s.arr.length);
+            s.arr.forEach((v, i) => {
                 let color = '#1e2a4a';
-                if (step.type === 'divide') {
-                    if (isLeft) color = '#4A90D9';
-                    else if (isRight) color = '#e67e22';
-                } else if (step.type === 'merge') {
-                    if (isRange) color = '#2ecc71';
+                if (s.left !== undefined && i >= s.left && i <= s.right) {
+                    color = '#3498db';
+                }
+                if (s.mid !== undefined && (i === s.mid || i === s.mid+1)) {
+                    color = '#e74c3c';
                 }
                 svg.append('rect').attr('x',30+i*(barW+3)).attr('y',h-30-v*4)
                  .attr('width',barW).attr('height',v*4).attr('rx',3)
@@ -136,72 +146,23 @@ def merge(left, right):
                  .attr('text-anchor','middle').attr('fill','#fff').attr('font-size','11').text(v);
             });
 
-            let label = '';
-            if (step.type === 'divide') label = `🔪 划分 [${step.left}..${step.right}]  →  左[${step.left}..${step.mid}]  右[${step.mid+1}..${step.right}]`;
-            else label = `🔄 合并 [${step.left}..${step.mid}] + [${step.mid+1}..${step.right}]`;
             svg.append('text').attr('x',20).attr('y',25).attr('fill','#FFD700')
-             .attr('font-size','13').text(label);
+             .attr('font-size','13').text(`[${s.phase}] ${s.msg}`);
 
-            document.getElementById('mergeStats').textContent = `比较: ${comparisons} | 合并: ${merges}`;
-            logMsg(`步骤 ${stepIdx+1}/${mergeSteps.length}: ${label}`);
+            document.getElementById('mergeStats').textContent = `阶段: ${idx+1}/${mSteps.length}`;
+            mLog(`步骤 ${idx+1}: ${s.msg}`);
         }
 
-        function mergeSortStart() {
-            comparisons = 0; merges = 0;
-            mergeArr = [...origArr];
-            mergeSteps = [];
-            generateMergeSteps([...mergeArr]);
-            stepIdx = 0;
-            // Auto play
-            function play() {
-                if (stepIdx < mergeSteps.length) {
-                    renderStep(stepIdx);
-                    stepIdx++;
-                    setTimeout(play, 800);
-                } else {
-                    logMsg('✅ 归并排序完成！O(n log n)');
-                }
-            }
-            play();
-        }
-
-        function stepMergeSort() {
-            if (mergeSteps.length === 0) {
-                comparisons = 0; merges = 0;
-                mergeArr = [...origArr];
-                mergeSteps = [];
-                generateMergeSteps([...mergeArr]);
-                stepIdx = 0;
-            }
-            if (stepIdx < mergeSteps.length) {
-                renderStep(stepIdx);
-                stepIdx++;
-            } else {
-                logMsg('✅ 排序已完成');
-            }
+        function mergeStep() {
+            if (mSteps.length === 0) { mergeSortStart(); mIdx = 0; }
+            if (mIdx < mSteps.length) { renderMStep(mIdx); mIdx++; }
         }
 
         function resetMerge() {
-            mergeArr = [...origArr];
-            mergeSteps = [];
-            stepIdx = 0;
-            comparisons = 0; merges = 0;
-            document.getElementById('mergeStats').textContent = '比较: 0 | 合并: 0';
-            // Initial render
-            const w = 700, h = 200;
-            const viz = document.getElementById('mergeViz');
-            viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
-            const svg = d3.select(viz.querySelector('svg'));
-            mergeArr.forEach((v, i) => {
-                const barW = Math.min(50, (w-100)/mergeArr.length);
-                svg.append('rect').attr('x',30+i*(barW+3)).attr('y',h-30-v*4)
-                 .attr('width',barW).attr('height',v*4).attr('rx',3)
-                 .attr('fill','#1e2a4a').attr('stroke','#4A90D9').attr('stroke-width',1);
-                svg.append('text').attr('x',30+i*(barW+3)+barW/2).attr('y',h-35)
-                 .attr('text-anchor','middle').attr('fill','#fff').attr('font-size','11').text(v);
-            });
-            logEl.innerHTML = '';
-            logMsg('已重置');
+            mData = [...origM]; mSteps = []; mIdx = 0;
+            document.getElementById('mergeStats').textContent = '阶段: -';
+            renderMStep(0);
+            mLog('已重置');
         }
         resetMerge();
     </script>

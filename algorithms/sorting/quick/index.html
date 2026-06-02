@@ -3,33 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>快速排序 (Quick Sort) - DSATutor</title>
-    <link rel="stylesheet" href="../../../assets/css/style.css">
-    <link rel="stylesheet" href="../../../assets/css/algorithm.css">
-    <link rel="stylesheet" href="../../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>快速排序 (Quick Sort) - DSATutor · DSATutor</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/algorithm.css">
+    <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+    
 </head>
 <body>
     <div class="algo-header">
-            <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回</a>
-    </nav>
+        <nav class="navbar">
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">快速排序</span>
+        </nav>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#3498db">数据结构</span>
+            <span class="algo-level">Lv1</span>
+            <h1>快速排序 (Quick Sort) - DSATutor</h1>
+            <p class="algo-desc"></p>
+        </div>
+    </div>
 
-        <div class="algo-layout">
-            <main class="algo-main">
-                <section class="algo-section">
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
+                
                     <h2>什么是快速排序？</h2>
                     <div class="intro-content">
                         <p><span class="highlight">快速排序</span> 是应用最广泛的排序算法之一，它的核心思想是 <strong>分治法</strong> (Divide and Conquer)。</p>
                         <p>🧩 想象你有一副 <strong>乱序的扑克牌</strong>：随便抽一张作为"基准"（pivot），比它小的放左边，比它大的放右边，然后对左右两堆重复这个过程。最终整副牌就有序了！</p>
                         <p>快速排序的 <span class="highlight">平均时间复杂度 O(n log n)</span>，且是 <strong>原地排序</strong>（空间复杂度 O(log n)），这使得它在实践中比归并排序更快。</p>
                     </div>
-                </section>
-
-                <!-- 交互可视化 -->
-                <section class="algo-section">
+                
+            </section>
+            <section class="algo-section">
+                
                     <h2>🎮 交互演示 · 快速排序过程</h2>
                     <div class="controls">
                         <div class="control-group">
@@ -61,10 +71,10 @@
                         <p>比较次数: <span id="compare-count">0</span> · 交换次数: <span id="swap-count">0</span></p>
                         <p>时间复杂度: 平均 <span class="highlight">O(n log n)</span> · 最差 O(n²) · 空间 O(log n)</p>
                     </div>
-                </section>
-
-                <!-- 深度理解 -->
-                <section class="algo-section">
+                
+            </section>
+            <section class="algo-section">
+                
                     <h2>📚 深度理解</h2>
 
                     <div class="info-card" style="margin-bottom:16px;">
@@ -140,29 +150,10 @@ def partition(arr, low, high):
                             </table>
                         </div>
                     </div>
-                </section>
-
-                <section class="takeaways-section">
-                    <h3>🎯 关键要点</h3>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">✅</span>
-                        <span class="takeaway-text"><strong>分治思想</strong> — 将大问题分解为独立的小问题分别解决</span>
-                    </div>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">✅</span>
-                        <span class="takeaway-text"><strong>原地排序</strong> — 不需要额外数组，空间效率高</span>
-                    </div>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">⚠️</span>
-                        <span class="takeaway-text"><strong>不稳定</strong> — 相等的元素可能会交换位置</span>
-                    </div>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">💡</span>
-                        <span class="takeaway-text"><strong>Pivot 选择</strong> 是关键 — 好的 pivot 选择能避免最差情况</span>
-                    </div>
-                </section>
-            </main>
-
+                
+            </section>
+        </main>
+        <aside class="algo-sidebar">
             <aside class="algo-sidebar">
                 <div class="algo-info-card">
                     <h3>⏱️ 复杂度速查</h3>
@@ -202,33 +193,11 @@ def partition(arr, low, high):
                     </ul>
                 </div>
             </aside>
-        </div>
+        </aside>
     </div>
 
-    <button class="ai-toggle-btn" onclick="toggleAIPanel()" title="AI 学习助手" style="position:fixed;bottom:28px;right:28px;z-index:9999;">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-    </button>
-    <div class="ai-chat-panel" id="aiChatPanel" style="position:fixed;bottom:104px;right:28px;z-index:9998;">
-        <div class="ai-chat-header">
-            <h3>AI 学习助手</h3>
-            <div class="ai-chat-header-actions">
-                <button class="ai-header-btn" onclick="clearChat()" title="清除"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
-            </div>
-        </div>
-        <div class="ai-chat-messages" id="aiChatMessages">
-            <div class="ai-message ai-bot-message">
-                <div class="ai-message-avatar">🤖</div>
-                <div class="ai-message-content"><p>📊 学习快速排序中！问我关于分区、复杂度的问题吧！</p></div>
-            </div>
-        </div>
-        <div class="ai-chat-input-area">
-            <textarea class="ai-chat-input" id="aiChatInput" placeholder="提问..." rows="1" onkeydown="handleInputKeydown(event)"></textarea>
-            <button class="ai-send-btn" onclick="sendMessage()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
-        </div>
-    </div>
-
-    <script src="../../../assets/js/ai-assistant.js"></script>
-    <script>
+        <script>
+        
     // ========== 快速排序可视化 ==========
     let sortData = [];
     let sortSteps = [];
@@ -523,6 +492,8 @@ def partition(arr, low, high):
             initData();
         });
     });
+    
     </script>
+
 </body>
 </html>

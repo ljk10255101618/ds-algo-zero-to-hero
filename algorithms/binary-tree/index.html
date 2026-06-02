@@ -3,447 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二叉树 (Binary Tree) - DSATutor</title>
+    <title>Binary Tree · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
     <div class="algo-header">
-            <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回</a>
-    </nav>
+        <nav class="navbar">
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">Binary Tree</span>
+        </nav>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#2ecc71">树结构</span>
+            <span class="algo-level">Lv2</span>
+            <h1>二叉树 Binary Tree</h1>
+            <p class="algo-desc">每个节点最多有两个子节点的数据结构</p>
+        </div>
+    </div>
 
-        <div class="algo-layout">
-            <main class="algo-main">
-                <section class="algo-section">
-                    <h2>什么是二叉树？</h2>
-                    <div class="intro-content">
-                        <p><span class="highlight">二叉树</span> 是一种树形数据结构，其中每个节点最多有两个子节点：<strong>左子节点</strong> 和 <strong>右子节点</strong>。</p>
-                        <p>🌳 想象一个 <strong>族谱</strong>：每个人最多有两个孩子。最上面的祖先叫 <strong>根节点</strong>，没有孩子的叫 <strong>叶子节点</strong>。从根到任意节点的层数叫 <strong>深度</strong>。</p>
-                        <p>二叉树的 <span class="highlight">递归结构</span> 是其核心特性：每个子树本身也是一棵二叉树。这使得许多树的操作（遍历、搜索）可以优雅地用递归实现。</p>
-                    </div>
-                </section>
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
+                <h2>📝 定义</h2>
+                <p>二叉树是一种树形数据结构，其中每个节点最多有两个子节点：<strong>左子节点</strong> 和 <strong>右子节点</strong>。</p>
+                <div class="highlight-box">
+                    <strong>递归特性：</strong>每个子树本身也是一棵二叉树。这使得许多树的操作可以用递归优雅实现。
+                </div>
+                <div class="complexity-box">
+                    <div><span class="big-o">查找</span> O(log n)</div>
+                    <div><span class="big-o">插入</span> O(log n)</div>
+                    <div><span class="big-o">删除</span> O(log n)</div>
+                    <div><span class="big-o">空间</span> O(n)</div>
+                </div>
+            </section>
 
-                <!-- 交互可视化 -->
-                <section class="algo-section">
-                    <h2>🎮 交互演示 · 二叉树遍历</h2>
+            <section class="algo-section">
+                <h2>🎮 交互演示</h2>
+                <div class="visualizer-container">
                     <div class="controls">
-                        <div class="control-group">
-                            <button id="traverse-preorder" class="btn btn-primary">前序遍历</button>
-                            <button id="traverse-inorder" class="btn btn-primary">中序遍历</button>
-                            <button id="traverse-postorder" class="btn btn-primary">后序遍历</button>
-                            <button id="traverse-levelorder" class="btn btn-secondary">层序遍历</button>
-                            <button id="reset-tree-btn" class="btn btn-secondary">重置</button>
-                        </div>
+                        <button id="traverse-preorder" class="btn btn-primary" onclick="treeTraverse('preorder')">前序</button>
+                        <button id="traverse-inorder" class="btn btn-primary" onclick="treeTraverse('inorder')">中序</button>
+                        <button id="traverse-postorder" class="btn btn-primary" onclick="treeTraverse('postorder')">后序</button>
+                        <button id="traverse-levelorder" class="btn btn-secondary" onclick="treeTraverse('levelorder')">层序</button>
+                        <button class="btn btn-danger" onclick="resetTree()">重置</button>
                     </div>
-
                     <div class="try-it-box">
-                        <strong>💡 试一试：</strong>
-                        <ul>
-                            <li>点击不同的遍历按钮，观察节点访问顺序</li>
-                            <li>🟢 绿色高亮表示当前访问的节点</li>
-                            <li>🟡 黄色表示已经访问过的节点</li>
-                            <li>看看遍历结果是否符合预期</li>
-                        </ul>
+                        <strong>💡 提示：</strong>点击遍历按钮，观察节点访问顺序
                     </div>
+                    <div id="tree-viz" class="viz-canvas" style="min-height:300px;"></div>
+                    <div id="treeLog" class="viz-log"></div>
+                </div>
+            </section>
 
-                    <div id="tree-viz" class="viz-container" style="min-height:350px;"></div>
+            <section class="algo-section">
+                <h2>📊 遍历对比</h2>
+                <table class="complexity-table">
+                    <tr><th>遍历方式</th><th>顺序</th><th>用途</th></tr>
+                    <tr><td><strong>前序</strong> (Pre-order)</td><td>根 → 左 → 右</td><td>复制树、序列化</td></tr>
+                    <tr><td><strong>中序</strong> (In-order)</td><td>左 → 根 → 右</td><td>BST 有序输出</td></tr>
+                    <tr><td><strong>后序</strong> (Post-order)</td><td>左 → 右 → 根</td><td>删除树、表达式求值</td></tr>
+                    <tr><td><strong>层序</strong> (Level-order)</td><td>逐层从左到右</td><td>BFS、最短路径</td></tr>
+                </table>
+            </section>
 
-                    <div class="status-bar">
-                        <h4>📊 遍历结果</h4>
-                        <p>遍历顺序: <span id="traverse-result" style="font-family:monospace;font-size:1.1rem;">—</span></p>
-                        <p>节点总数: <span id="node-count">11</span> · 树高: <span id="tree-height">4</span></p>
+            <section class="algo-section">
+                <h2>📌 题目练习</h2>
+                <ul class="practice-list">
+                    <li><a href="https://leetcode.cn/problems/binary-tree-inorder-traversal/" target="_blank">94. 二叉树中序遍历</a></li>
+                    <li><a href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/" target="_blank">104. 二叉树的最大深度</a></li>
+                </ul>
+            </section>
+        </main>
+        <aside class="algo-sidebar">
+            <div class="info-card">
+                <h3>⚡ 代码实现</h3>
+                <div class="code-tabs">
+                    <div class="tab-header">
+                        <button class="tab-btn active" onclick="switchTab(this, 'tree-py')">Python</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'tree-js')">JavaScript</button>
                     </div>
-                </section>
-
-                <!-- 深度理解 -->
-                <section class="algo-section">
-                    <h2>📚 深度理解</h2>
-
-                    <div class="info-card" style="margin-bottom:16px;">
-                        <h3>🌲 遍历方式对比</h3>
-                        <div class="info-content">
-                            <table class="complexity-table">
-                                <tr><th>遍历方式</th><th>顺序</th><th>用途</th></tr>
-                                <tr><td><strong>前序</strong> (Pre-order)</td><td>根 → 左 → 右</td><td>复制树、序列化</td></tr>
-                                <tr><td><strong>中序</strong> (In-order)</td><td>左 → 根 → 右</td><td>BST 有序输出</td></tr>
-                                <tr><td><strong>后序</strong> (Post-order)</td><td>左 → 右 → 根</td><td>删除树、表达式求值</td></tr>
-                                <tr><td><strong>层序</strong> (Level-order)</td><td>逐层从左到右</td><td>BFS、最短路径</td></tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="info-card" style="margin-bottom:16px;">
-                        <h3>🎯 特殊二叉树</h3>
-                        <div class="info-content">
-                            <ul>
-                                <li><strong>满二叉树</strong>：每个节点都有 0 或 2 个子节点</li>
-                                <li><strong>完全二叉树</strong>：除最后一层外全满，叶子靠左排列（堆的底层结构）</li>
-                                <li><strong>二叉搜索树 (BST)</strong>：左 < 根 < 右，中序遍历为递增序列</li>
-                                <li><strong>平衡二叉树 (AVL)</strong>：左右子树高度差 ≤ 1</li>
-                                <li><strong>完美二叉树</strong>：所有叶子在同一层，节点数 = 2^h - 1</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="info-card" style="margin-bottom:16px;">
-                        <h3>💻 代码实现</h3>
-                        <div class="code-block">
-                            <div class="code-header"><span>Python</span><span>二叉树遍历</span></div>
-                            <div class="code-content">
-<pre style="margin:0;">class TreeNode:
-    def __init__(self, val):
+                    <div class="tab-content active" id="tree-py"><pre><code>class TreeNode:
+    def __init__(self, val=0):
         self.val = val
         self.left = None
         self.right = None
 
-# 前序遍历：根 → 左 → 右
-def preorder(root):
-    if not root: return []
-    return [root.val] + preorder(root.left) + preorder(root.right)
-
-# 中序遍历：左 → 根 → 右
 def inorder(root):
     if not root: return []
     return inorder(root.left) + [root.val] + inorder(root.right)
 
-# 后序遍历：左 → 右 → 根
+def preorder(root):
+    if not root: return []
+    return [root.val] + preorder(root.left) + preorder(root.right)
+
 def postorder(root):
     if not root: return []
-    return postorder(root.left) + postorder(root.right) + [root.val]
+    return postorder(root.left) + postorder(root.right) + [root.val]</code></pre></div>
+                    <div class="tab-content" id="tree-js"><pre><code>class TreeNode {
+    constructor(val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+    }
+}
 
-# 层序遍历 (BFS)
-def levelorder(root):
-    if not root: return []
-    result, queue = [], [root]
-    while queue:
-        node = queue.pop(0)
-        result.append(node.val)
-        if node.left: queue.append(node.left)
-        if node.right: queue.append(node.right)
-    return result</pre>
-                            </div>
-                        </div>
-                    </div>
+function inorder(root) {
+    if (!root) return [];
+    return [...inorder(root.left), root.val, ...inorder(root.right)];
+}
 
-                    <!-- 发展脉络 -->
-                    <div class="info-card" style="margin-bottom:16px;">
-                        <h3>🔗 发展脉络</h3>
-                        <div class="evolution-timeline">
-                            <div class="evo-node">
-                                <div class="evo-circle" style="background:#10b981;">1962</div>
-                                <div class="evo-name">二叉树</div>
-                            </div>
-                            <div class="evo-arrow">→</div>
-                            <a class="evo-node" href="../bst/index.html">
-                                <div class="evo-circle" style="background:#10b981;">1960</div>
-                                <div class="evo-name">BST</div>
-                            </a>
-                            <div class="evo-reason">有序性</div>
-                            <div class="evo-arrow">→</div>
-                            <a class="evo-node" href="../avl/index.html">
-                                <div class="evo-circle" style="background:#10b981;">1962</div>
-                                <div class="evo-name">AVL树</div>
-                            </a>
-                            <div class="evo-reason">自动平衡</div>
-                            <div class="evo-arrow">→</div>
-                            <a class="evo-node" href="../red-black/index.html">
-                                <div class="evo-circle" style="background:#10b981;">1972</div>
-                                <div class="evo-name">红黑树</div>
-                            </a>
-                            <div class="evo-reason">减少旋转</div>
-                            <div class="evo-arrow">→</div>
-                            <a class="evo-node" href="../heap/index.html">
-                                <div class="evo-circle" style="background:#10b981;">1964</div>
-                                <div class="evo-name">堆</div>
-                            </a>
-                            <div class="evo-reason">优先级</div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="takeaways-section">
-                    <h3>🎯 关键要点</h3>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">✅</span>
-                        <span class="takeaway-text"><strong>递归是树的灵魂</strong> — 树的定义本身就是递归的，遍历和操作天然适合递归</span>
-                    </div>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">✅</span>
-                        <span class="takeaway-text"><strong>四种遍历各有用途</strong> — 中序→有序，前序→复制，后序→删除，层序→BFS</span>
-                    </div>
-                    <div class="takeaway-item">
-                        <span class="takeaway-icon">✅</span>
-                        <span class="takeaway-text"><strong>时间复杂度</strong> — 所有遍历均为 O(n)，树的深度影响递归栈空间 O(h)</span>
-                    </div>
-                </section>
-            </main>
-
-            <aside class="algo-sidebar">
-                <div class="algo-info-card">
-                    <h3>⏱️ 复杂度速查</h3>
-                    <table class="complexity-table">
-                        <tr><th>操作</th><th>复杂度</th></tr>
-                        <tr><td>遍历</td><td><strong style="color:var(--success);">O(n)</strong></td></tr>
-                        <tr><td>树高</td><td><strong style="color:var(--warning);">O(h)</strong></td></tr>
-                        <tr><td>递归栈</td><td><strong style="color:var(--warning);">O(h)</strong></td></tr>
-                    </table>
-                    <p style="margin-top:8px;font-size:0.75rem;color:var(--text-muted);">h 为树高, 最好 log n, 最差 n</p>
+function preorder(root) {
+    if (!root) return [];
+    return [root.val, ...preorder(root.left), ...preorder(root.right)];
+}</code></pre></div>
                 </div>
-
-                <div class="algo-info-card">
-                    <h3>📝 相关题目</h3>
-                    <ul class="problem-list">
-                        <li>
-                            <span class="problem-name">二叉树中序遍历</span>
-                            <span class="problem-difficulty diff-easy">简单</span>
-                        </li>
-                        <li>
-                            <span class="problem-name">二叉树最大深度</span>
-                            <span class="problem-difficulty diff-easy">简单</span>
-                        </li>
-                        <li>
-                            <span class="problem-name">验证二叉搜索树</span>
-                            <span class="problem-difficulty diff-medium">中等</span>
-                        </li>
-                        <li>
-                            <span class="problem-name">二叉树的序列化</span>
-                            <span class="problem-difficulty diff-hard">困难</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="algo-info-card">
-                    <h3>🔗 关联知识点</h3>
-                    <ul class="problem-list">
-                        <li><a href="../bst/index.html" class="problem-name" style="color:var(--primary);">→ BST 二叉搜索树</a></li>
-                        <li><a href="../heap/index.html" class="problem-name" style="color:var(--primary);">→ 堆 (Heap)</a></li>
-                        <li><a href="../avl/index.html" class="problem-name" style="color:var(--primary);">→ AVL树</a></li>
-                        <li><a href="../../algorithms/sorting/merge/index.html" class="problem-name" style="color:var(--primary);">→ 归并排序</a></li>
-                    </ul>
-                </div>
-            </aside>
-        </div>
+            </div>
+        </aside>
     </div>
 
-    <!-- AI 助手 -->
-    <button class="ai-toggle-btn" onclick="toggleAIPanel()" title="AI 学习助手" style="position:fixed;bottom:28px;right:28px;z-index:9999;">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-    </button>
-    <div class="ai-chat-panel" id="aiChatPanel" style="position:fixed;bottom:104px;right:28px;z-index:9998;">
-        <div class="ai-chat-header">
-            <h3>AI 学习助手</h3>
-            <div class="ai-chat-header-actions">
-                <button class="ai-header-btn" onclick="clearChat()" title="清除"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
-            </div>
-        </div>
-        <div class="ai-chat-messages" id="aiChatMessages">
-            <div class="ai-message ai-bot-message">
-                <div class="ai-message-avatar">🤖</div>
-                <div class="ai-message-content"><p>🌳 正在学习二叉树！问我关于遍历、性质的问题吧！</p></div>
-            </div>
-        </div>
-        <div class="ai-chat-input-area">
-            <textarea class="ai-chat-input" id="aiChatInput" placeholder="提问..." rows="1" onkeydown="handleInputKeydown(event)"></textarea>
-            <button class="ai-send-btn" onclick="sendMessage()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
-        </div>
-    </div>
-
-    <script src="../../assets/js/ai-assistant.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-    // ========== 二叉树可视化 ==========
-    let treeData = null;
-    let traversalTimer = null;
+        function switchTab(btn, tabId) {
+            const parent = btn.closest('.code-tabs');
+            parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            parent.querySelector('#' + tabId).classList.add('active');
+        }
 
-    // 构建树数据
-    function buildTree() {
-        return {
-            val: 8,
-            left: {
-                val: 3,
-                left: { val: 1, left: null, right: null },
-                right: {
-                    val: 6,
-                    left: { val: 4, left: null, right: null },
-                    right: { val: 7, left: null, right: null }
-                }
-            },
-            right: {
-                val: 15,
-                left: {
-                    val: 10,
-                    left: null,
-                    right: { val: 12, left: null, right: null }
-                },
-                right: {
-                    val: 20,
-                    left: { val: 18, left: null, right: null },
-                    right: { val: 25, left: null, right: null }
-                }
+        class Node {
+            constructor(val, left=null, right=null) {
+                this.val = val; this.left = left; this.right = right;
             }
-        };
-    }
-
-    // 获取树信息
-    function countNodes(root) {
-        if (!root) return 0;
-        return 1 + countNodes(root.left) + countNodes(root.right);
-    }
-
-    function treeHeight(root) {
-        if (!root) return 0;
-        return 1 + Math.max(treeHeight(root.left), treeHeight(root.right));
-    }
-
-    // 遍历算法
-    function traverse(root, type) {
-        if (!root) return [];
-        if (type === 'preorder') return [root.val, ...traverse(root.left, 'preorder'), ...traverse(root.right, 'preorder')];
-        if (type === 'inorder') return [...traverse(root.left, 'inorder'), root.val, ...traverse(root.right, 'inorder')];
-        if (type === 'postorder') return [...traverse(root.left, 'postorder'), ...traverse(root.right, 'postorder'), root.val];
-        return [];
-    }
-
-    function levelOrder(root) {
-        if (!root) return [];
-        const result = [], queue = [root];
-        while (queue.length) {
-            const node = queue.shift();
-            result.push(node.val);
-            if (node.left) queue.push(node.left);
-            if (node.right) queue.push(node.right);
         }
-        return result;
-    }
+        const root = new Node(1,
+            new Node(2, new Node(4), new Node(5)),
+            new Node(3, new Node(6), new Node(7))
+        );
+        let treeSteps = [], treeIdx = 0;
+        const treeLogEl = document.getElementById('treeLog');
+        function treeLog(m){treeLogEl.innerHTML=`<span class="log-msg">👉 ${m}</span>`;}
 
-    // 绘制树
-    function drawTree(root, highlightVals = [], visitedVals = []) {
-        const container = document.getElementById('tree-viz');
-        container.innerHTML = '';
-
-        const width = container.clientWidth || 800;
-        const height = 350;
-
-        const svg = d3.select(container)
-            .append('svg')
-            .attr('width', '100%')
-            .attr('height', height)
-            .attr('viewBox', [0, 0, width, height]);
-
-        const g = svg.append('g').attr('transform', `translate(0,40)`);
-
-        // 计算布局
-        const treeLayout = d3.tree().size([width - 80, height - 80]);
-        const rootNode = d3.hierarchy(root, d => d ? [d.left, d.right].filter(Boolean) : []);
-        const treeData = treeLayout(rootNode);
-
-        // 连线
-        g.selectAll('.link')
-            .data(treeData.links())
-            .join('path')
-            .attr('class', 'link')
-            .attr('d', d3.linkHorizontal()
-                .x(d => d.x + 40)
-                .y(d => d.y + 40))
-            .style('fill', 'none')
-            .style('stroke', '#cbd5e1')
-            .style('stroke-width', 2);
-
-        // 节点组
-        const nodes = g.selectAll('.node-group')
-            .data(treeData.descendants())
-            .join('g')
-            .attr('class', 'node-group')
-            .attr('transform', d => `translate(${d.x + 40}, ${d.y + 40})`);
-
-        // 圆形
-        nodes.append('circle')
-            .attr('r', 22)
-            .style('fill', d => {
-                if (highlightVals.includes(d.data.val)) return '#22c55e';
-                if (visitedVals.includes(d.data.val)) return '#facc15';
-                return '#6366f1';
-            })
-            .style('stroke', '#fff')
-            .style('stroke-width', 3)
-            .style('filter', d => highlightVals.includes(d.data.val) ? 'drop-shadow(0 0 8px rgba(34,197,94,0.6))' : 'none')
-            .transition().duration(300);
-
-        // 数值
-        nodes.append('text')
-            .attr('dy', '0.35em')
-            .attr('text-anchor', 'middle')
-            .style('font-size', '14px')
-            .style('font-weight', '700')
-            .style('fill', '#fff')
-            .style('pointer-events', 'none')
-            .text(d => d.data.val);
-    }
-
-    function animateTraversal(type) {
-        if (traversalTimer) {
-            clearInterval(traversalTimer);
-            traversalTimer = null;
+        function getTreeLayout(node, x, y, spread=120) {
+            if (!node) return [];
+            let result = [{x, y, val: node.val, id: node.val}];
+            if (node.left) result = result.concat(getTreeLayout(node.left, x - spread/2, y + 70, spread/2));
+            if (node.right) result = result.concat(getTreeLayout(node.right, x + spread/2, y + 70, spread/2));
+            return result;
         }
 
-        const root = treeData;
-        let order;
-        if (type === 'levelorder') {
-            order = levelOrder(root);
-        } else {
-            order = traverse(root, type);
+        function renderTree(highlight=[]) {
+            const w = 700, h = 300;
+            const viz = document.getElementById('tree-viz');
+            viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
+            const svg = d3.select(viz.querySelector('svg'));
+            const nodes = getTreeLayout(root, w/2, 40);
+
+            // 绘制边
+            const drawEdges = (node, x, y, spread) => {
+                if (!node) return;
+                if (node.left) {
+                    svg.append('line').attr('x1',x).attr('y1',y).attr('x2',x-spread/2).attr('y2',y+70)
+                     .attr('stroke','#555').attr('stroke-width','2');
+                    drawEdges(node.left, x-spread/2, y+70, spread/2);
+                }
+                if (node.right) {
+                    svg.append('line').attr('x1',x).attr('y1',y).attr('x2',x+spread/2).attr('y2',y+70)
+                     .attr('stroke','#555').attr('stroke-width','2');
+                    drawEdges(node.right, x+spread/2, y+70, spread/2);
+                }
+            };
+            drawEdges(root, w/2, 40, 120);
+
+            // 绘制节点
+            nodes.forEach(n => {
+                let color = '#2c3e50';
+                if (highlight.includes(n.val)) color = '#e74c3c';
+                svg.append('circle').attr('cx',n.x).attr('cy',n.y).attr('r',22)
+                 .attr('fill',color).attr('stroke','#fff').attr('stroke-width','2');
+                svg.append('text').attr('x',n.x).attr('y',n.y+5).attr('text-anchor','middle')
+                 .attr('fill','#fff').attr('font-size','14').attr('font-weight','bold').text(n.val);
+            });
         }
 
-        document.getElementById('traverse-result').textContent = order.join(' → ');
-
-        let idx = 0;
-        const visited = [];
-
-        function step() {
-            if (idx >= order.length) {
-                clearInterval(traversalTimer);
-                traversalTimer = null;
-                // 最终全亮
-                drawTree(treeData, [], order);
-                return;
+        function treeTraverse(type) {
+            const order = [];
+            const dfs = (node, type) => {
+                if (!node) return;
+                if (type === 'preorder') order.push(node.val);
+                dfs(node.left, type);
+                if (type === 'inorder') order.push(node.val);
+                dfs(node.right, type);
+                if (type === 'postorder') order.push(node.val);
+            };
+            if (type === 'levelorder') {
+                const q = [root], result = [];
+                while (q.length) { const n = q.shift(); result.push(n.val); if (n.left) q.push(n.left); if (n.right) q.push(n.right); }
+                treeLog(`层序遍历: ${result.join(' → ')}`);
+                renderTree(result);
+            } else {
+                dfs(root, type);
+                const names = {preorder:'前序', inorder:'中序', postorder:'后序'};
+                treeLog(`${names[type]}遍历: ${order.join(' → ')}`);
+                renderTree(order);
             }
-            const currentVal = order[idx];
-            const currentHighlight = [currentVal];
-            drawTree(treeData, currentHighlight, [...visited]);
-            idx++;
-            visited.push(currentVal);
         }
 
-        drawTree(treeData, [], []);
-        setTimeout(() => {
-            step();
-            traversalTimer = setInterval(step, 600);
-        }, 300);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        treeData = buildTree();
-        drawTree(treeData);
-
-        document.getElementById('traverse-preorder').addEventListener('click', () => animateTraversal('preorder'));
-        document.getElementById('traverse-inorder').addEventListener('click', () => animateTraversal('inorder'));
-        document.getElementById('traverse-postorder').addEventListener('click', () => animateTraversal('postorder'));
-        document.getElementById('traverse-levelorder').addEventListener('click', () => animateTraversal('levelorder'));
-
-        document.getElementById('reset-tree-btn').addEventListener('click', () => {
-            if (traversalTimer) { clearInterval(traversalTimer); traversalTimer = null; }
-            treeData = buildTree();
-            drawTree(treeData);
-            document.getElementById('traverse-result').textContent = '—';
-        });
-
-        document.getElementById('node-count').textContent = countNodes(treeData);
-        document.getElementById('tree-height').textContent = treeHeight(treeData);
-    });
+        function resetTree() { renderTree([]); treeLog('点击按钮开始遍历'); }
+        resetTree();
     </script>
 </body>
 </html>

@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>并查集 (Union-Find) - DSATutor</title>
+    <title>并查集 (Union-Find) - DSATutor · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    
 </head>
 <body>
-<div class="algo-header">
+    <div class="algo-header">
         <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回</a>
-    </nav>
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">并查集</span>
+        </nav>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#3498db">数据结构</span>
+            <span class="algo-level">Lv1</span>
+            <h1>并查集 (Union-Find) - DSATutor</h1>
+            <p class="algo-desc"></p>
+        </div>
+    </div>
+
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
+                
                 <h2>什么是并查集？</h2>
                 <div class="intro-content">
                     <p><strong>并查集 (Disjoint Set Union, DSU)</strong> 是一种 <span class="highlight">处理不相交集合的合并与查询</span> 的数据结构。</p>
@@ -27,8 +38,10 @@
                     </ul>
                     <p>💡 <strong>现实应用</strong>：社交网络中的"共同好友"判断、Kruskal 最小生成树、图像分割、迷宫生成。</p>
                 </div>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>🎮 交互演示</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -39,8 +52,10 @@
                 </div>
                 <div id="uf-viz" class="viz-container"><svg width="700" height="280"></svg></div>
                 <div id="uf-status" class="status-bar"><span id="uf-msg">点击操作查看并查集变化</span></div>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>💻 代码实现</h2>
                 <pre class="code-block"><code>class UnionFind:
     def __init__(self, n):
@@ -70,8 +85,10 @@
 
     def connected(self, x, y):
         return self.find(x) == self.find(y)</code></pre>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>📊 复杂度</h2>
                 <table class="complexity-table">
                     <tr><th>操作</th><th>时间复杂度</th><th>说明</th></tr>
@@ -79,16 +96,19 @@
                     <tr><td>Union</td><td class="good">O(α(n))</td><td>合并 + 路径压缩</td></tr>
                     <tr><td>空间</td><td class="good">O(n)</td><td>存储 parent 和 rank 数组</td></tr>
                 </table>
+            
             </section>
         </main>
         <aside class="algo-sidebar">
+            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 两个优化</h3><ul><li><strong>路径压缩</strong>：Find 时扁平化</li><li><strong>按秩合并</strong>：矮树接高树</li><li>两者结合 = 近乎 O(1)</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关</h3><ul><li>← <a href="../../graph/index.html">图论</a></li><li>→ <a href="../../mst/index.html">最小生成树</a></li></ul></div>
         </aside>
+        </aside>
     </div>
-</div>
-<script src="../../assets/js/ai-assistant.js"></script>
-<script>
+
+        <script>
+        
 const svg=d3.select("#uf-viz svg"),W=700,H=280;const N=8;
 class UF{constructor(n){this.p=[...Array(n).keys()];this.r=new Array(n).fill(0);this.n=n;}
 find(x){if(this.p[x]!==x)this.p[x]=this.find(this.p[x]);return this.p[x];}
@@ -119,6 +139,8 @@ document.getElementById("find-btn").addEventListener("click",()=>{const x=Math.f
     const root=uf.find(x);msg.textContent=`🔍 Find(${x}) = ${root} (集合代表元)`;render();});
 document.getElementById("reset-btn").addEventListener("click",()=>{uf=new UF(N);msg.textContent='已重置';render();});
 render();
-</script>
+
+    </script>
+
 </body>
 </html>

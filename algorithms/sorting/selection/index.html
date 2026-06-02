@@ -3,28 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>选择排序 - DSATutor</title>
+    <title>选择排序 - DSATutor · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    
 </head>
 <body>
-<div class="algo-header">
+    <div class="algo-header">
         <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回</a>
-    </nav>
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">选择排序</span>
+        </nav>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#3498db">数据结构</span>
+            <span class="algo-level">Lv1</span>
+            <h1>选择排序 - DSATutor</h1>
+            <p class="algo-desc"></p>
+        </div>
+    </div>
+
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
+                
                 <h2>什么是选择排序？</h2>
                 <div class="intro-content">
                     <p><strong>选择排序</strong> 是一种直观的排序算法。它的核心思想是：<span class="highlight">每一轮从未排序部分选出最小值，放到已排序部分的末尾</span>。</p>
                     <p>📱 就像你手里有一副打乱的扑克牌，你每次从中抽出最小的那张放到桌上 —— 重复这个操作，桌上的牌就是有序的。</p>
                     <p>特点：<strong>不稳定排序</strong>，原地排序，<strong>无论数据如何，比较次数都相同</strong>。</p>
                 </div>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>🎮 交互演示</h2>
                 <div class="controls">
                     <button id="step-btn" class="btn btn-primary">单步执行</button>
@@ -34,8 +47,10 @@
                 </div>
                 <div id="sort-viz" class="viz-container"><svg width="700" height="300"></svg></div>
                 <div id="sort-status" class="status-bar"><span id="sort-msg">点击"单步执行"开始</span></div>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>💻 代码实现</h2>
                 <pre class="code-block"><code>def selection_sort(arr):
     n = len(arr)
@@ -46,23 +61,28 @@
                 min_idx = j
         arr[i], arr[min_idx] = arr[min_idx], arr[i]  # 交换
     return arr</code></pre>
+            
             </section>
             <section class="algo-section">
+                
                 <h2>📊 复杂度</h2>
                 <table class="complexity-table">
                     <tr><th>情况</th><th>时间复杂度</th><th>空间</th></tr>
                     <tr><td>最好/最坏/平均</td><td class="bad">O(n²)</td><td class="good">O(1)</td></tr>
                 </table>
+            
             </section>
         </main>
         <aside class="algo-sidebar">
+            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 特性</h3><ul><li>不稳定排序</li><li>原地排序 O(1)</li><li>比较次数固定 n(n-1)/2</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关</h3><ul><li>→ <a href="../bubble/index.html">冒泡排序</a></li><li>→ <a href="../insertion/index.html">插入排序</a></li></ul></div>
         </aside>
+        </aside>
     </div>
-</div>
-<script src="../../assets/js/ai-assistant.js"></script>
-<script>
+
+        <script>
+        
 const svg=d3.select("#sort-viz svg"),W=700,H=300;let arr=[],steps=[],stepIdx=-1,timer=null;
 function randArr(){return Array.from({length:8},()=>Math.floor(Math.random()*90)+10);}
 function genSteps(a){const s=[];const n=a.length;for(let i=0;i<n-1;i++){let min=i;for(let j=i+1;j<n;j++){s.push({type:'compare',i,j,min,arr:[...a]});if(a[j]<a[min])min=j;}if(min!==i){[a[i],a[min]]=[a[min],a[i]];s.push({type:'swap',i,min,arr:[...a]});}s.push({type:'sorted',idx:i,arr:[...a]});}s.push({type:'done',arr:[...a]});return s;}
@@ -82,6 +102,8 @@ document.getElementById("auto-btn").addEventListener("click",function(){if(timer
 document.getElementById("reset-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}document.getElementById("auto-btn").textContent='▶ 自动播放';arr=[];steps=[];stepIdx=-1;renderEmpty();document.getElementById("sort-msg").textContent='已重置';});
 document.getElementById("new-btn").addEventListener("click",()=>{if(timer){clearInterval(timer);timer=null;}document.getElementById("auto-btn").textContent='▶ 自动播放';arr=randArr();steps=genSteps([...arr]);stepIdx=0;render(0);});
 renderEmpty();
-</script>
+
+    </script>
+
 </body>
 </html>

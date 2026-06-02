@@ -3,22 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>最小生成树 - DSATutor</title>
+    <title>最小生成树 - DSATutor · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+    
 </head>
 <body>
-<div class="algo-header">
+    <div class="algo-header">
         <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回</a>
-    </nav>
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">最小生成树</span>
+        </nav>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#3498db">数据结构</span>
+            <span class="algo-level">Lv1</span>
+            <h1>最小生成树 - DSATutor</h1>
+            <p class="algo-desc"></p>
+        </div>
+    </div>
+
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
+                
                 <h2>什么是最小生成树？</h2>
                 <div class="intro-content">
                     <p><strong>最小生成树 (Minimum Spanning Tree, MST)</strong> 是在一个连通无向加权图中，找到一棵 <span class="highlight">包含所有顶点、边的权值和最小</span> 的树。</p>
@@ -29,9 +40,10 @@
                         <li><strong>Prim</strong>（普里姆）：从顶点出发，贪心选最小边，O(E log V)</li>
                     </ul>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>🎮 交互演示 · Kruskal 算法</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -44,9 +56,10 @@
                     <svg width="750" height="380"></svg>
                 </div>
                 <div id="mst-status" class="status-bar"><span id="mst-msg">点击 ▶ 查看 MST 构建过程</span></div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>💻 代码实现</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -106,37 +119,30 @@ def prim(graph, start=0):
 
     return mst</code></pre></div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>📊 算法对比</h2>
                 <table class="complexity-table">
                     <tr><th>算法</th><th>时间复杂度</th><th>策略</th><th>适用场景</th></tr>
                     <tr><td>Kruskal</td><td>O(E log E)</td><td>选边法</td><td>稀疏图</td></tr>
                     <tr><td>Prim</td><td>O(E log V)</td><td>选点法</td><td>稠密图</td></tr>
                 </table>
-            </section>
-
-            <section class="practice-section">
-                <h2>🎯 练一练</h2>
-                <div class="practice-grid">
-                    <a href="https://leetcode.cn/problems/min-cost-to-connect-all-points/" target="_blank" class="practice-card">
-                        <span class="practice-num">1584</span>
-                        <span class="practice-title">连接所有点的最小费用</span>
-                        <span class="practice-tag medium">中等</span>
-                    </a>
-                </div>
+            
             </section>
         </main>
         <aside class="algo-sidebar">
+            <aside class="algo-sidebar">
             <div class="algo-info-card"><h3>📖 MST 性质</h3><ul><li><strong>切割性质</strong>：最小权边必属于某MST</li><li><strong>环性质</strong>：最大权边不会在MST中</li><li>MST 唯一当权值互异</li></ul></div>
             <div class="algo-info-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../shortest-path/index.html">最短路径</a></li><li>← <a href="../graph/index.html">图论</a></li></ul></div>
             <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:60%">60%</div></div></div>
         </aside>
+        </aside>
     </div>
-</div>
-<script src="../../assets/js/ai-assistant.js"></script>
-<script>
+
+        <script>
+        
 const svg=d3.select("#mst-viz svg"),W=750,H=380;
 const nodes=[{id:0,x:120,y:180},{id:1,x:260,y:80},{id:2,x:260,y:280},{id:3,x:420,y:80},{id:4,x:420,y:280},{id:5,x:560,y:180}];
 const allEdges=[
@@ -202,6 +208,8 @@ document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",func
     this.classList.add("active");document.querySelector(`.tab-content[data-lang="${this.dataset.lang}"]`).classList.add("active");
 }));
 render(-1,'kruskal');
-</script>
+
+    </script>
+
 </body>
 </html>

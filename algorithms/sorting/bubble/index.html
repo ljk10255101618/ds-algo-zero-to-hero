@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>冒泡排序 · DSATutor</title>
+    <title>Bubble Sort · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
 </head>
 <body>
     <div class="algo-header">
-        <a href="../../index.html" class="back-link">← 返回</a>
+        <nav class="navbar">
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">Bubble Sort</span>
+        </nav>
         <div class="algo-header-content">
             <span class="algo-tag" style="background:#e74c3c">排序算法</span>
             <span class="algo-level">Lv1</span>
             <h1>冒泡排序 Bubble Sort</h1>
-            <p>相邻元素两两比较，大的"冒泡"到末尾</p>
+            <p class="algo-desc">相邻元素两两比较，大的"冒泡"到末尾</p>
         </div>
     </div>
 
@@ -48,9 +51,19 @@
                     <div id="bubbleLog" class="viz-log"></div>
                 </div>
             </section>
+
+            <section class="algo-section">
+                <h2>📌 题目练习</h2>
+                <ul class="practice-list">
+                    <li><a href="https://leetcode.cn/problems/sort-an-array/" target="_blank">912. 排序数组</a></li>
+                    <li><a href="https://leetcode.cn/problems/move-zeroes/" target="_blank">283. 移动零</a></li>
+                </ul>
+            </section>
         </main>
         <aside class="algo-sidebar">
-            <div class="sidebar-card"><h3>⚡ 代码</h3><div class="code-block"><pre><code>def bubble_sort(arr):
+            <div class="info-card">
+                <h3>⚡ 代码实现</h3>
+                <div class="code-block"><pre><code>def bubble_sort(arr):
     n = len(arr)
     for i in range(n-1):
         swapped = False
@@ -60,11 +73,8 @@
                 swapped = True
         if not swapped:
             break
-    return arr</code></pre></div></div>
-            <div class="sidebar-card"><h3>📌 题目</h3><ul>
-                <li><a href="https://leetcode.cn/problems/sort-an-array/" target="_blank">912. 排序数组</a></li>
-                <li><a href="https://leetcode.cn/problems/move-zeroes/" target="_blank">283. 移动零</a></li>
-            </ul></div>
+    return arr</code></pre></div>
+            </div>
         </aside>
     </div>
 

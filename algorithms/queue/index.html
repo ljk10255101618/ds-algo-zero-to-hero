@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>队列 · DSATutor</title>
+    <title>队列 · DSATutor · DSATutor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/algorithm.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
     <link rel="stylesheet" href="../../assets/css/ai-assistant.css">
+    <script src="https://d3js.org/d3.v7.min.js"><\/script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+    
 </head>
 <body>
     <div class="algo-header">
-        <a href="../../index.html" class="back-link">← 返回</a>
+        <nav class="navbar">
+            <a href="../../index.html" class="back-link">← 返回首页</a>
+            <span class="nav-title">队列</span>
+        </nav>
         <div class="algo-header-content">
             <span class="algo-tag" style="background:#4A90D9">线性结构</span>
             <span class="algo-level">Lv1</span>
             <h1>队列 Queue</h1>
-            <p>先进先出 (FIFO)，队尾入队、队头出队</p>
+            <p class="algo-desc"></p>
         </div>
     </div>
 
     <div class="algo-layout">
         <main class="algo-main">
             <section class="algo-section">
+                
                 <h2>📝 定义</h2>
                 <p>队列是一种操作受限的线性表，<strong>只允许在队尾插入 (enqueue)</strong>，<strong>在队头删除 (dequeue)</strong>，遵循 <strong>先进先出 (FIFO)</strong> 原则。</p>
                 <div class="highlight-box">
@@ -39,9 +46,10 @@
                     <div><span class="big-o">Front</span> O(1)</div>
                     <div><span class="big-o">空间</span> O(n)</div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>🎮 交互演示</h2>
                 <div class="visualizer-container">
                     <div class="controls">
@@ -54,9 +62,10 @@
                     <div id="queueViz" class="viz-canvas"></div>
                     <div id="queueLog" class="viz-log"></div>
                 </div>
+            
             </section>
-
             <section class="algo-section">
+                
                 <h2>💡 应用场景</h2>
                 <div class="use-cases">
                     <div class="use-case-card">
@@ -72,9 +81,11 @@
                         <p>图的广度优先搜索依赖队列实现</p>
                     </div>
                 </div>
+            
             </section>
         </main>
         <aside class="algo-sidebar">
+            <aside class="algo-sidebar">
             <div class="sidebar-card">
                 <h3>⚡ 代码实现</h3>
                 <div class="code-block"><pre><code>from collections import deque
@@ -107,10 +118,11 @@ class Queue:
                 </ul>
             </div>
         </aside>
+        </aside>
     </div>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>
+        <script>
+        
         let queueData = [10, 20, 30, 40];
         const MAX_Q = 8;
         const logEl = document.getElementById('queueLog');
@@ -183,6 +195,8 @@ class Queue:
         function clearQueue() { queueData = []; render(); logMsg('已清空队列'); }
 
         render();
+    
     </script>
+
 </body>
 </html>
