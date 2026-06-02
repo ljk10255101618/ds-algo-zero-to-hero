@@ -12,15 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-<div class="algo-page">
-    <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
-        <div class="algo-level"><span class="level-badge level-4">Lv4 · 高阶挑战</span></div>
-        <h1 class="algo-title">红黑树 (Red-Black Tree)</h1>
+<div class="algo-header">
+        <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回</a>
     </nav>
-    <div class="content-wrapper">
-        <main class="main-area">
-            <section class="intro-section">
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
                 <h2>什么是红黑树？</h2>
                 <div class="intro-content">
                     <p>红黑树是一种 <span class="highlight">自平衡的二叉搜索树</span>，是计算机科学中最重要的数据结构之一。它保证了在最坏情况下基本操作的时间复杂度为 O(log n)。</p>
@@ -36,7 +34,7 @@
                 </div>
             </section>
 
-            <section class="viz-section">
+            <section class="algo-section">
                 <h2>🎮 交互演示 · 红黑树插入</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -58,7 +56,7 @@
                 </div>
             </section>
 
-            <section class="code-section">
+            <section class="algo-section">
                 <h2>💻 核心操作</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -96,7 +94,7 @@ class RBTree:
                 </div>
             </section>
 
-            <section class="complexity-section">
+            <section class="algo-section">
                 <h2>📊 对比 AVL 树</h2>
                 <table class="complexity-table">
                     <tr><th>特性</th><th>红黑树</th><th>AVL树</th></tr>
@@ -118,10 +116,10 @@ class RBTree:
                 </div>
             </section>
         </main>
-        <aside class="sidebar">
-            <div class="sidebar-card"><h3>📖 5条性质</h3><ol style="font-size:13px;padding-left:16px"><li>节点红或黑</li><li>根黑</li><li>叶(NIL)黑</li><li>红子必黑</li><li>黑高相同</li></ol></div>
-            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../avl/index.html">AVL树</a></li><li>← <a href="../bst/index.html">二叉搜索树</a></li></ul></div>
-            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:80%">80%</div></div></div>
+        <aside class="algo-sidebar">
+            <div class="algo-info-card"><h3>📖 5条性质</h3><ol style="font-size:13px;padding-left:16px"><li>节点红或黑</li><li>根黑</li><li>叶(NIL)黑</li><li>红子必黑</li><li>黑高相同</li></ol></div>
+            <div class="algo-info-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../avl/index.html">AVL树</a></li><li>← <a href="../bst/index.html">二叉搜索树</a></li></ul></div>
+            <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:80%">80%</div></div></div>
         </aside>
     </div>
 </div>

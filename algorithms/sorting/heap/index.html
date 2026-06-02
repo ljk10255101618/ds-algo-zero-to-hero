@@ -10,15 +10,13 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-<div class="algo-page">
-    <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
-        <div class="algo-level"><span class="level-badge level-3">Lv3 · 进阶掌握</span></div>
-        <h1 class="algo-title">堆排序 (Heap Sort)</h1>
+<div class="algo-header">
+        <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回</a>
     </nav>
-    <div class="content-wrapper">
-        <main class="main-area">
-            <section class="intro-section">
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
                 <h2>什么是堆排序？</h2>
                 <div class="intro-content">
                     <p><strong>堆排序</strong> 利用 <strong>堆</strong>（完全二叉树）这种数据结构进行排序。它结合了 <span class="highlight">选择排序的思想</span> 和 <span class="highlight">堆的高效取最大值操作</span>。</p>
@@ -30,7 +28,7 @@
                     <p>特点：<strong>不稳定排序</strong>，原地排序，没有最坏情况。</p>
                 </div>
             </section>
-            <section class="viz-section">
+            <section class="algo-section">
                 <h2>🎮 交互演示</h2>
                 <div class="controls">
                     <button id="auto-btn" class="btn btn-primary">▶ 自动演示</button>
@@ -40,7 +38,7 @@
                 <div id="sort-viz" class="viz-container"><svg width="750" height="320"></svg></div>
                 <div id="sort-status" class="status-bar"><span id="sort-msg">点击"自动演示"开始堆排序</span></div>
             </section>
-            <section class="code-section">
+            <section class="algo-section">
                 <h2>💻 代码实现</h2>
                 <pre class="code-block"><code>def heapify(arr, n, i):
     """维护以 i 为根的子树为最大堆"""
@@ -66,7 +64,7 @@ def heap_sort(arr):
         heapify(arr, i, 0)  # 调整剩余堆
     return arr</code></pre>
             </section>
-            <section class="complexity-section">
+            <section class="algo-section">
                 <h2>📊 复杂度</h2>
                 <table class="complexity-table">
                     <tr><th>操作</th><th>时间复杂度</th><th>空间</th></tr>
@@ -76,9 +74,9 @@ def heap_sort(arr):
                 </table>
             </section>
         </main>
-        <aside class="sidebar">
-            <div class="sidebar-card"><h3>📖 核心概念</h3><ul><li>完全二叉树表示</li><li>最大堆：父 ≥ 子</li><li>无需额外空间</li><li>不稳定排序</li></ul></div>
-            <div class="sidebar-card"><h3>🔗 相关</h3><ul><li>← <a href="../../heap/index.html">堆结构</a></li><li>→ <a href="../quick/index.html">快速排序</a></li></ul></div>
+        <aside class="algo-sidebar">
+            <div class="algo-info-card"><h3>📖 核心概念</h3><ul><li>完全二叉树表示</li><li>最大堆：父 ≥ 子</li><li>无需额外空间</li><li>不稳定排序</li></ul></div>
+            <div class="algo-info-card"><h3>🔗 相关</h3><ul><li>← <a href="../../heap/index.html">堆结构</a></li><li>→ <a href="../quick/index.html">快速排序</a></li></ul></div>
         </aside>
     </div>
 </div>

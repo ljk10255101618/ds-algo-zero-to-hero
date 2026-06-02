@@ -12,15 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-<div class="algo-page">
-    <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
-        <div class="algo-level"><span class="level-badge level-4">Lv4 · 高阶挑战</span></div>
-        <h1 class="algo-title">最短路径 (Dijkstra & Bellman-Ford)</h1>
+<div class="algo-header">
+        <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回</a>
     </nav>
-    <div class="content-wrapper">
-        <main class="main-area">
-            <section class="intro-section">
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
                 <h2>什么是最短路径？</h2>
                 <div class="intro-content">
                     <p>最短路径问题是图论中的经典问题：在加权图中找到从起点到终点的 <span class="highlight">路径权值和最小</span> 的路径。</p>
@@ -33,7 +31,7 @@
                 </div>
             </section>
 
-            <section class="viz-section">
+            <section class="algo-section">
                 <h2>🎮 交互演示 · Dijkstra 最短路径</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -56,7 +54,7 @@
                 </div>
             </section>
 
-            <section class="code-section">
+            <section class="algo-section">
                 <h2>💻 代码实现</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -104,7 +102,7 @@ def dijkstra(graph, start):
                 </div>
             </section>
 
-            <section class="complexity-section">
+            <section class="algo-section">
                 <h2>📊 算法对比</h2>
                 <table class="complexity-table">
                     <tr><th>算法</th><th>时间复杂度</th><th>负权边</th><th>负环检测</th></tr>
@@ -130,10 +128,10 @@ def dijkstra(graph, start):
                 </div>
             </section>
         </main>
-        <aside class="sidebar">
-            <div class="sidebar-card"><h3>📖 核心步骤</h3><ul><li>初始化距离数组</li><li>每次选未访问的最小距离点</li><li>松弛相邻节点</li><li>重复直到所有点访问完</li></ul></div>
-            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../graph/index.html">图论基础</a></li><li>→ <a href="../mst/index.html">最小生成树</a></li></ul></div>
-            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:85%">85%</div></div></div>
+        <aside class="algo-sidebar">
+            <div class="algo-info-card"><h3>📖 核心步骤</h3><ul><li>初始化距离数组</li><li>每次选未访问的最小距离点</li><li>松弛相邻节点</li><li>重复直到所有点访问完</li></ul></div>
+            <div class="algo-info-card"><h3>🔗 相关结构</h3><ul><li>← <a href="../graph/index.html">图论基础</a></li><li>→ <a href="../mst/index.html">最小生成树</a></li></ul></div>
+            <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:85%">85%</div></div></div>
         </aside>
     </div>
 </div>

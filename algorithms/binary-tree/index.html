@@ -12,18 +12,14 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-    <div class="algo-page">
-        <nav class="navbar">
-            <a href="../../index.html" class="back-link">← 返回知识图谱</a>
-            <div class="algo-level">
-                <span class="level-badge level-2">Lv2 · 核心基础</span>
-            </div>
-            <h1 class="algo-title">二叉树 (Binary Tree)</h1>
-        </nav>
+    <div class="algo-header">
+            <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回</a>
+    </nav>
 
-        <div class="content-wrapper">
-            <main class="main-area">
-                <section class="intro-section">
+        <div class="algo-layout">
+            <main class="algo-main">
+                <section class="algo-section">
                     <h2>什么是二叉树？</h2>
                     <div class="intro-content">
                         <p><span class="highlight">二叉树</span> 是一种树形数据结构，其中每个节点最多有两个子节点：<strong>左子节点</strong> 和 <strong>右子节点</strong>。</p>
@@ -33,7 +29,7 @@
                 </section>
 
                 <!-- 交互可视化 -->
-                <section class="viz-section">
+                <section class="algo-section">
                     <h2>🎮 交互演示 · 二叉树遍历</h2>
                     <div class="controls">
                         <div class="control-group">
@@ -65,7 +61,7 @@
                 </section>
 
                 <!-- 深度理解 -->
-                <section class="viz-section">
+                <section class="algo-section">
                     <h2>📚 深度理解</h2>
 
                     <div class="info-card" style="margin-bottom:16px;">
@@ -187,8 +183,8 @@ def levelorder(root):
                 </section>
             </main>
 
-            <aside class="sidebar">
-                <div class="sidebar-card">
+            <aside class="algo-sidebar">
+                <div class="algo-info-card">
                     <h3>⏱️ 复杂度速查</h3>
                     <table class="complexity-table">
                         <tr><th>操作</th><th>复杂度</th></tr>
@@ -199,7 +195,7 @@ def levelorder(root):
                     <p style="margin-top:8px;font-size:0.75rem;color:var(--text-muted);">h 为树高, 最好 log n, 最差 n</p>
                 </div>
 
-                <div class="sidebar-card">
+                <div class="algo-info-card">
                     <h3>📝 相关题目</h3>
                     <ul class="problem-list">
                         <li>
@@ -221,7 +217,7 @@ def levelorder(root):
                     </ul>
                 </div>
 
-                <div class="sidebar-card">
+                <div class="algo-info-card">
                     <h3>🔗 关联知识点</h3>
                     <ul class="problem-list">
                         <li><a href="../bst/index.html" class="problem-name" style="color:var(--primary);">→ BST 二叉搜索树</a></li>

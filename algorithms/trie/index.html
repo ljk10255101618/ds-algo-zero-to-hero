@@ -12,15 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-<div class="algo-page">
-    <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
-        <div class="algo-level"><span class="level-badge level-3">Lv3 · 进阶掌握</span></div>
-        <h1 class="algo-title">前缀树 (Trie / 字典树)</h1>
+<div class="algo-header">
+        <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回</a>
     </nav>
-    <div class="content-wrapper">
-        <main class="main-area">
-            <section class="intro-section">
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
                 <h2>什么是 Trie 树？</h2>
                 <div class="intro-content">
                     <p><strong>Trie（前缀树 / 字典树）</strong> 是一种 <span class="highlight">用于高效存储和搜索字符串集合</span> 的树形数据结构。</p>
@@ -29,7 +27,7 @@
                 </div>
             </section>
 
-            <section class="viz-section">
+            <section class="algo-section">
                 <h2>🎮 交互演示 · Trie 操作</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -50,7 +48,7 @@
                 <div id="trie-status" class="status-bar"><span id="trie-msg">输入单词进行插入/搜索/前缀匹配</span></div>
             </section>
 
-            <section class="code-section">
+            <section class="algo-section">
                 <h2>💻 代码实现</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -125,7 +123,7 @@ class Trie {
                 </div>
             </section>
 
-            <section class="complexity-section">
+            <section class="algo-section">
                 <h2>📊 复杂度分析</h2>
                 <table class="complexity-table">
                     <tr><th>操作</th><th>时间复杂度</th><th>空间复杂度</th></tr>
@@ -152,10 +150,10 @@ class Trie {
                 </div>
             </section>
         </main>
-        <aside class="sidebar">
-            <div class="sidebar-card"><h3>📖 核心特性</h3><ul><li>利用前缀共享节省空间</li><li>查询效率为 O(L)</li><li>天然支持前缀匹配</li><li>适合字典/自动补全</li></ul></div>
-            <div class="sidebar-card"><h3>🔗 相关结构</h3><ul><li>→ <a href="../hash-table/index.html">哈希表</a></li><li>← <a href="../binary-tree/index.html">二叉树</a></li></ul></div>
-            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:75%">75%</div></div></div>
+        <aside class="algo-sidebar">
+            <div class="algo-info-card"><h3>📖 核心特性</h3><ul><li>利用前缀共享节省空间</li><li>查询效率为 O(L)</li><li>天然支持前缀匹配</li><li>适合字典/自动补全</li></ul></div>
+            <div class="algo-info-card"><h3>🔗 相关结构</h3><ul><li>→ <a href="../hash-table/index.html">哈希表</a></li><li>← <a href="../binary-tree/index.html">二叉树</a></li></ul></div>
+            <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:75%">75%</div></div></div>
         </aside>
     </div>
 </div>

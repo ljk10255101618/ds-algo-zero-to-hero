@@ -10,15 +10,13 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-<div class="algo-page">
-    <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
-        <div class="algo-level"><span class="level-badge level-3">Lv3 · 进阶掌握</span></div>
-        <h1 class="algo-title">图 (Graph) · BFS & DFS 遍历</h1>
+<div class="algo-header">
+        <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回</a>
     </nav>
-    <div class="content-wrapper">
-        <main class="main-area">
-            <section class="intro-section">
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
                 <h2>什么是图？</h2>
                 <div class="intro-content">
                     <p>图由 <strong>顶点 (Vertex)</strong> 和 <strong>边 (Edge)</strong> 组成，记作 G = (V, E)，是描述 <span class="highlight">万物互联关系</span> 的最通用数据结构。</p>
@@ -31,7 +29,7 @@
                 </div>
             </section>
 
-            <section class="viz-section">
+            <section class="algo-section">
                 <h2>🎮 交互演示 · BFS / DFS 遍历</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -59,7 +57,7 @@
                 </div>
             </section>
 
-            <section class="code-section">
+            <section class="algo-section">
                 <h2>💻 代码实现</h2>
                 <div class="code-tabs">
                     <div class="tab-header">
@@ -116,7 +114,7 @@ def dfs_iterative(graph, start):
                 </div>
             </section>
 
-            <section class="complexity-section">
+            <section class="algo-section">
                 <h2>📊 复杂度分析</h2>
                 <table class="complexity-table">
                     <tr><th>算法</th><th>时间复杂度</th><th>空间复杂度</th><th>数据结构</th></tr>
@@ -125,10 +123,10 @@ def dfs_iterative(graph, start):
                 </table>
             </section>
         </main>
-        <aside class="sidebar">
-            <div class="sidebar-card"><h3>📖 图分类</h3><ul><li>有向 / 无向</li><li>加权 / 无权</li><li>连通 / 非连通</li><li>稀疏 / 稠密</li></ul></div>
-            <div class="sidebar-card"><h3>🔗 相关算法</h3><ul><li>→ <a href="../shortest-path/index.html">最短路径</a></li><li>→ <a href="../mst/index.html">最小生成树</a></li></ul></div>
-            <div class="sidebar-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:90%">90%</div></div></div>
+        <aside class="algo-sidebar">
+            <div class="algo-info-card"><h3>📖 图分类</h3><ul><li>有向 / 无向</li><li>加权 / 无权</li><li>连通 / 非连通</li><li>稀疏 / 稠密</li></ul></div>
+            <div class="algo-info-card"><h3>🔗 相关算法</h3><ul><li>→ <a href="../shortest-path/index.html">最短路径</a></li><li>→ <a href="../mst/index.html">最小生成树</a></li></ul></div>
+            <div class="algo-info-card"><h3>📝 面试频率</h3><div class="frequency-bar"><div class="freq-fill" style="width:90%">90%</div></div></div>
         </aside>
     </div>
 </div>

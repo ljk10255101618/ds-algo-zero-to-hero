@@ -12,18 +12,14 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </head>
 <body>
-    <div class="algo-page">
-        <nav class="navbar">
-            <a href="../../../index.html" class="back-link">← 返回知识图谱</a>
-            <div class="algo-level">
-                <span class="level-badge level-2">Lv2 · 核心算法</span>
-            </div>
-            <h1 class="algo-title">快速排序 (Quick Sort)</h1>
-        </nav>
+    <div class="algo-header">
+            <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回</a>
+    </nav>
 
-        <div class="content-wrapper">
-            <main class="main-area">
-                <section class="intro-section">
+        <div class="algo-layout">
+            <main class="algo-main">
+                <section class="algo-section">
                     <h2>什么是快速排序？</h2>
                     <div class="intro-content">
                         <p><span class="highlight">快速排序</span> 是应用最广泛的排序算法之一，它的核心思想是 <strong>分治法</strong> (Divide and Conquer)。</p>
@@ -33,7 +29,7 @@
                 </section>
 
                 <!-- 交互可视化 -->
-                <section class="viz-section">
+                <section class="algo-section">
                     <h2>🎮 交互演示 · 快速排序过程</h2>
                     <div class="controls">
                         <div class="control-group">
@@ -68,7 +64,7 @@
                 </section>
 
                 <!-- 深度理解 -->
-                <section class="viz-section">
+                <section class="algo-section">
                     <h2>📚 深度理解</h2>
 
                     <div class="info-card" style="margin-bottom:16px;">
@@ -167,8 +163,8 @@ def partition(arr, low, high):
                 </section>
             </main>
 
-            <aside class="sidebar">
-                <div class="sidebar-card">
+            <aside class="algo-sidebar">
+                <div class="algo-info-card">
                     <h3>⏱️ 复杂度速查</h3>
                     <table class="complexity-table">
                         <tr><th>情况</th><th>复杂度</th></tr>
@@ -179,7 +175,7 @@ def partition(arr, low, high):
                     </table>
                 </div>
 
-                <div class="sidebar-card">
+                <div class="algo-info-card">
                     <h3>📝 相关题目</h3>
                     <ul class="problem-list">
                         <li>
@@ -197,7 +193,7 @@ def partition(arr, low, high):
                     </ul>
                 </div>
 
-                <div class="sidebar-card">
+                <div class="algo-info-card">
                     <h3>🔗 关联知识点</h3>
                     <ul class="problem-list">
                         <li><a href="../merge/index.html" class="problem-name" style="color:var(--primary);">→ 归并排序</a></li>

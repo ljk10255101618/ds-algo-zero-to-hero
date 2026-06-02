@@ -10,15 +10,13 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-<div class="algo-page">
-    <nav class="navbar">
-        <a href="../../index.html" class="back-link">← 返回知识图谱</a>
-        <div class="algo-level"><span class="level-badge level-4">Lv4 · 高阶挑战</span></div>
-        <h1 class="algo-title">线段树 (Segment Tree)</h1>
+<div class="algo-header">
+        <nav class="navbar">
+        <a href="../../index.html" class="back-link">← 返回</a>
     </nav>
-    <div class="content-wrapper">
-        <main class="main-area">
-            <section class="intro-section">
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
                 <h2>什么是线段树？</h2>
                 <div class="intro-content">
                     <p><strong>线段树</strong> 是一种用于 <span class="highlight">区间查询和区间更新</span> 的二叉树数据结构。它可以在 O(log n) 时间内完成区间求和、区间最小值/最大值等操作。</p>
@@ -26,7 +24,7 @@
                     <p>💡 <strong>典型应用</strong>：区间和查询 + 单点/区间更新、区间最大值/最小值、区间众数。</p>
                 </div>
             </section>
-            <section class="viz-section">
+            <section class="algo-section">
                 <h2>🎮 交互演示</h2>
                 <div class="controls">
                     <div class="control-group">
@@ -38,7 +36,7 @@
                 <div id="seg-viz" class="viz-container"><svg width="750" height="320"></svg></div>
                 <div id="seg-status" class="status-bar"><span id="seg-msg">点击操作查看线段树</span></div>
             </section>
-            <section class="code-section">
+            <section class="algo-section">
                 <h2>💻 代码实现</h2>
                 <pre class="code-block"><code>class SegmentTree:
     def __init__(self, arr):
@@ -77,7 +75,7 @@
         return self.query(ql, qr, node * 2 + 1, l, mid) + \
                self.query(ql, qr, node * 2 + 2, mid + 1, r)</code></pre>
             </section>
-            <section class="complexity-section">
+            <section class="algo-section">
                 <h2>📊 复杂度</h2>
                 <table class="complexity-table">
                     <tr><th>操作</th><th>时间复杂度</th><th>空间</th></tr>
@@ -87,9 +85,9 @@
                 </table>
             </section>
         </main>
-        <aside class="sidebar">
-            <div class="sidebar-card"><h3>📖 核心操作</h3><ul><li>build: 递归建树 O(n)</li><li>update: 更新叶子 + 回溯 O(log n)</li><li>query: 区间合并 O(log n)</li><li>lazy propagation: 区间更新</li></ul></div>
-            <div class="sidebar-card"><h3>🔗 相关</h3><ul><li>→ <a href="../advanced/bit-index-tree/index.html">树状数组</a></li><li>← <a href="../array/index.html">数组</a></li></ul></div>
+        <aside class="algo-sidebar">
+            <div class="algo-info-card"><h3>📖 核心操作</h3><ul><li>build: 递归建树 O(n)</li><li>update: 更新叶子 + 回溯 O(log n)</li><li>query: 区间合并 O(log n)</li><li>lazy propagation: 区间更新</li></ul></div>
+            <div class="algo-info-card"><h3>🔗 相关</h3><ul><li>→ <a href="../advanced/bit-index-tree/index.html">树状数组</a></li><li>← <a href="../array/index.html">数组</a></li></ul></div>
         </aside>
     </div>
 </div>
