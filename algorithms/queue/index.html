@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>队列 · DSATutor</title>
+    <link rel="stylesheet" href="/assets/css/algorithm.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+</head>
+<body>
+    <div class="algo-header">
+        <a href="/" class="back-link">← 返回</a>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#4A90D9">线性结构</span>
+            <span class="algo-level">Lv1</span>
+            <h1>队列 Queue</h1>
+            <p>先进先出 (FIFO)，队尾入队、队头出队</p>
+        </div>
+    </div>
+
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
+                <h2>📝 定义</h2>
+                <p>队列是一种操作受限的线性表，<strong>只允许在队尾插入 (enqueue)</strong>，<strong>在队头删除 (dequeue)</strong>，遵循 <strong>先进先出 (FIFO)</strong> 原则。</p>
+                <div class="highlight-box">
+                    <strong>核心操作：</strong>
+                    <ul>
+                        <li><code>enqueue(x)</code> — 入队：在队尾插入 x，O(1)</li>
+                        <li><code>dequeue()</code> — 出队：移除队头元素并返回，O(1)</li>
+                        <li><code>front()</code> — 查看队头元素，O(1)</li>
+                    </ul>
+                </div>
+                <div class="complexity-box">
+                    <div><span class="big-o">Enqueue</span> O(1)</div>
+                    <div><span class="big-o">Dequeue</span> O(1)</div>
+                    <div><span class="big-o">Front</span> O(1)</div>
+                    <div><span class="big-o">空间</span> O(n)</div>
+                </div>
+            </section>
+
+            <section class="algo-section">
+                <h2>🎮 交互演示</h2>
+                <div class="visualizer-container">
+                    <div class="controls">
+                        <label>值: <input type="number" id="qVal" value="42" min="0" max="999"></label>
+                        <button class="btn btn-primary" onclick="enqueue()">Enqueue 入队</button>
+                        <button class="btn btn-warning" onclick="dequeue()">Dequeue 出队</button>
+                        <button class="btn btn-secondary" onclick="front()">Front 查看</button>
+                        <button class="btn btn-danger" onclick="clearQueue()">清空</button>
+                    </div>
+                    <div id="queueViz" class="viz-canvas"></div>
+                    <div id="queueLog" class="viz-log"></div>
+                </div>
+            </section>
+
+            <section class="algo-section">
+                <h2>💡 应用场景</h2>
+                <div class="use-cases">
+                    <div class="use-case-card">
+                        <h4>🖨️ 打印队列</h4>
+                        <p>操作系统按先来先服务(FCFS)调度打印任务</p>
+                    </div>
+                    <div class="use-case-card">
+                        <h4>📨 消息队列</h4>
+                        <p>微服务架构中的异步消息传递</p>
+                    </div>
+                    <div class="use-case-card">
+                        <h4>🌊 BFS 遍历</h4>
+                        <p>图的广度优先搜索依赖队列实现</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <aside class="algo-sidebar">
+            <div class="sidebar-card">
+                <h3>⚡ 代码实现</h3>
+                <pre><code>from collections import deque
+
+class Queue:
+    def __init__(self):
+        self.items = deque()
+
+    def enqueue(self, val):
+        self.items.append(val)
+
+    def dequeue(self):
+        return self.items.popleft()
+
+    def front(self):
+        return self.items[0]
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def size(self):
+        return len(self.items)</code></pre>
+            </div>
+            <div class="sidebar-card">
+                <h3>📌 推荐题目</h3>
+                <ul>
+                    <li><a href="https://leetcode.cn/problems/implement-queue-using-stacks/" target="_blank">232. 用栈实现队列</a></li>
+                    <li><a href="https://leetcode.cn/problems/design-circular-queue/" target="_blank">622. 设计循环队列</a></li>
+                    <li><a href="https://leetcode.cn/problems/sliding-window-maximum/" target="_blank">239. 滑动窗口最大值</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        let queueData = [10, 20, 30, 40];
+        const MAX_Q = 8;
+        const logEl = document.getElementById('queueLog');
+
+        function logMsg(msg) {
+            logEl.innerHTML = `<span class="log-msg">👉 ${msg}</span>`;
+            setTimeout(() => logEl.innerHTML = '', 2000);
+        }
+
+        function render() {
+            const w = 700, h = 220;
+            const viz = document.getElementById('queueViz');
+            viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
+            const svg = d3.select(viz.querySelector('svg'));
+
+            if (queueData.length === 0) {
+                svg.append('text').attr('x',w/2).attr('y',h/2).attr('text-anchor','middle')
+                 .attr('fill','#888').attr('font-size','20').text('∅ 空队列');
+                return;
+            }
+
+            const gap = 75, startX = 70, y = 100;
+            const validDisplay = queueData.slice(0, MAX_Q);
+
+            validDisplay.forEach((d, i) => {
+                const g = svg.append('g');
+                const x = startX + i * gap;
+                g.append('rect').attr('x',x).attr('y',y-25).attr('width',60).attr('height',50)
+                 .attr('rx',6).attr('fill', i===0 ? '#2d4a8a' : '#1e2a4a')
+                 .attr('stroke', i===0 ? '#FFD700' : '#4A90D9').attr('stroke-width', i===0?2:1);
+                g.append('text').attr('x',x+30).attr('y',y+5).attr('text-anchor','middle')
+                 .attr('fill','#fff').attr('font-size','16').text(d);
+                // Labels
+                if (i === 0) {
+                    g.append('text').attr('x',x+30).attr('y',y-40).attr('text-anchor','middle')
+                     .attr('fill','#FFD700').attr('font-size','12').attr('font-weight','bold').text('FRONT ← 出');
+                }
+                if (i === validDisplay.length - 1) {
+                    g.append('text').attr('x',x+30).attr('y',y-40).attr('text-anchor','middle')
+                     .attr('fill','#7ecf9e').attr('font-size','12').attr('font-weight','bold').text('REAR ← 入');
+                }
+                // Arrow between elements
+                if (i < validDisplay.length - 1) {
+                    const x1 = x+60, x2 = startX + (i+1)*gap;
+                    svg.append('defs').append('marker').attr('id',`qarrow${i}`)
+                     .attr('viewBox','0 0 10 10').attr('refX',5).attr('refY',5)
+                     .attr('markerWidth',6).attr('markerHeight',6).attr('orient','auto')
+                     .append('path').attr('d','M0,0 L10,5 L0,10').attr('fill','#4A90D9');
+                    svg.append('line').attr('x1',x1).attr('y1',y).attr('x2',x2).attr('y2',y)
+                     .attr('stroke','#4A90D9').attr('stroke-width',2).attr('marker-end',`url(#qarrow${i})`);
+                }
+            });
+        }
+
+        function enqueue() {
+            const v = +document.getElementById('qVal').value;
+            if (queueData.length >= MAX_Q) return logMsg('⚠️ 队列已满！');
+            queueData.push(v);
+            render(); logMsg(`enqueue(${v})  → 入队成功，队尾: ${v}`);
+        }
+        function dequeue() {
+            if (!queueData.length) return logMsg('⚠️ 队列已空 (Underflow)');
+            const v = queueData.shift();
+            render(); logMsg(`dequeue() → 出队: ${v}`);
+        }
+        function front() {
+            if (!queueData.length) return logMsg('⚠️ 队列空');
+            logMsg(`front() → 队头元素: ${queueData[0]}`);
+        }
+        function clearQueue() { queueData = []; render(); logMsg('已清空队列'); }
+
+        render();
+    </script>
+</body>
+</html>

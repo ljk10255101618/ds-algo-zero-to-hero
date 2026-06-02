@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>堆 · DSATutor</title>
+    <link rel="stylesheet" href="/assets/css/algorithm.css">
+</head>
+<body>
+    <div class="algo-header">
+        <a href="/" class="back-link">← 返回</a>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#e67e22">树形结构</span>
+            <span class="algo-level">Lv3</span>
+            <h1>堆 Heap</h1>
+            <p>完全二叉树 + 堆序性质，优先队列的核心</p>
+        </div>
+    </div>
+
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
+                <h2>📝 定义</h2>
+                <p>堆是一种 <strong>完全二叉树</strong>，满足 <strong>堆序性质</strong>：</p>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>大根堆 (Max-Heap)</strong>：父节点 ≥ 子节点，根是最大值</li>
+                        <li><strong>小根堆 (Min-Heap)</strong>：父节点 ≤ 子节点，根是最小值</li>
+                    </ul>
+                </div>
+                <div class="complexity-box">
+                    <div><span class="big-o">插入</span> O(log n)</div>
+                    <div><span class="big-o">取极值</span> O(1)</div>
+                    <div><span class="big-o">删除极值</span> O(log n)</div>
+                    <div><span class="big-o">建堆</span> O(n)</div>
+                </div>
+            </section>
+
+            <section class="algo-section">
+                <h2>🎮 交互演示</h2>
+                <div class="visualizer-container">
+                    <div class="controls">
+                        <label>值: <input type="number" id="heapVal" value="7" min="0" max="99"></label>
+                        <button class="btn btn-primary" onclick="heapPush()">Push 插入</button>
+                        <button class="btn btn-warning" onclick="heapPop()">Pop 取最大值</button>
+                        <button class="btn btn-secondary" onclick="heapPeek()">Peek 查看堆顶</button>
+                        <button class="btn btn-danger" onclick="resetHeap()">重置</button>
+                        <span style="color:#888;margin-left:10px;font-size:13px">
+                            <label><input type="radio" name="heapType" value="max" checked> 大根堆</label>
+                            <label><input type="radio" name="heapType" value="min"> 小根堆</label>
+                        </span>
+                    </div>
+                    <div id="heapViz" class="viz-canvas"></div>
+                    <div id="heapLog" class="viz-log"></div>
+                </div>
+            </section>
+
+            <section class="algo-section">
+                <h2>💡 应用</h2>
+                <div class="use-cases">
+                    <div class="use-case-card"><h4>⏰ 任务调度</h4><p>操作系统按优先级调度进程</p></div>
+                    <div class="use-case-card"><h4>📊 Top K</h4><p>小根堆维护最大的 K 个元素</p></div>
+                    <div class="use-case-card"><h4>🔀 堆排序</h4><p>建堆 O(n) + 取极值 O(n log n)</p></div>
+                </div>
+            </section>
+        </main>
+        <aside class="algo-sidebar">
+            <div class="sidebar-card"><h3>⚡ 代码</h3><pre><code>import heapq
+# Python 默认小根堆
+heap = []
+heapq.heappush(heap, 3)
+heapq.heappush(heap, 1)
+heapq.heappush(heap, 2)
+min_val = heapq.heappop(heap)  # 1
+
+# 大根堆：存负值
+import heapq
+max_heap = []
+heapq.heappush(max_heap, -3)
+heapq.heappush(max_heap, -1)
+max_val = -heapq.heappop(max_heap)  # 3</code></pre></div>
+            <div class="sidebar-card"><h3>📌 题目</h3><ul>
+                <li><a href="https://leetcode.cn/problems/kth-largest-element-in-an-array/" target="_blank">215. 数组第K大</a></li>
+                <li><a href="https://leetcode.cn/problems/merge-k-sorted-lists/" target="_blank">23. 合并K个链表</a></li>
+            </ul></div>
+        </aside>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        let heapData = [50, 30, 40, 10, 20, 35];
+        const logEl = document.getElementById('heapLog');
+        function logMsg(m){logEl.innerHTML=`<span class="log-msg">👉 ${m}</span>`;setTimeout(()=>logEl.innerHTML='',2500);}
+        function isMax() { return document.querySelector('input[name="heapType"]:checked').value === 'max'; }
+
+        function heapify(arr, n, i, maxHeap) {
+            let ext = i, l = 2*i+1, r = 2*i+2;
+            if (maxHeap) {
+                if (l < n && arr[l] > arr[ext]) ext = l;
+                if (r < n && arr[r] > arr[ext]) ext = r;
+            } else {
+                if (l < n && arr[l] < arr[ext]) ext = l;
+                if (r < n && arr[r] < arr[ext]) ext = r;
+            }
+            if (ext !== i) { [arr[i],arr[ext]]=[arr[ext],arr[i]]; heapify(arr,n,ext,maxHeap); }
+        }
+
+        function buildHeap() {
+            const maxH = isMax();
+            for (let i = Math.floor(heapData.length/2)-1; i >= 0; i--)
+                heapify(heapData, heapData.length, i, maxH);
+        }
+
+        function render() {
+            const w = 700, h = 350;
+            const viz = document.getElementById('heapViz');
+            viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
+            const svg = d3.select(viz.querySelector('svg'));
+            if (!heapData.length) {
+                svg.append('text').attr('x',w/2).attr('y',h/2).attr('text-anchor','middle')
+                 .attr('fill','#888').attr('font-size','20').text('∅ 空堆');
+                return;
+            }
+            buildHeap();
+            // Tree layout
+            const nodes = heapData.map((v,i)=>({val:v,id:i}));
+            const links = [];
+            for (let i = 0; i < heapData.length; i++) {
+                if (2*i+1 < heapData.length) links.push({s:i,t:2*i+1});
+                if (2*i+2 < heapData.length) links.push({s:i,t:2*i+2});
+            }
+            const hierarchy = d3.stratify().id(d=>d.id).parentId(d=>{
+                if (d.id===0) return null;
+                return Math.floor((d.id-1)/2);
+            })(nodes);
+            const treeLayout = d3.tree().size([w-100, h-80]);
+            treeLayout(hierarchy);
+            svg.selectAll('line').data(hierarchy.links()).enter().append('line')
+             .attr('x1',d=>d.source.x+50).attr('y1',d=>d.source.y+40)
+             .attr('x2',d=>d.target.x+50).attr('y2',d=>d.target.y+40)
+             .attr('stroke','#4A90D9').attr('stroke-width',2);
+            const gs = svg.selectAll('g').data(hierarchy.descendants()).enter().append('g')
+             .attr('transform',d=>`translate(${d.x+50},${d.y+40})`);
+            gs.append('circle').attr('r',22).attr('fill','#1e2a4a').attr('stroke',(d)=>d.id===0?'#FFD700':'#e67e22')
+             .attr('stroke-width',(d)=>d.id===0?3:2);
+            gs.append('text').attr('text-anchor','middle').attr('dy','5')
+             .attr('fill','#fff').attr('font-size','14').attr('font-weight','bold').text(d=>d.data.val);
+            // Array display below
+            const arrY = h-20;
+            heapData.forEach((v,i)=>{
+                const g = svg.append('g');
+                g.append('rect').attr('x',50+i*45).attr('y',arrY-12).attr('width',40).attr('height',24)
+                 .attr('rx',3).attr('fill',i===0?'#2d4a8a':'#1a2a4a')
+                 .attr('stroke','#4A90D9').attr('stroke-width',1);
+                g.append('text').attr('x',70+i*45).attr('y',arrY+5).attr('text-anchor','middle')
+                 .attr('fill','#fff').attr('font-size','11').text(v);
+                g.append('text').attr('x',70+i*45).attr('y',arrY-20).attr('text-anchor','middle')
+                 .attr('fill','#666').attr('font-size','9').text(i);
+            });
+            svg.append('text').attr('x',20).attr('y',arrY+5).attr('fill','#888').attr('font-size','11').text('数组:');
+        }
+
+        function heapPush() {
+            const v = +document.getElementById('heapVal').value;
+            heapData.push(v);
+            render(); logMsg(`✅ push(${v})，堆大小: ${heapData.length}`);
+        }
+        function heapPop() {
+            if (!heapData.length) return logMsg('⚠️ 堆空');
+            buildHeap();
+            const maxV = heapData[0];
+            heapData[0] = heapData[heapData.length-1];
+            heapData.pop();
+            render(); logMsg(`🗑️ pop() → 取出 ${isMax()?'最大值':'最小值'} ${maxV}`);
+        }
+        function heapPeek() {
+            if (!heapData.length) return logMsg('⚠️ 堆空');
+            buildHeap();
+            logMsg(`👀 堆顶元素: ${heapData[0]}（当前${isMax()?'大根':'小根'}堆）`);
+        }
+        function resetHeap() { heapData = [50, 30, 40, 10, 20, 35]; render(); logMsg('已重置'); }
+
+        render();
+    </script>
+</body>
+</html>

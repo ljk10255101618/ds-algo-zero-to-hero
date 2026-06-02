@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>栈 · DSATutor</title>
+    <link rel="stylesheet" href="/assets/css/algorithm.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+</head>
+<body>
+    <div class="algo-header">
+        <a href="/" class="back-link">← 返回</a>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#4A90D9">线性结构</span>
+            <span class="algo-level">Lv1</span>
+            <h1>栈 Stack</h1>
+            <p>后进先出 (LIFO)，只有一端可操作</p>
+        </div>
+    </div>
+
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
+                <h2>📝 定义</h2>
+                <p>栈是一种受限的线性表，<strong>只允许在表的一端（栈顶）</strong> 进行插入和删除操作，遵循 <strong>后进先出 (LIFO)</strong> 原则。</p>
+                <div class="highlight-box">
+                    <strong>核心操作：</strong>
+                    <ul>
+                        <li><code>push(x)</code> — 压栈：将 x 放入栈顶，O(1)</li>
+                        <li><code>pop()</code> — 出栈：移除并返回栈顶元素，O(1)</li>
+                        <li><code>peek()</code> — 查看栈顶元素，O(1)</li>
+                    </ul>
+                </div>
+                <div class="complexity-box">
+                    <div><span class="big-o">Push</span> O(1)</div>
+                    <div><span class="big-o">Pop</span> O(1)</div>
+                    <div><span class="big-o">Peek</span> O(1)</div>
+                    <div><span class="big-o">空间</span> O(n)</div>
+                </div>
+            </section>
+
+            <section class="algo-section">
+                <h2>🎮 交互演示</h2>
+                <div class="visualizer-container">
+                    <div class="controls">
+                        <label>值: <input type="number" id="stackVal" value="42" min="0" max="999"></label>
+                        <button class="btn btn-primary" onclick="push()">Push 压栈</button>
+                        <button class="btn btn-warning" onclick="pop()">Pop 出栈</button>
+                        <button class="btn btn-secondary" onclick="peek()">Peek 查看</button>
+                        <button class="btn btn-danger" onclick="clearStack()">清空</button>
+                    </div>
+                    <div id="stackViz" class="viz-canvas"></div>
+                    <div id="stackLog" class="viz-log"></div>
+                </div>
+            </section>
+
+            <section class="algo-section">
+                <h2>💡 应用场景</h2>
+                <div class="use-cases">
+                    <div class="use-case-card">
+                        <h4>🔄 函数调用栈</h4>
+                        <p>编程语言的函数调用/返回管理</p>
+                    </div>
+                    <div class="use-case-card">
+                        <h4>🧮 表达式求值</h4>
+                        <p>中缀→后缀转换、括号匹配检查</p>
+                    </div>
+                    <div class="use-case-card">
+                        <h4>↩️ 浏览记录</h4>
+                        <p>浏览器的前进/后退功能实现</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <aside class="algo-sidebar">
+            <div class="sidebar-card">
+                <h3>⚡ 代码实现</h3>
+                <pre><code>class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, val):
+        self.items.append(val)
+
+    def pop(self):
+        return self.items.pop()
+
+    def peek(self):
+        return self.items[-1]
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def size(self):
+        return len(self.items)</code></pre>
+            </div>
+            <div class="sidebar-card">
+                <h3>📌 推荐题目</h3>
+                <ul>
+                    <li><a href="https://leetcode.cn/problems/valid-parentheses/" target="_blank">20. 有效括号</a></li>
+                    <li><a href="https://leetcode.cn/problems/min-stack/" target="_blank">155. 最小栈</a></li>
+                    <li><a href="https://leetcode.cn/problems/evaluate-reverse-polish-notation/" target="_blank">150. 逆波兰表达式</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        let stackData = [7, 15, 3, 22];
+        const MAX_STACK = 10;
+        const logEl = document.getElementById('stackLog');
+
+        function logMsg(msg) {
+            logEl.innerHTML = `<span class="log-msg">👉 ${msg}</span>`;
+            setTimeout(() => logEl.innerHTML = '', 2000);
+        }
+
+        function render() {
+            const w = 500, h = 350;
+            const viz = document.getElementById('stackViz');
+            viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
+            const svg = d3.select(viz.querySelector('svg'));
+
+            // Draw container
+            svg.append('rect').attr('x',150).attr('y',30).attr('width',200).attr('height',280)
+             .attr('fill','none').attr('stroke','#4A90D9').attr('stroke-width',2).attr('rx',5);
+            svg.append('text').attr('x',250).attr('y',20).attr('text-anchor','middle')
+             .attr('fill','#888').attr('font-size','12').text(`容量 ${MAX_STACK}`);
+
+            // Stack bottom line
+            svg.append('line').attr('x1',140).attr('y1',310).attr('x2',360).attr('y2',310)
+             .attr('stroke','#4A90D9').attr('stroke-width',2);
+            svg.append('text').attr('x',130).attr('y',315).attr('text-anchor','end')
+             .attr('fill','#888').attr('font-size','12').text('底部');
+
+            if (stackData.length === 0) {
+                svg.append('text').attr('x',250).attr('y',180).attr('text-anchor','middle')
+                 .attr('fill','#555').attr('font-size','20').text('∅ 空栈');
+                return;
+            }
+
+            const blockH = Math.min(35, 260 / MAX_STACK);
+            stackData.forEach((d, i) => {
+                const g = svg.append('g');
+                const y = 310 - (i + 1) * blockH - 2;
+                g.append('rect').attr('x',155).attr('y',y).attr('width',190).attr('height',blockH)
+                 .attr('fill', i === stackData.length-1 ? '#2d4a8a' : '#1a2a4a')
+                 .attr('stroke', i === stackData.length-1 ? '#FFD700' : '#4A90D9')
+                 .attr('stroke-width', i === stackData.length-1 ? 2 : 1).attr('rx',3);
+                g.append('text').attr('x',250).attr('y', y + blockH/2 + 5)
+                 .attr('text-anchor','middle').attr('fill','#fff')
+                 .attr('font-size','14').text(d);
+                // Index label
+                g.append('text').attr('x',140).attr('y', y + blockH/2 + 5)
+                 .attr('text-anchor','end').attr('fill','#666')
+                 .attr('font-size','11').text(`[${stackData.length-1-i}]`);
+            });
+
+            // Top pointer
+            if (stackData.length > 0 && stackData.length < MAX_STACK) {
+                const topY = 310 - stackData.length * blockH - 2;
+                svg.append('text').attr('x',370).attr('y', topY + blockH/2 + 5)
+                 .attr('fill','#FFD700').attr('font-size','12').attr('font-weight','bold').text('← TOP');
+            }
+            if (stackData.length === MAX_STACK) {
+                svg.append('text').attr('x',250).attr('y',55).attr('text-anchor','middle')
+                 .attr('fill','#ff6b6b').attr('font-size','14').text('⚠️ 栈满');
+            }
+        }
+
+        function push() {
+            const v = +document.getElementById('stackVal').value;
+            if (stackData.length >= MAX_STACK) return logMsg('⚠️ 栈已满！');
+            stackData.push(v);
+            render(); logMsg(`push(${v})  → 栈顶元素: ${v}`);
+        }
+        function pop() {
+            if (!stackData.length) return logMsg('⚠️ 栈已空 (Stack Underflow)');
+            const v = stackData.pop();
+            render(); logMsg(`pop() → 弹出: ${v}`);
+        }
+        function peek() {
+            if (!stackData.length) return logMsg('⚠️ 栈空，无栈顶元素');
+            logMsg(`peek() → 栈顶元素: ${stackData[stackData.length-1]}`);
+        }
+        function clearStack() { stackData = []; render(); logMsg('已清空栈'); }
+
+        render();
+    </script>
+</body>
+</html>

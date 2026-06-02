@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冒泡排序 · DSATutor</title>
+    <link rel="stylesheet" href="/assets/css/algorithm.css">
+</head>
+<body>
+    <div class="algo-header">
+        <a href="/" class="back-link">← 返回</a>
+        <div class="algo-header-content">
+            <span class="algo-tag" style="background:#e74c3c">排序算法</span>
+            <span class="algo-level">Lv1</span>
+            <h1>冒泡排序 Bubble Sort</h1>
+            <p>相邻元素两两比较，大的"冒泡"到末尾</p>
+        </div>
+    </div>
+
+    <div class="algo-layout">
+        <main class="algo-main">
+            <section class="algo-section">
+                <h2>📝 定义</h2>
+                <p>冒泡排序重复遍历数组，依次比较相邻两个元素，如果顺序错误就交换，直到没有需要交换的元素。</p>
+                <div class="highlight-box">
+                    <strong>优化技巧：</strong>如果一趟遍历没有发生交换，说明已经有序，提前终止。
+                </div>
+                <div class="complexity-box">
+                    <div><span class="big-o">最优</span> O(n)</div>
+                    <div><span class="big-o">最差</span> O(n²)</div>
+                    <div><span class="big-o">平均</span> O(n²)</div>
+                    <div><span class="big-o">空间</span> O(1)</div>
+                </div>
+            </section>
+
+            <section class="algo-section">
+                <h2>🎮 交互演示</h2>
+                <div class="visualizer-container">
+                    <div class="controls">
+                        <button class="btn btn-primary" onclick="bubbleSortStart()">🚀 开始排序</button>
+                        <button class="btn btn-secondary" onclick="bubbleStep()">⏭️ 单步</button>
+                        <button class="btn btn-danger" onclick="resetBubble()">重置</button>
+                        <span style="color:#888;margin-left:10px;font-size:13px" id="bubbleStats">比较: 0 | 交换: 0</span>
+                    </div>
+                    <div id="bubbleViz" class="viz-canvas"></div>
+                    <div id="bubbleLog" class="viz-log"></div>
+                </div>
+            </section>
+        </main>
+        <aside class="algo-sidebar">
+            <div class="sidebar-card"><h3>⚡ 代码</h3><pre><code>def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n-1):
+        swapped = False
+        for j in range(n-1-i):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    return arr</code></pre></div>
+            <div class="sidebar-card"><h3>📌 题目</h3><ul>
+                <li><a href="https://leetcode.cn/problems/sort-an-array/" target="_blank">912. 排序数组</a></li>
+                <li><a href="https://leetcode.cn/problems/move-zeroes/" target="_blank">283. 移动零</a></li>
+            </ul></div>
+        </aside>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        let bData = [29, 10, 14, 37, 13, 33, 48, 22];
+        const origB = [...bData];
+        let bSteps = [], bIdx = 0;
+        let bComp = 0, bSwap = 0;
+        const logEl = document.getElementById('bubbleLog');
+        function logMsg(m){logEl.innerHTML=`<span class="log-msg">👉 ${m}</span>`;}
+
+        function generateBSteps() {
+            bSteps = []; bComp = 0; bSwap = 0;
+            const arr = [...origB];
+            const n = arr.length;
+            bSteps.push({arr:[...arr], cmp:[-1,-1], swp:false, msg:'初始数组'});
+            for (let i = 0; i < n-1; i++) {
+                let swapped = false;
+                for (let j = 0; j < n-1-i; j++) {
+                    bComp++;
+                    bSteps.push({arr:[...arr], cmp:[j, j+1], swp:false, msg:`比较 arr[${j}]=${arr[j]} 和 arr[${j+1}]=${arr[j+1]}`});
+                    if (arr[j] > arr[j+1]) {
+                        [arr[j], arr[j+1]] = [arr[j+1], arr[j]];
+                        bSwap++;
+                        swapped = true;
+                        bSteps.push({arr:[...arr], cmp:[j, j+1], swp:true, msg:`🔁 交换 ${arr[j+1]} 和 ${arr[j]}`});
+                    }
+                }
+                if (!swapped) {
+                    bSteps.push({arr:[...arr], cmp:[-1,-1], swp:false, msg:`✅ 第 ${i+1} 轮无交换，提前结束！`});
+                    break;
+                }
+                bSteps.push({arr:[...arr], cmp:[-1,-1], swp:false, msg:`--- 第 ${i+1} 轮结束，最大值 ${arr[n-1-i]} 已归位 ---`});
+            }
+            bSteps.push({arr:[...arr], cmp:[-1,-1], swp:false, msg:'🎉 排序完成！'});
+        }
+
+        function renderBStep(idx) {
+            if (idx >= bSteps.length) return;
+            const s = bSteps[idx];
+            const w = 700, h = 220;
+            const viz = document.getElementById('bubbleViz');
+            viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
+            const svg = d3.select(viz.querySelector('svg'));
+            const barW = Math.min(50, (w-100)/s.arr.length);
+
+            s.arr.forEach((v, i) => {
+                let color = '#1e2a4a';
+                if (s.cmp[0] === i || s.cmp[1] === i) {
+                    color = s.swp ? '#ff6b6b' : '#FFD700';
+                }
+                svg.append('rect').attr('x',30+i*(barW+3)).attr('y',h-30-v*4)
+                 .attr('width',barW).attr('height',v*4).attr('rx',3)
+                 .attr('fill',color).attr('stroke','#fff').attr('stroke-width',1);
+                svg.append('text').attr('x',30+i*(barW+3)+barW/2).attr('y',h-35)
+                 .attr('text-anchor','middle').attr('fill','#fff').attr('font-size','11').text(v);
+            });
+
+            svg.append('text').attr('x',20).attr('y',25).attr('fill','#FFD700')
+             .attr('font-size','13').text(s.msg);
+
+            document.getElementById('bubbleStats').textContent = `比较: ${bComp} | 交换: ${bSwap}`;
+            logMsg(`步骤 ${idx+1}/${bSteps.length}: ${s.msg}`);
+        }
+
+        function bubbleSortStart() {
+            generateBSteps(); bIdx = 0;
+            function play() {
+                if (bIdx < bSteps.length) {
+                    renderBStep(bIdx); bIdx++;
+                    setTimeout(play, 500);
+                }
+            }
+            play();
+        }
+
+        function bubbleStep() {
+            if (bSteps.length === 0) generateBSteps();
+            if (bIdx < bSteps.length) { renderBStep(bIdx); bIdx++; }
+        }
+
+        function resetBubble() {
+            bData = [...origB]; bSteps = []; bIdx = 0;
+            bComp = 0; bSwap = 0;
+            document.getElementById('bubbleStats').textContent = '比较: 0 | 交换: 0';
+            const w = 700, h = 220;
+            const viz = document.getElementById('bubbleViz');
+            viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
+            const svg = d3.select(viz.querySelector('svg'));
+            const barW = Math.min(50, (w-100)/bData.length);
+            bData.forEach((v, i) => {
+                svg.append('rect').attr('x',30+i*(barW+3)).attr('y',h-30-v*4)
+                 .attr('width',barW).attr('height',v*4).attr('rx',3)
+                 .attr('fill','#1e2a4a').attr('stroke','#e74c3c').attr('stroke-width',1);
+                svg.append('text').attr('x',30+i*(barW+3)+barW/2).attr('y',h-35)
+                 .attr('text-anchor','middle').attr('fill','#fff').attr('font-size','11').text(v);
+            });
+            logEl.innerHTML = '';
+            logMsg('已重置');
+        }
+        resetBubble();
+    </script>
+</body>
+</html>
