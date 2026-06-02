@@ -442,21 +442,22 @@ function initEvolutionGraph() {
     container.innerHTML = '';
 
     const parent = container.parentElement;
-    const width = parent.clientWidth - 40;
-    const height = Math.max(500, parent.clientHeight - 40);
+    const width = Math.max(900, parent.clientWidth - 40);
+    const height = Math.max(800, parent.clientHeight - 40);
 
     let evoSvg = d3.select(container)
         .append('svg')
         .attr('width', '100%')
         .attr('height', '100%')
         .attr('viewBox', [0, 0, width, height])
-        .style('min-height', height + 'px');
+        .style('min-height', height + 'px')
+        .style('overflow', 'visible');
 
     let evoG = evoSvg.append('g');
     let evoTooltip = d3.select('.graph-tooltip');
 
     const zoom = d3.zoom()
-        .scaleExtent([0.3, 3])
+        .scaleExtent([0.3, 4])
         .filter((event) => {
             if (event.type === 'wheel') return event.ctrlKey || event.touches > 0;
             return true;
@@ -489,17 +490,25 @@ function initEvolutionGraph() {
 
     const categories = Object.keys(categoryColors);
     const catCount = categories.length;
-    const rowHeight = Math.min(100, (height - 80) / catCount);
+    const rowHeight = Math.max(110, Math.min(130, (height - 100) / catCount));
 
-    // 按类别分配行，按年份分配列
+    // 按类别分配行，按年份分配列，同一类别内添加垂直抖动避免重叠
+    const rowPositionCache = {};
     nodes.forEach(d => {
         const catIdx = categories.indexOf(d.category);
         if (catIdx >= 0) {
-            const yPos = 50 + catIdx * rowHeight + rowHeight / 2;
+            const yBase = 50 + catIdx * rowHeight + rowHeight / 2;
             const xRatio = (d.year - yearMin) / (yearMax - yearMin + 1);
             const xPos = 80 + xRatio * (width - 160);
+
+            // 同一行同一年的节点，垂直方向散布
+            const rowKey = catIdx + '-' + Math.round(xPos / 30);
+            if (!rowPositionCache[rowKey]) rowPositionCache[rowKey] = 0;
+            const vOffset = (rowPositionCache[rowKey] % 3 - 1) * 22;
+            rowPositionCache[rowKey]++;
+
             d.fx = xPos;
-            d.fy = yPos;
+            d.fy = yBase + vOffset;
         }
     });
 
@@ -618,12 +627,13 @@ function initEvolutionGraph() {
 
     evoNodes.append('text')
         .text(d => d.name)
-        .attr('dy', '0.35em')
-        .attr('x', d => getNodeRadius(d) + 6)
-        .style('font-size', '11px')
+        .attr('dy', d => getNodeRadius(d) + 14)
+        .attr('text-anchor', 'middle')
+        .style('font-size', '10px')
         .style('font-weight', '500')
         .style('fill', '#1f2937')
-        .style('pointer-events', 'none');
+        .style('pointer-events', 'none')
+        .style('text-shadow', '0 1px 2px rgba(255,255,255,0.8)');
 }
 
 // ========== Drag handlers ==========
