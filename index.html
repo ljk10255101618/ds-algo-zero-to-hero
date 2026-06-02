@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSATutor - 数据结构与算法可视化教学平台</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/ai-assistant.css">
+    <link rel="stylesheet" href="https://unpkg.com/katex@0.16.9/dist/katex.min.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+    <!-- ========== Tooltip (知识图谱浮窗) ========== -->
+    <div class="graph-tooltip tooltip" style="opacity:0; position:fixed;"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>DSATutor <span class="subtitle">数据结构与算法</span></h1>
+            <p class="subtitle-desc">可视化交互学习平台 · 建立直觉 · 理解本质 · 掌握算法</p>
+            <div class="knowledge-tags">
+                <span class="tag tag-linear" onclick="document.querySelector('[data-category=\"线性结构\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">📊 线性结构</span>
+                <span class="tag tag-tree" onclick="document.querySelector('[data-category=\"树形结构\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🌳 树形结构</span>
+                <span class="tag tag-graph" onclick="document.querySelector('[data-category=\"图\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🔗 图</span>
+                <span class="tag tag-sort" onclick="document.querySelector('[data-category=\"排序\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🔄 排序</span>
+                <span class="tag tag-search" onclick="document.querySelector('[data-category=\"搜索\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🔍 搜索</span>
+                <span class="tag tag-advanced" onclick="document.querySelector('[data-category=\"高级结构\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🚀 高级结构</span>
+            </div>
+        </header>
+
+        <!-- 主内容 -->
+        <div class="main-content">
+            <!-- 知识图谱导航区域 -->
+            <div id="knowledge-graph-container">
+                <div class="section-title"><span class="icon">🧠</span> 知识图谱 · 探索数据结构之间的关系</div>
+                <div class="graph-mode-switch">
+                    <button class="mode-btn active" data-mode="knowledge" onclick="switchGraphMode('knowledge')">知识图谱</button>
+                    <button class="mode-btn" data-mode="evolution" onclick="switchGraphMode('evolution')">进化史</button>
+                </div>
+                <div id="knowledge-graph" class="graph-view active"></div>
+                <div id="evolution-graph" class="graph-view"></div>
+                <p class="hint">🖱️ 点击节点跳转学习 · Ctrl+滚轮缩放 · 拖拽移动</p>
+            </div>
+
+            <!-- 快速入口 -->
+            <div class="quick-access">
+                <div class="section-title"><span class="icon">📚</span> 快速入口 · 开始学习</div>
+                <div class="card-grid-wrapper">
+                    <div class="card-grid">
+                        <!-- 线性结构 -->
+                        <a href="algorithms/array/index.html" class="card" data-category="线性结构">
+                            <h3>数组</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-1">Lv1</span>
+                                <span class="category-tag">线性结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/linked-list/index.html" class="card" data-category="线性结构">
+                            <h3>链表</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-1">Lv1</span>
+                                <span class="category-tag">线性结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/stack/index.html" class="card" data-category="线性结构">
+                            <h3>栈</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-1">Lv1</span>
+                                <span class="category-tag">线性结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/queue/index.html" class="card" data-category="线性结构">
+                            <h3>队列</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-1">Lv1</span>
+                                <span class="category-tag">线性结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/deque/index.html" class="card" data-category="线性结构">
+                            <h3>双端队列</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-2">Lv2</span>
+                                <span class="category-tag">线性结构</span>
+                            </div>
+                        </a>
+
+                        <!-- 树形结构 -->
+                        <a href="algorithms/binary-tree/index.html" class="card" data-category="树形结构">
+                            <h3>二叉树</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-2">Lv2</span>
+                                <span class="category-tag">树形结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/bst/index.html" class="card" data-category="树形结构">
+                            <h3>BST</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-2">Lv2</span>
+                                <span class="category-tag">树形结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/avl/index.html" class="card" data-category="树形结构">
+                            <h3>AVL树</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-3">Lv3</span>
+                                <span class="category-tag">树形结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/red-black/index.html" class="card" data-category="树形结构">
+                            <h3>红黑树</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-4">Lv4</span>
+                                <span class="category-tag">树形结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/heap/index.html" class="card" data-category="树形结构">
+                            <h3>堆</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-3">Lv3</span>
+                                <span class="category-tag">树形结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/trie/index.html" class="card" data-category="树形结构">
+                            <h3>Trie树</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-3">Lv3</span>
+                                <span class="category-tag">树形结构</span>
+                            </div>
+                        </a>
+
+                        <!-- 图 -->
+                        <a href="algorithms/graph/index.html" class="card" data-category="图">
+                            <h3>图论基础</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-3">Lv3</span>
+                                <span class="category-tag">图</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/graph/index.html#bfs" class="card" data-category="图">
+                            <h3>BFS</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-3">Lv3</span>
+                                <span class="category-tag">图</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/graph/index.html#dfs" class="card" data-category="图">
+                            <h3>DFS</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-3">Lv3</span>
+                                <span class="category-tag">图</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/shortest-path/index.html" class="card" data-category="图">
+                            <h3>最短路径</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-4">Lv4</span>
+                                <span class="category-tag">图</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/mst/index.html" class="card" data-category="图">
+                            <h3>最小生成树</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-4">Lv4</span>
+                                <span class="category-tag">图</span>
+                            </div>
+                        </a>
+
+                        <!-- 排序 -->
+                        <a href="algorithms/sorting/bubble/index.html" class="card" data-category="排序">
+                            <h3>冒泡排序</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-1">Lv1</span>
+                                <span class="category-tag">排序</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/sorting/selection/index.html" class="card" data-category="排序">
+                            <h3>选择排序</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-1">Lv1</span>
+                                <span class="category-tag">排序</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/sorting/insertion/index.html" class="card" data-category="排序">
+                            <h3>插入排序</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-1">Lv1</span>
+                                <span class="category-tag">排序</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/sorting/merge/index.html" class="card" data-category="排序">
+                            <h3>归并排序</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-2">Lv2</span>
+                                <span class="category-tag">排序</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/sorting/quick/index.html" class="card" data-category="排序">
+                            <h3>快速排序</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-2">Lv2</span>
+                                <span class="category-tag">排序</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/sorting/heap/index.html" class="card" data-category="排序">
+                            <h3>堆排序</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-3">Lv3</span>
+                                <span class="category-tag">排序</span>
+                            </div>
+                        </a>
+
+                        <!-- 搜索 -->
+                        <a href="algorithms/search/binary-search/index.html" class="card" data-category="搜索">
+                            <h3>二分搜索</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-1">Lv1</span>
+                                <span class="category-tag">搜索</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/hash-table/index.html" class="card" data-category="搜索">
+                            <h3>哈希表</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-2">Lv2</span>
+                                <span class="category-tag">搜索</span>
+                            </div>
+                        </a>
+
+                        <!-- 高级结构 -->
+                        <a href="algorithms/advanced/union-find/index.html" class="card" data-category="高级结构">
+                            <h3>并查集</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-3">Lv3</span>
+                                <span class="category-tag">高级结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/segment-tree/index.html" class="card" data-category="高级结构">
+                            <h3>线段树</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-5">Lv5</span>
+                                <span class="category-tag">高级结构</span>
+                            </div>
+                        </a>
+                        <a href="algorithms/advanced/bit-index-tree/index.html" class="card" data-category="高级结构">
+                            <h3>树状数组</h3>
+                            <div class="badge-row">
+                                <span class="level-badge level-4">Lv4</span>
+                                <span class="category-tag">高级结构</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🎯 互动学习 · 可视化理解 · 循序渐进 Lv1→Lv5</p>
+            <p>拖动知识图谱节点探索关系 · 点击卡片进入深度学习</p>
+        </footer>
+    </div>
+
+    <!-- ========== AI 助手面板 ========== -->
+    <!-- 切换按钮 -->
+    <button class="ai-toggle-btn" id="aiToggleBtn" onclick="toggleAIPanel()" title="AI 学习助手">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span class="ai-badge" id="aiBadge" style="display:none;">1</span>
+    </button>
+
+    <!-- 聊天面板 -->
+    <div class="ai-chat-panel" id="aiChatPanel">
+        <div class="ai-chat-header">
+            <h3>AI 学习助手 · 实时答疑</h3>
+            <div class="ai-chat-header-actions">
+                <button class="ai-header-btn" onclick="clearChat()" title="清除对话">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-message ai-bot-message">
+                <div class="ai-message-avatar">🤖</div>
+                <div class="ai-message-content">
+                    <p>👋 你好！我是 DSATutor 的 AI 学习助手。我可以帮助你：</p>
+                    <ul style="margin: 8px 0 0 16px; padding:0; font-size:13px; line-height:1.8;">
+                        <li>📖 解释数据结构的原理</li>
+                        <li>💡 分析算法的时间/空间复杂度</li>
+                        <li>🔍 解答刷题思路</li>
+                        <li>📊 可视化算法执行过程</li>
+                    </ul>
+                    <p style="margin-top:8px; color:var(--ai-text-muted); font-size:12px;">试试问我："解释一下快速排序" 或 "栈和队列有什么区别？"</p>
+                </div>
+            </div>
+        </div>
+        <div class="ai-chat-input-area">
+            <textarea class="ai-chat-input" id="aiChatInput" placeholder="输入你的问题..." rows="1" onkeydown="handleInputKeydown(event)"></textarea>
+            <button class="ai-send-btn" onclick="sendMessage()">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- KaTeX -->
+    <script src="https://unpkg.com/katex@0.16.9/dist/katex.min.js"></script>
+    <script>
+    // KaTeX 公式渲染
+    window.renderMathInElement = function(element) {
+        if (typeof katex === 'undefined') return;
+        const text = element.textContent || element.innerText;
+        let result = text.replace(/\$\$([\s\S]+?)\$\$/g, function(match, tex) {
+            try { return katex.renderToString(tex.trim(), {displayMode: true, throwOnError: false}); }
+            catch(e) { return match; }
+        });
+        result = result.replace(/\$([^\$\n]+?)\$/g, function(match, tex) {
+            try { return katex.renderToString(tex.trim(), {displayMode: false, throwOnError: false}); }
+            catch(e) { return match; }
+        });
+        if (result !== text) element.innerHTML = result;
+    };
+    </script>
+
+    <script src="assets/js/knowledge-graph.js"></script>
+    <script src="assets/js/ai-assistant.js"></script>
+
+    <!-- D3 初始化 -->
+    <script>
+    window.addEventListener('load', function() {
+        if (typeof initKnowledgeGraph === 'function') initKnowledgeGraph();
+    });
+    </script>
+</body>
+</html>
