@@ -121,7 +121,10 @@ class Queue:
         }
 
         function render() {
-            const w = 700, h = 220;
+            const viz = document.getElementById('queueViz');
+            const containerW = viz.clientWidth || 700;
+            const w = Math.max(containerW, 400);
+            const h = 220;
             const viz = document.getElementById('queueViz');
             viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
             const svg = d3.select(viz.querySelector('svg'));

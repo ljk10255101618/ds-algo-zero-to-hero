@@ -111,7 +111,10 @@ def merge(left, right):
         function renderStep(stepIdx) {
             if (stepIdx >= mergeSteps.length) return;
             const step = mergeSteps[stepIdx];
-            const w = 700, h = 200;
+            const viz = document.getElementById('mergeViz');
+            const containerW = viz.clientWidth || 700;
+            const w = Math.max(containerW, 400);
+            const h = 200;
             const viz = document.getElementById('mergeViz');
             viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
             const svg = d3.select(viz.querySelector('svg'));
@@ -188,7 +191,10 @@ def merge(left, right):
             comparisons = 0; merges = 0;
             document.getElementById('mergeStats').textContent = '比较: 0 | 合并: 0';
             // Initial render
-            const w = 700, h = 200;
+            const viz = document.getElementById('mergeViz');
+            const containerW = viz.clientWidth || 700;
+            const w = Math.max(containerW, 400);
+            const h = 200;
             const viz = document.getElementById('mergeViz');
             viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
             const svg = d3.select(viz.querySelector('svg'));

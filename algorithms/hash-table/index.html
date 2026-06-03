@@ -111,7 +111,10 @@
         }
 
         function render() {
-            const w = 750, h = 380;
+            const viz = document.getElementById('hashViz');
+            const containerW = viz.clientWidth || 750;
+            const w = Math.max(containerW, 400);
+            const h = 380;
             const viz = document.getElementById('hashViz');
             viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
             const svg = d3.select(viz.querySelector('svg'));

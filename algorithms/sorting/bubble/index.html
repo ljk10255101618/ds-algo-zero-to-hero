@@ -106,7 +106,10 @@
         function renderBStep(idx) {
             if (idx >= bSteps.length) return;
             const s = bSteps[idx];
-            const w = 700, h = 220;
+            const viz = document.getElementById('bubbleViz');
+            const containerW = viz.clientWidth || 700;
+            const w = Math.max(containerW, 400);
+            const h = 220;
             const viz = document.getElementById('bubbleViz');
             viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
             const svg = d3.select(viz.querySelector('svg'));
@@ -151,7 +154,10 @@
             bData = [...origB]; bSteps = []; bIdx = 0;
             bComp = 0; bSwap = 0;
             document.getElementById('bubbleStats').textContent = '比较: 0 | 交换: 0';
-            const w = 700, h = 220;
+            const viz = document.getElementById('bubbleViz');
+            const containerW = viz.clientWidth || 700;
+            const w = Math.max(containerW, 400);
+            const h = 220;
             const viz = document.getElementById('bubbleViz');
             viz.innerHTML = `<svg width="${w}" height="${h}"></svg>`;
             const svg = d3.select(viz.querySelector('svg'));
