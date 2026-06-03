@@ -3495,8 +3495,13 @@ function findKnowledge(query) {
 直接在输入框提问，我会为你详细解答！`;
 }
 
+// ========== 全局变量 ==========
+let conversationHistory = [];  // 存储对话历史
+const API_URL = '/api/chat';   // API 地址（部署时改为实际地址）
+const USE_API = true;          // 是否使用API（设为false则使用本地知识库）
+
 // ========== 发送消息 ==========
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('aiChatInput');
     const text = input.value.trim();
     if (!text) return;
@@ -3509,13 +3514,61 @@ function sendMessage() {
     // 显示打字中
     showTyping();
     
-    // 模拟思考延迟（根据问题复杂度调整）
-    const delay = 300 + Math.random() * 700;
-    setTimeout(() => {
+    try {
+        let answer;
+        
+        if (USE_API) {
+            // 调用 API 获取回答
+            answer = await callAPI(text);
+        } else {
+            // 使用本地知识库
+            answer = findKnowledge(text);
+        }
+        
         hideTyping();
-        const answer = findKnowledge(text);
         addMessage(answer);
-    }, delay);
+        
+        // 添加到对话历史
+        conversationHistory.push({ role: 'user', content: text });
+        conversationHistory.push({ role: 'assistant', content: answer });
+        
+        // 只保留最近20轮对话
+        if (conversationHistory.length > 40) {
+            conversationHistory = conversationHistory.slice(-40);
+        }
+    } catch (error) {
+        hideTyping();
+        console.error('API调用失败:', error);
+        // 如果API失败，回退到本地知识库
+        const answer = findKnowledge(text);
+        addMessage(answer + '\n\n> ⚠️ API调用失败，已使用本地知识库回答。');
+    }
+}
+
+// ========== 调用 API ==========
+async function callAPI(message) {
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            message: message,
+            history: conversationHistory.slice(-10)  // 只传最近10轮
+        })
+    });
+    
+    if (!response.ok) {
+        throw new Error(`API请求失败: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.success) {
+        return data.message;
+    } else {
+        throw new Error(data.error || 'API返回错误');
+    }
 }
 
 // ========== 输入框事件 ==========

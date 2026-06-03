@@ -1,0 +1,5 @@
+# DSA Tutor API 服务依赖
+flask>=2.0.0
+flask-cors>=3.0.0
+coze-coding-dev-sdk>=1.0.0
+coze-coding-utils>=1.0.0
