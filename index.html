@@ -430,11 +430,31 @@
 
             if (isMatch) {
                 node.style.opacity = '1';
-                node.style.transform = 'scale(1.3)';
-                node.style.filter = 'drop-shadow(0 0 8px currentColor)';
+                node.style.filter = 'brightness(1.2) drop-shadow(0 0 10px currentColor)';
+                // 使用 stroke-width 增加边框来高亮，而不是 transform
+                const circle = node.querySelector('circle');
+                const rect = node.querySelector('rect');
+                if (circle) {
+                    circle.style.strokeWidth = '4';
+                    circle.style.stroke = '#fff';
+                }
+                if (rect) {
+                    rect.style.strokeWidth = '4';
+                    rect.style.stroke = '#fff';
+                }
             } else {
                 node.style.opacity = '0.15';
-                node.style.transform = 'scale(0.8)';
+                node.style.filter = 'grayscale(0.8)';
+                const circle = node.querySelector('circle');
+                const rect = node.querySelector('rect');
+                if (circle) {
+                    circle.style.strokeWidth = '';
+                    circle.style.stroke = '';
+                }
+                if (rect) {
+                    rect.style.strokeWidth = '';
+                    rect.style.stroke = '';
+                }
             }
         });
 
@@ -452,8 +472,18 @@
 
         nodes.forEach(node => {
             node.style.opacity = '';
-            node.style.transform = '';
             node.style.filter = '';
+            // 重置边框
+            const circle = node.querySelector('circle');
+            const rect = node.querySelector('rect');
+            if (circle) {
+                circle.style.strokeWidth = '';
+                circle.style.stroke = '';
+            }
+            if (rect) {
+                rect.style.strokeWidth = '';
+                rect.style.stroke = '';
+            }
         });
 
         links.forEach(link => {
