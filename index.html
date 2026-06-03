@@ -429,31 +429,36 @@
             const isMatch = targetIds.some(id => nodeId?.includes(id.toLowerCase()));
 
             if (isMatch) {
+                // 选中节点：完全显示 + 更亮的颜色 + 明显的边框
                 node.style.opacity = '1';
-                node.style.filter = 'brightness(1.2) drop-shadow(0 0 10px currentColor)';
-                // 使用 stroke-width 增加边框来高亮，而不是 transform
+                node.style.filter = 'brightness(1.6) drop-shadow(0 0 15px rgba(255,255,255,0.8))';
                 const circle = node.querySelector('circle');
                 const rect = node.querySelector('rect');
                 if (circle) {
-                    circle.style.strokeWidth = '4';
+                    circle.style.strokeWidth = '5';
                     circle.style.stroke = '#fff';
+                    circle.style.filter = 'drop-shadow(0 0 8px rgba(255,255,255,0.6))';
                 }
                 if (rect) {
-                    rect.style.strokeWidth = '4';
+                    rect.style.strokeWidth = '5';
                     rect.style.stroke = '#fff';
+                    rect.style.filter = 'drop-shadow(0 0 8px rgba(255,255,255,0.6))';
                 }
             } else {
-                node.style.opacity = '0.15';
-                node.style.filter = 'grayscale(0.8)';
+                // 未选中节点：变暗变灰
+                node.style.opacity = '0.08';
+                node.style.filter = 'grayscale(1)';
                 const circle = node.querySelector('circle');
                 const rect = node.querySelector('rect');
                 if (circle) {
                     circle.style.strokeWidth = '';
                     circle.style.stroke = '';
+                    circle.style.filter = '';
                 }
                 if (rect) {
                     rect.style.strokeWidth = '';
                     rect.style.stroke = '';
+                    rect.style.filter = '';
                 }
             }
         });
