@@ -19,13 +19,41 @@
         <header>
             <h1>DSATutor <span class="subtitle">数据结构与算法</span></h1>
             <p class="subtitle-desc">可视化交互学习平台 · 建立直觉 · 理解本质 · 掌握算法</p>
-            <div class="knowledge-tags">
-                <span class="tag tag-linear" onclick="document.querySelector('[data-category=\"线性结构\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">📊 线性结构</span>
-                <span class="tag tag-tree" onclick="document.querySelector('[data-category=\"树形结构\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🌳 树形结构</span>
-                <span class="tag tag-graph" onclick="document.querySelector('[data-category=\"图\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🔗 图</span>
-                <span class="tag tag-sort" onclick="document.querySelector('[data-category=\"排序\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🔄 排序</span>
-                <span class="tag tag-search" onclick="document.querySelector('[data-category=\"搜索\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🔍 搜索</span>
-                <span class="tag tag-advanced" onclick="document.querySelector('[data-category=\"高级结构\"]')?.scrollIntoView({behavior:'smooth', block:'center'})">🚀 高级结构</span>
+            <div class="knowledge-tags" id="knowledgeTags">
+                <span class="tag tag-linear" data-category="线性结构" onclick="filterByCategory(this, 'linear')">
+                    <span class="tag-icon">📊</span>
+                    <span class="tag-text">线性结构</span>
+                    <span class="tag-count">5</span>
+                </span>
+                <span class="tag tag-tree" data-category="树形结构" onclick="filterByCategory(this, 'tree')">
+                    <span class="tag-icon">🌳</span>
+                    <span class="tag-text">树形结构</span>
+                    <span class="tag-count">6</span>
+                </span>
+                <span class="tag tag-graph" data-category="图" onclick="filterByCategory(this, 'graph')">
+                    <span class="tag-icon">🔗</span>
+                    <span class="tag-text">图</span>
+                    <span class="tag-count">5</span>
+                </span>
+                <span class="tag tag-sort" data-category="排序" onclick="filterByCategory(this, 'sort')">
+                    <span class="tag-icon">🔄</span>
+                    <span class="tag-text">排序</span>
+                    <span class="tag-count">6</span>
+                </span>
+                <span class="tag tag-search" data-category="搜索" onclick="filterByCategory(this, 'search')">
+                    <span class="tag-icon">🔍</span>
+                    <span class="tag-text">搜索</span>
+                    <span class="tag-count">2</span>
+                </span>
+                <span class="tag tag-advanced" data-category="高级结构" onclick="filterByCategory(this, 'advanced')">
+                    <span class="tag-icon">🚀</span>
+                    <span class="tag-text">高级结构</span>
+                    <span class="tag-count">3</span>
+                </span>
+            </div>
+            <!-- 分类统计提示 -->
+            <div class="category-stats" id="categoryStats">
+                <span class="stats-hint">点击标签筛选知识图谱节点</span>
             </div>
         </header>
 
@@ -316,6 +344,159 @@
     
     <script src="assets/js/knowledge-graph.js"></script>
     <script src="assets/js/ai-assistant.js"></script>
+
+    <!-- 标签交互功能 -->
+    <script>
+    // 类别映射
+    const categoryMap = {
+        'linear': ['array', 'linked-list', 'stack', 'queue', 'deque'],
+        'tree': ['binary-tree', 'bst', 'avl', 'red-black', 'heap', 'trie'],
+        'graph': ['graph', 'shortest-path', 'mst', 'bfs', 'dfs'],
+        'sort': ['bubble', 'selection', 'insertion', 'merge', 'quick', 'heap'],
+        'search': ['binary-search', 'hash-table'],
+        'advanced': ['union-find', 'segment-tree', 'bit-index-tree']
+    };
+
+    // 类别信息
+    const categoryInfo = {
+        'linear': { icon: '📊', name: '线性结构', color: '#667eea', levels: 'Lv1-Lv2' },
+        'tree': { icon: '🌳', name: '树形结构', color: '#11998e', levels: 'Lv2-Lv4' },
+        'graph': { icon: '🔗', name: '图', color: '#fc4a1a', levels: 'Lv3-Lv4' },
+        'sort': { icon: '🔄', name: '排序算法', color: '#8e2de2', levels: 'Lv1-Lv3' },
+        'search': { icon: '🔍', name: '搜索', color: '#00b4db', levels: 'Lv1-Lv2' },
+        'advanced': { icon: '🚀', name: '高级结构', color: '#f093fb', levels: 'Lv3-Lv5' }
+    };
+
+    let currentFilter = null;
+
+    // 分类筛选函数
+    function filterByCategory(element, category) {
+        const tags = document.querySelectorAll('.tag');
+        const statsEl = document.getElementById('categoryStats');
+
+        // 切换选中状态
+        if (currentFilter === category) {
+            // 取消筛选
+            element.classList.remove('active');
+            currentFilter = null;
+            statsEl.innerHTML = '<span class="stats-hint">点击标签筛选知识图谱节点</span>';
+
+            // 显示所有节点和卡片
+            showAllNodes();
+            showAllCards();
+        } else {
+            // 选中新的分类
+            tags.forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            currentFilter = category;
+
+            // 更新统计信息
+            const info = categoryInfo[category];
+            const nodes = categoryMap[category];
+            statsEl.innerHTML = `
+                <span style="color: ${info.color}; font-weight: 600;">
+                    ${info.icon} ${info.name} · ${nodes.length} 个知识点 · 难度 ${info.levels}
+                </span>
+                <span style="margin-left: 12px; opacity: 0.7; cursor: pointer;" onclick="clearFilter()">[清除筛选]</span>
+            `;
+
+            // 高亮相关节点
+            highlightNodes(category);
+            highlightCards(category);
+        }
+    }
+
+    // 清除筛选
+    function clearFilter() {
+        const tags = document.querySelectorAll('.tag');
+        tags.forEach(t => t.classList.remove('active'));
+        currentFilter = null;
+
+        const statsEl = document.getElementById('categoryStats');
+        statsEl.innerHTML = '<span class="stats-hint">点击标签筛选知识图谱节点</span>';
+
+        showAllNodes();
+        showAllCards();
+    }
+
+    // 高亮知识图谱节点
+    function highlightNodes(category) {
+        const nodes = document.querySelectorAll('#knowledge-graph .node');
+        const targetIds = categoryMap[category];
+
+        nodes.forEach(node => {
+            const nodeId = node.getAttribute('data-id') || node.querySelector('text')?.textContent?.toLowerCase();
+            const isMatch = targetIds.some(id => nodeId?.includes(id.toLowerCase()));
+
+            if (isMatch) {
+                node.style.opacity = '1';
+                node.style.transform = 'scale(1.3)';
+                node.style.filter = 'drop-shadow(0 0 8px currentColor)';
+            } else {
+                node.style.opacity = '0.15';
+                node.style.transform = 'scale(0.8)';
+            }
+        });
+
+        // 高亮连接线
+        const links = document.querySelectorAll('#knowledge-graph .link');
+        links.forEach(link => {
+            link.style.opacity = '0.15';
+        });
+    }
+
+    // 显示所有节点
+    function showAllNodes() {
+        const nodes = document.querySelectorAll('#knowledge-graph .node');
+        const links = document.querySelectorAll('#knowledge-graph .link');
+
+        nodes.forEach(node => {
+            node.style.opacity = '';
+            node.style.transform = '';
+            node.style.filter = '';
+        });
+
+        links.forEach(link => {
+            link.style.opacity = '';
+        });
+    }
+
+    // 高亮卡片
+    function highlightCards(category) {
+        const cards = document.querySelectorAll('.card');
+        const targetCategories = {
+            'linear': '线性结构',
+            'tree': '树形结构',
+            'graph': '图',
+            'sort': '排序',
+            'search': '搜索',
+            'advanced': '高级结构'
+        };
+        const targetCat = targetCategories[category];
+
+        cards.forEach(card => {
+            const cardCat = card.getAttribute('data-category');
+            if (cardCat === targetCat) {
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1.05)';
+                card.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.3)';
+            } else {
+                card.style.opacity = '0.3';
+                card.style.transform = 'scale(0.95)';
+            }
+        });
+    }
+
+    // 显示所有卡片
+    function showAllCards() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.style.opacity = '';
+            card.style.transform = '';
+            card.style.boxShadow = '';
+        });
+    }
+    </script>
 
     <!-- 初始化 -->
     <script>
