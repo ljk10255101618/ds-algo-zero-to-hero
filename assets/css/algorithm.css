@@ -180,13 +180,14 @@ body {
 
 .viz-container {
     width: 100%;
-    min-height: 450px; /* 增加高度 */
+    min-height: 500px; /* 增加高度 */
     height: auto; /* 自适应高度 */
     background: linear-gradient(180deg, #fafbfc, #f1f5f9);
     border-radius: 12px;
     border: 1px solid var(--border-light);
     position: relative;
     overflow: visible; /* 改为 visible，允许内容显示 */
+    z-index: 1; /* 确保不被侧边栏覆盖 */
 }
 
 .viz-container svg {
@@ -198,6 +199,27 @@ body {
 /* 确保 SVG 中的节点不会被裁剪 */
 .viz-container svg * {
     overflow: visible;
+}
+
+/* 通用可视化容器样式 */
+.viz-canvas,
+.heap-container,
+.merge-container,
+.bubble-container,
+.stack-container,
+.list-container,
+.hash-container,
+.bst-container,
+.queue-container {
+    width: 100%;
+    min-height: 500px;
+    height: auto;
+    background: linear-gradient(180deg, #fafbfc, #f1f5f9);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    position: relative;
+    overflow: visible;
+    z-index: 1;
 }
 
 .controls {
