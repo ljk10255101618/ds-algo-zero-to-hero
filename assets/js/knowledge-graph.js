@@ -258,6 +258,8 @@ function initKnowledgeGraph() {
         .data(nodes)
         .join('g')
         .attr('class', 'node')
+        .attr('data-id', d => d.id)  // 添加 data-id 属性用于筛选
+        .attr('data-category', d => d.category)  // 添加 data-category 属性
         .style('cursor', 'pointer')
         .call(d3.drag()
             .on('start', dragStarted)

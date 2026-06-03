@@ -347,14 +347,14 @@
 
     <!-- 标签交互功能 -->
     <script>
-    // 类别映射
+    // 类别映射 - 使用节点数据中实际的 id
     const categoryMap = {
         'linear': ['array', 'linked-list', 'stack', 'queue', 'deque'],
         'tree': ['binary-tree', 'bst', 'avl', 'red-black', 'heap', 'trie'],
-        'graph': ['graph', 'shortest-path', 'mst', 'bfs', 'dfs'],
-        'sort': ['bubble', 'selection', 'insertion', 'merge', 'quick', 'heap'],
+        'graph': ['graph-basic', 'bfs', 'dfs', 'dijkstra', 'mst'],
+        'sort': ['bubble-sort', 'selection-sort', 'insertion-sort', 'merge-sort', 'quick-sort', 'heap-sort'],
         'search': ['binary-search', 'hash-table'],
-        'advanced': ['union-find', 'segment-tree', 'bit-index-tree']
+        'advanced': ['union-find', 'segment-tree', 'bit-index-tree', 'fib-heap']
     };
 
     // 类别信息
